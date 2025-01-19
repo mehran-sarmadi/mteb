@@ -1208,7 +1208,7 @@ C_MTEB = Benchmark(
 
 
 FA_MTEB = Benchmark(
-    name="MTEB(fa, beta)",
+    name="FaMTEB(fa, beta)",
     tasks=get_tasks(
         languages=["fas"],
         tasks=[
