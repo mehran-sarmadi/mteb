@@ -181,23 +181,23 @@ _HISTORIC_DATASETS = [
 
     # Newly added tasks:
     "PersianFoodSentimentClassification",
-    "SynPerChatbotConvSAAnger.json",
-    "SynPerChatbotConvSAFear.json",
-    "SynPerChatbotConvSAFriendship.json",
-    "SynPerChatbotConvSAHappiness.json",
-    "SynPerChatbotConvSAJealousy.json",
-    "SynPerChatbotConvSALove.json",
-    "SynPerChatbotConvSASadness.json",
-    "SynPerChatbotConvSASatisfaction.json",
-    "SynPerChatbotConvSASurprise.json",
+    "SynPerChatbotConvSAAnger",
+    "SynPerChatbotConvSAFear",
+    "SynPerChatbotConvSAFriendship",
+    "SynPerChatbotConvSAHappiness",
+    "SynPerChatbotConvSAJealousy",
+    "SynPerChatbotConvSALove",
+    "SynPerChatbotConvSASadness",
+    "SynPerChatbotConvSASatisfaction",
+    "SynPerChatbotConvSASurprise",
 
-    "SynPerChatbotConvSAToneChatbotClassification.json",
-    "SynPerChatbotConvSAToneUserClassification.json",
+    "SynPerChatbotConvSAToneChatbotClassification",
+    "SynPerChatbotConvSAToneUserClassification",
 
     "SynPerChatbotSatisfactionLevelClassification",
     
-    "SynPerChatbotRAGToneChatbotClassification.json",
-    "SynPerChatbotRAGToneUserClassification.json",
+    "SynPerChatbotRAGToneChatbotClassification",
+    "SynPerChatbotRAGToneUserClassification",
 
     "SynPerChatbotToneChatbotClassification",
     "SynPerChatbotToneUserClassification",
