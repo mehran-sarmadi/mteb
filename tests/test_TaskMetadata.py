@@ -181,10 +181,24 @@ _HISTORIC_DATASETS = [
 
     # Newly added tasks:
     "PersianFoodSentimentClassification",
-    "SynPerChatbotConvSAClassification",
-    "SynPerChatbotConvSAToneClassification",
+    "SynPerChatbotConvSAAnger.json",
+    "SynPerChatbotConvSAFear.json",
+    "SynPerChatbotConvSAFriendship.json",
+    "SynPerChatbotConvSAHappiness.json",
+    "SynPerChatbotConvSAJealousy.json",
+    "SynPerChatbotConvSALove.json",
+    "SynPerChatbotConvSASadness.json",
+    "SynPerChatbotConvSASatisfaction.json",
+    "SynPerChatbotConvSASurprise.json",
+
+    "SynPerChatbotConvSAToneChatbotClassification.json",
+    "SynPerChatbotConvSAToneUserClassification.json",
+
     "SynPerChatbotSatisfactionLevelClassification",
-    "SynPerChatbotRAGToneClassification",
+    
+    "SynPerChatbotRAGToneChatbotClassification.json",
+    "SynPerChatbotRAGToneUserClassification.json",
+
     "SynPerChatbotToneChatbotClassification",
     "SynPerChatbotToneUserClassification",
     "PersianTextTone",
@@ -194,8 +208,8 @@ _HISTORIC_DATASETS = [
     "SentimentDKSF",
     "NLPTwitterAnalysisClassification",
     "DigikalamagClassification",
-    "MassiveIntentClassification",
-    "MassiveScenarioClassification",
+    "MassiveIntentClassification",         
+    "MassiveScenarioClassification",       
     "BeytooteClustering",
     "DigikalamagClustering",
     "HamshahriClustring",

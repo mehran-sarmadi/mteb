@@ -1214,10 +1214,25 @@ FA_MTEB = Benchmark(
         tasks=[
             # Classification
             "PersianFoodSentimentClassification",
-            "SynPerChatbotConvSAClassification",
-            "SynPerChatbotConvSAToneClassification",
+
+            "SynPerChatbotConvSAAnger.json",
+            "SynPerChatbotConvSAFear.json",
+            "SynPerChatbotConvSAFriendship.json",
+            "SynPerChatbotConvSAHappiness.json",
+            "SynPerChatbotConvSAJealousy.json",
+            "SynPerChatbotConvSALove.json",
+            "SynPerChatbotConvSASadness.json",
+            "SynPerChatbotConvSASatisfaction.json",
+            "SynPerChatbotConvSASurprise.json",
+
+            "SynPerChatbotConvSAToneChatbotClassification.json",
+            "SynPerChatbotConvSAToneUserClassification.json",
+
             "SynPerChatbotSatisfactionLevelClassification",
-            "SynPerChatbotRAGToneClassification",
+            
+            "SynPerChatbotRAGToneChatbotClassification.json",
+            "SynPerChatbotRAGToneUserClassification.json",
+
             "SynPerChatbotToneChatbotClassification",
             "SynPerChatbotToneUserClassification",
             "PersianTextTone",
@@ -1265,7 +1280,18 @@ FA_MTEB = Benchmark(
             "MSMARCO-Fa",
             "NQ-Fa",
             "ArguAna-Fa",
-            "CQADupstackRetrieval-Fa",
+            "CQADupstackAndroidRetrieval-Fa.json",
+            "CQADupstackEnglishRetrieval-Fa.json",
+            "CQADupstackGamingRetrieval-Fa.json",
+            "CQADupstackGisRetrieval-Fa.json",
+            "CQADupstackMathematicaRetrieval-Fa.json",
+            "CQADupstackPhysicsRetrieval-Fa.json",
+            "CQADupstackProgrammersRetrieval-Fa.json",
+            "CQADupstackStatsRetrieval-Fa.json",
+            "CQADupstackTexRetrieval-Fa.json",
+            "CQADupstackUnixRetrieval-Fa.json",
+            "CQADupstackWebmastersRetrieval-Fa.json",
+            "CQADupstackWordpressRetrieval-Fa.json",
             "FiQA2018-Fa",
             "NFCorpus-Fa",
             "QuoraRetrieval-Fa",
