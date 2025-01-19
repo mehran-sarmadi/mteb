@@ -1258,7 +1258,7 @@ FA_MTEB = Benchmark(
             "SynPerChatbotRAGFAQPC",
             "FarsiParaphraseDetection",
             "SynPerTextKeywordsPC",
-            "SynPerQAFaPC",
+            "SynPerQAPC",
             "ParsinluEntail",
             "ParsinluQueryParaphPC",
 

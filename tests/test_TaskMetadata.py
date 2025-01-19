@@ -220,7 +220,7 @@ _HISTORIC_DATASETS = [
     "SynPerChatbotRAGFAQPC",
     "FarsiParaphraseDetection",
     "SynPerTextKeywordsPC",
-    "SynPerQAFaPC",
+    "SynPerQAPC",
     "ParsinluEntail",
     "ParsinluQueryParaphPC",
     "MIRACLReranking",
