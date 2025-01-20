@@ -25,10 +25,10 @@ class ArguAnaFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -52,10 +52,10 @@ class ClimateFEVERFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -78,10 +78,10 @@ class CQADupstackAndroidRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackEnglishRetrievalFa(AbsTaskRetrieval):
@@ -103,10 +103,10 @@ class CQADupstackEnglishRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackGamingRetrievalFa(AbsTaskRetrieval):
@@ -128,10 +128,10 @@ class CQADupstackGamingRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackGisRetrievalFa(AbsTaskRetrieval):
@@ -153,10 +153,10 @@ class CQADupstackGisRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackMathematicaRetrievalFa(AbsTaskRetrieval):
@@ -178,10 +178,10 @@ class CQADupstackMathematicaRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackPhysicsRetrievalFa(AbsTaskRetrieval):
@@ -203,10 +203,10 @@ class CQADupstackPhysicsRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackProgrammersRetrievalFa(AbsTaskRetrieval):
@@ -228,10 +228,10 @@ class CQADupstackProgrammersRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackStatsRetrievalFa(AbsTaskRetrieval):
@@ -253,10 +253,10 @@ class CQADupstackStatsRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackTexRetrievalFa(AbsTaskRetrieval):
@@ -278,10 +278,10 @@ class CQADupstackTexRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackUnixRetrievalFa(AbsTaskRetrieval):
@@ -303,10 +303,10 @@ class CQADupstackUnixRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackWebmastersRetrievalFa(AbsTaskRetrieval):
@@ -328,10 +328,10 @@ class CQADupstackWebmastersRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class CQADupstackWordpressRetrievalFa(AbsTaskRetrieval):
@@ -353,10 +353,10 @@ class CQADupstackWordpressRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -379,10 +379,10 @@ class DBPediaFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class FiQA2018Fa(AbsTaskRetrieval):
@@ -406,10 +406,10 @@ class FiQA2018Fa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -433,10 +433,10 @@ class HotpotQAFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -461,10 +461,10 @@ class MSMARCOFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class NFCorpusFa(AbsTaskRetrieval):
@@ -486,10 +486,10 @@ class NFCorpusFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class NQFa(AbsTaskRetrieval):
@@ -512,10 +512,10 @@ class NQFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class QuoraRetrievalFa(AbsTaskRetrieval):
@@ -539,10 +539,10 @@ class QuoraRetrievalFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class SCIDOCSFa(AbsTaskRetrieval):
@@ -564,10 +564,10 @@ class SCIDOCSFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -590,10 +590,10 @@ class SciFactFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 class TRECCOVIDFa(AbsTaskRetrieval):
@@ -615,10 +615,10 @@ class TRECCOVIDFa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
 
 
@@ -642,8 +642,8 @@ class Touche2020Fa(AbsTaskRetrieval):
         domains=[],
         task_subtypes=[],
         license="not specified",
-        annotations_creators="",
+        annotations_creators="derived",
         dialect=[],
-        sample_creation="",
-        bibtex_citation="""""",
+        sample_creation="found",
+        bibtex_citation=""" """,
     )
