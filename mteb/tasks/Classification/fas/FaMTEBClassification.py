@@ -26,7 +26,7 @@ class SynPerChatbotConvSAAnger(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -54,7 +54,7 @@ class SynPerChatbotConvSASatisfaction(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -84,7 +84,7 @@ class SynPerChatbotConvSAFriendship(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -112,7 +112,7 @@ class SynPerChatbotConvSAFear(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -140,7 +140,7 @@ class SynPerChatbotConvSAJealousy(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -169,7 +169,7 @@ class SynPerChatbotConvSASurprise(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -198,7 +198,7 @@ class SynPerChatbotConvSALove(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -227,7 +227,7 @@ class SynPerChatbotConvSASadness(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -256,7 +256,7 @@ class SynPerChatbotConvSAHappiness(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -285,7 +285,7 @@ class SynPerChatbotConvSAToneChatbotClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -313,7 +313,7 @@ class SynPerChatbotConvSAToneUserClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -341,7 +341,7 @@ class SynPerChatbotSatisfactionLevelClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -369,7 +369,7 @@ class SynPerChatbotRAGToneChatbotClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -397,7 +397,7 @@ class SynPerChatbotRAGToneUserClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -425,7 +425,7 @@ class SynPerChatbotToneChatbotClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -453,7 +453,7 @@ class SynPerChatbotToneUserClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -481,7 +481,7 @@ class PersianTextTone(AbsTaskClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -509,7 +509,7 @@ class SIDClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="derived",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -538,7 +538,7 @@ class DeepSentiPers(AbsTaskClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -569,7 +569,7 @@ class PersianTextEmotion(AbsTaskClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -598,7 +598,7 @@ class SentimentDKSF(AbsTaskClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -626,7 +626,7 @@ class NLPTwitterAnalysisClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -658,7 +658,7 @@ class DigikalamagClassification(AbsTaskClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )

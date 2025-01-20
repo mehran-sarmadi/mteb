@@ -24,7 +24,7 @@ class CExaPPC(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -64,7 +64,7 @@ class SynPerChatbotRAGFAQPC(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -101,7 +101,7 @@ class FarsiParaphraseDetection(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -139,7 +139,7 @@ class SynPerTextKeywordsPC(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -176,7 +176,7 @@ class SynPerQAPC(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -215,7 +215,7 @@ class ParsinluEntail(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -259,7 +259,7 @@ class ParsinluQueryParaphPC(AbsTaskPairClassification):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
