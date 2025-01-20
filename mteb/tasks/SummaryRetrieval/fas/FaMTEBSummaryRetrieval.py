@@ -25,7 +25,7 @@ class SAMSumFa(AbsTaskSummaryRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="found",
+        sample_creation="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -51,7 +51,7 @@ class SynPerChatbotSumSRetrieval(AbsTaskSummaryRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -77,7 +77,7 @@ class SynPerChatbotRAGSumSRetrieval(AbsTaskSummaryRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        annotations_creators="LM-generated and verified",
+        sample_creation="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
