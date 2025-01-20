@@ -27,7 +27,7 @@ class SynPerQARetrieval(AbsTaskRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        sample_creation="",
+        annotations_creators="LM-generated and verified",
         bibtex_citation="""""",
     )
 
@@ -53,7 +53,7 @@ class SynPerChatbotTopicsRetrieval(AbsTaskRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        sample_creation="",
+        annotations_creators="LM-generated and verified",
         bibtex_citation="""""",
     )
 
@@ -79,7 +79,7 @@ class SynPerChatbotRAGTopicsRetrieval(AbsTaskRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        sample_creation="",
+        annotations_creators="LM-generated and verified",
         bibtex_citation="""""",
     )
 
@@ -106,7 +106,7 @@ class SynPerChatbotRAGFAQRetrieval(AbsTaskRetrieval):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        sample_creation="",
+        annotations_creators="LM-generated and verified",
         bibtex_citation="""""",
     )
 

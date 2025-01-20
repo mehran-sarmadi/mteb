@@ -26,7 +26,7 @@ class Farsick(AbsTaskSTS):
         license="not specified",
         annotations_creators="derived",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -60,7 +60,7 @@ class SynPerSTS(AbsTaskSTS):
         license="not specified",
         annotations_creators="LM-generated",
         dialect=[],
-        sample_creation="",
+        annotations_creators="LM-generated and verified",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -94,7 +94,7 @@ class Query2Query(AbsTaskSTS):
         license="not specified",
         annotations_creators="derived",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )

@@ -31,7 +31,7 @@ class BeytooteClustering(AbsTaskClusteringFast):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -68,7 +68,7 @@ class DigikalamagClustering(AbsTaskClusteringFast):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -109,7 +109,7 @@ class HamshahriClustring(AbsTaskClusteringFast):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -170,7 +170,7 @@ class NLPTwitterAnalysisClustering(AbsTaskClusteringFast):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
@@ -208,7 +208,7 @@ class SIDClustring(AbsTaskClusteringFast):
         license="not specified",
         annotations_creators="'derived'",
         dialect=[],
-        sample_creation="",
+        annotations_creators="found",
         bibtex_citation=""" """,
         descriptive_stats={"n_samples": "", "avg_character_length": ""},
     )
