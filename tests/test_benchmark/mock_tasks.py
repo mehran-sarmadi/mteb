@@ -19,6 +19,7 @@ from mteb.abstasks.AbsTaskRetrieval import AbsTaskRetrieval
 from mteb.abstasks.AbsTaskSTS import AbsTaskSTS
 from mteb.abstasks.AbsTaskSummarization import AbsTaskSummarization
 from mteb.abstasks.TaskMetadata import TaskMetadata
+from mteb.abstasks.AbsTaskSummaryRetrieval import AbsTaskSummaryRetrieval
 
 general_args = {
     "description": "a mock task for testing",
@@ -210,6 +211,51 @@ class MockMultilingualClassificationTask(AbsTaskClassification, MultilingualTask
             {
                 "eng": data,
                 "fra": data,
+            }
+        )
+        self.data_loaded = True
+
+
+
+class MockSummaryRetrievalTask(AbsTaskSummaryRetrieval):
+    expected_stats = {
+        "test": {
+            "num_samples": 2,
+            "number_of_characters": 120,
+            "unique_pairs": 2,
+            "min_text_length": 23,
+            "average_text_length": 30.0,
+            "max_text_length": 37,
+            "unique_text": 2,
+            "min_summary_length": 10,
+            "average_summary_length": 15.0,
+            "max_summary_length": 20,
+            "unique_summary": 2,
+        }
+    }
+
+    metadata = TaskMetadata(
+        type="SummaryRetrieval",
+        name="MockSummaryRetrievalTask",
+        main_score="f1",
+        **general_args,
+    )
+
+    def load_data(self, **kwargs):
+        # Mock data for summary retrieval
+        texts = ["This is a test document.", "This is another test document."]
+        summaries = ["Test summary.", "Another test summary."]
+        ids = ["doc1", "doc2"]
+
+        self.dataset = DatasetDict(
+            {
+                "test": Dataset.from_dict(
+                    {
+                        "id": ids,
+                        "text": texts,
+                        "summary": summaries,
+                    }
+                )
             }
         )
         self.data_loaded = True
