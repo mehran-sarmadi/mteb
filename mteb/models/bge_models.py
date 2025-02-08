@@ -776,23 +776,3 @@ bge_en_icl = ModelMeta(
     },
     adapted_from="intfloat/e5-mistral-7b-instruct",
 )
-
-bge_m3_unsupervised = ModelMeta(
-    name="BAAI/bge-m3-unsupervised",
-    languages=bgem3_languages,
-    open_weights=True,
-    revision="46f03bc86361cf88102b0b517b36c8259f2946b1",
-    release_date="2024-01-28",  # initial commit of hf model.
-    n_parameters=567_754_752,
-    memory_usage_mb=2166,
-    embed_dim=1024,
-    license="mit",
-    max_tokens=8194,
-    reference="https://huggingface.co/BAAI/bge-m3-unsupervised",
-    similarity_fn_name="cosine",
-    framework=["Sentence Transformers", "PyTorch"],
-    use_instructions=False,
-    public_training_code="https://github.com/FlagOpen/FlagEmbedding",
-    public_training_data="https://huggingface.co/datasets/cfli/bge-full-data",
-    training_datasets=None,
-)
