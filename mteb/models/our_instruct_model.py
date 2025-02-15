@@ -11,10 +11,7 @@ import tqdm
 from transformers import AutoTokenizer
 from mteb.encoder_interface import PromptType
 from mteb.model_meta import ModelMeta
-from mteb.models.sentence_transformer_wrapper import (
-    get_prompt_name,
-    validate_task_to_prompt_name,
-)
+
 
 from .our_instructions import preprocess_sample
 from .wrapper import Wrapper
