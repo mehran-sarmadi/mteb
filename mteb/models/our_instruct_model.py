@@ -186,6 +186,7 @@ out_instruct_model = ModelMeta(
     public_training_code=None,  # couldn't find
     public_training_data=None,
     training_datasets={},  # English part of gte_multi_training_data,
+    open_weights=True
 )
 
 
