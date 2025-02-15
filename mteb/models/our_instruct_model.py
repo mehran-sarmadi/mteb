@@ -49,7 +49,7 @@ class OurInstructModelWrapper(Wrapper):
         # default to search_document if input_type and prompt_name are not provided
         print('\n\nyes you right...\n\n')
         print(task_name)
-        print(type(prompt_type.value))
+        # print(type(prompt_type.value))
         print(len(sentences))
         print('before...')
         print(sentences[0])
