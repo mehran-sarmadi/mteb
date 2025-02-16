@@ -171,7 +171,7 @@ dataset_info_dict_1 = {
         'task_id': 4,
         'subtask_id': 3,
         },
-    'CExapPC':
+    'CExaPPC':
      {  
         'task_id': 4,
         'subtask_id': 7,
@@ -594,7 +594,7 @@ dataset_info_dict_2 = {
         'task_id': 4,
         'subtask_id': 3,
         },
-    'CExapPC':
+    'CExaPPC':
      {  
         'task_id': 4,
         'subtask_id': 7,
