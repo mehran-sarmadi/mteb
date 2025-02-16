@@ -57,12 +57,12 @@ class OurInstructModelWrapper(Wrapper):
         print(sentences[0])
 
         sub = kwargs.get("sub", None) 
-
+        print(f"\n sub === {sub}")
         if sub:
             sentences = [preprocess_sample(sentence, task_name, prompt_type, self.model_name, sub) for sentence in sentences]
         else:
             sentences = [preprocess_sample(sentence, task_name, prompt_type, self.model_name) for sentence in sentences]
-            
+
         # print(task_name)
         print('after...')
         print(sentences[0])
