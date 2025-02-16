@@ -53,8 +53,16 @@ class OurInstructModelWrapper(Wrapper):
         print(len(sentences))
         print('before...')
         print(f"len = {len(sentences)} and len_0 = {len(sentences[0])}")
+    
         print(sentences[0])
-        # sentences = [preprocess_sample(sentence, task_name, prompt_type, self.model_name) for sentence in sentences]
+
+        sub = kwargs.get("sub", None) 
+
+        if sub:
+            sentences = [preprocess_sample(sentence, task_name, prompt_type, self.model_name, sub) for sentence in sentences]
+        else:
+            sentences = [preprocess_sample(sentence, task_name, prompt_type, self.model_name) for sentence in sentences]
+            
         # print(task_name)
         print('after...')
         print(sentences[0])

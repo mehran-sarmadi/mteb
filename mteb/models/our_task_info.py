@@ -400,18 +400,18 @@ dataset_info_dict_1 = {
         },
     #######################################################################
     ########################## Summary Retrieval #################################
-   # 'SAMSumFa': {
-   #      'task_id': 3,
-   #      'subtask_id': 12, 
-   # },
-   # 'SynPerChatbotSumSRetrieval': {
-   #      'task_id': 3,
-   #      'subtask_id': 1, 
-   # },
-   # 'SynPerChatbotRAGSumSRetrieval': {
-   #      'task_id': 3,
-   #      'subtask_id': 1, 
-   # },
+   'SAMSumFa': {
+        'task_id': 3,
+        'subtask_id': 12, 
+   },
+   'SynPerChatbotSumSRetrieval': {
+        'task_id': 3,
+        'subtask_id': 1, 
+   },
+   'SynPerChatbotRAGSumSRetrieval': {
+        'task_id': 3,
+        'subtask_id': 1, 
+   },
 
 }
 
@@ -818,18 +818,18 @@ dataset_info_dict_2 = {
         },
     #######################################################################
     ########################## Summary Retrieval #################################
-   # 'SAMSumFa': {
-   #      'task_id': 3,
-   #      'subtask_id': 12, 
-   # },
-   # 'SynPerChatbotSumSRetrieval': {
-   #      'task_id': 3,
-   #      'subtask_id': 1, 
-   # },
-   # 'SynPerChatbotRAGSumSRetrieval': {
-   #      'task_id': 3,
-   #      'subtask_id': 1, 
-   # },
+   'SAMSumFa': {
+        'task_id': 3,
+        'subtask_id': 12, 
+   },
+   'SynPerChatbotSumSRetrieval': {
+        'task_id': 3,
+        'subtask_id': 1, 
+   },
+   'SynPerChatbotRAGSumSRetrieval': {
+        'task_id': 3,
+        'subtask_id': 1, 
+   },
 
 }
 

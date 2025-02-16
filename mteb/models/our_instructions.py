@@ -61,8 +61,6 @@ task_prompt_dict_v1 = {
                 "task_classes": ["موسیقی", "تقویم", "هشدار", "آب‌وهوا", "پخش", "تاریخ و زمان", "آشپزی", "ایمیل",
                                  "بیرون‌بر", "اخبار", "پیشنهاد", "فهرست‌ها", "اجتماعی", "حمل‌ونقل", "عمومی",
                                  "پرسش و پاسخ", "صوتی", "اینترنت اشیاء"]},
-
-
             "1_18": {
                 "task_prompt": "مسئله : دسته بندی , دسته بندی احساس متن",
                 "task_classes": ["شادی", "غم", "خشم", "انزجار", "ترس", "تعجب"]},
@@ -845,24 +843,24 @@ task_prompt_dict_v5 = {
 
 
 
-def preprocess_sample(sample, dataset_name, prompt_type, model_name):
+def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub=None):
     # version 1 
     if model_name.split('/')[-1].strip() in ['retrieval_2_9neg_instruct_stage3_v2', 
                                              'retrieval_2_9neg_instruct_stage3_with_inbatch_v2',
                                              'retro_9neg_instruct_stage3_v2',
                                              'retro_9neg_instruct_stage3_with_inbatch_v2']:
         # print("\nModel is Version 1\n")
-        processed_sample = preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict_v1, dataset_info_dict_1)
+        processed_sample = preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict_v1, dataset_info_dict_1, sub)
 
     # version 2 
     elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v2_with_inbatch']:
         # print("\nModel is Version 2\n")
-        processed_sample = preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict_v2, dataset_info_dict_2)
+        processed_sample = preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict_v2, dataset_info_dict_2, sub)
 
     # version 3 
     elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v3_with_inbatch']:
         # print("\nModel is Version 3\n")
-        processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v3, dataset_info_dict_2)
+        processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v3, dataset_info_dict_2, sub)
 
     # version 4 
     elif model_name.split('/')[-1].strip() in ['bge_9neg_instruct_stage3_v2_v4_no_inbatch',
@@ -872,19 +870,19 @@ def preprocess_sample(sample, dataset_name, prompt_type, model_name):
                                              'bge_balanced_9neg_instruct_stage3_v2_v4_with_inbatch',
                                              'bge_unbalanced_9neg_instruct_stage3_v2_v4_with_inbatch']:
         # print("\nModel is Version 4\n")
-        processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v4, dataset_info_dict_2)
+        processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v4, dataset_info_dict_2, sub)
 
     # version 5 
     elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v5_with_inbatch']:
         print("\nModel is Version 5\n")
-        processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v5, dataset_info_dict_2)
+        processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v5, dataset_info_dict_2, sub)
 
     else:
         raise Exception("Sorry, should be one of above")
 
     return processed_sample
 
-def preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict):
+def preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict, sub):
     dataset_info = dataset_info_dict[dataset_name]
     task_id = dataset_info["task_id"]
     subtask_id = dataset_info["subtask_id"]
@@ -903,10 +901,15 @@ def preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict, 
         processed_sample = task_prompt + " | " + "دسته ها : " + " , ".join(
             task_classes) + " | " + "متن اول : " + sample[0] + " | " + "متن دوم : " + sample[1]
 
-    elif task_id == 3:
+    elif task_id == 3 and not sub:
         if prompt_type.value == 'query':
             processed_sample = task_prompt + " | " + "متن اول : " + sample
         elif prompt_type.value == 'passage':
+            processed_sample = task_prompt + " | " + "متن دوم : " + sample
+    elif task_id == 3 and  sub:
+        if sub == 'sentence1':
+            processed_sample = task_prompt + " | " + "متن اول : " + sample
+        elif sub == 'sentence2':
             processed_sample = task_prompt + " | " + "متن دوم : " + sample
                                     
     elif task_id == 4:
@@ -917,7 +920,7 @@ def preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict, 
 
 
 
-def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict):
+def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict, is_first_batch):
 
     dataset_info = dataset_info_dict[dataset_name]
     task_id = dataset_info["task_id"]
@@ -944,6 +947,12 @@ def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, 
                                     
     elif task_id == 4:
         processed_sample = sample
+
+    elif task_id == 5:
+        if sub == 'sentence1':
+            processed_sample = task_prompt + " | " + "متن اول : " + sample
+        else:
+            processed_sample = task_prompt + " | " + "متن دوم : " + sample
 
     return processed_sample
 
