@@ -920,7 +920,7 @@ def preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict, 
 
 
 
-def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict, is_first_batch):
+def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict, sub):
 
     dataset_info = dataset_info_dict[dataset_name]
     task_id = dataset_info["task_id"]
@@ -937,7 +937,7 @@ def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, 
     elif task_id == 2:
         processed_sample = task_prompt + " | " + "متن اول : " + sample[0] + " | " + "متن دوم : " + sample[1]
 
-    elif task_id == 3:
+    elif task_id == 3 and not sub:
         # print(f'yes it is task id = 3 and prompt values is {prompt_type.value}')
         # print(sample)
         if prompt_type.value == 'query':
@@ -948,10 +948,10 @@ def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, 
     elif task_id == 4:
         processed_sample = sample
 
-    elif task_id == 5:
+    elif task_id == 3 and  sub:
         if sub == 'sentence1':
             processed_sample = task_prompt + " | " + "متن اول : " + sample
-        else:
+        elif sub == 'sentence2':
             processed_sample = task_prompt + " | " + "متن دوم : " + sample
 
     return processed_sample
