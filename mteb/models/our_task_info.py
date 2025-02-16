@@ -132,7 +132,7 @@ dataset_info_dict_1 = {
         'task_id': 1,
         'subtask_id': 19,
         },
-   'DigikalamagClustering':
+   'DigikalamagClassification':
      {  
         'task_id': 1,
         'subtask_id': 14,
@@ -555,7 +555,7 @@ dataset_info_dict_2 = {
         'task_id': 1,
         'subtask_id': 19,
         },  
-   'DigikalamagClustering':
+   'DigikalamagClassification':
      {  
         'task_id': 1,
         'subtask_id': 14,
