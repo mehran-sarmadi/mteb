@@ -131,7 +131,12 @@ dataset_info_dict_1 = {
          {  
         'task_id': 1,
         'subtask_id': 19,
-        },  
+        },
+   'DigikalamagClustering':
+     {  
+        'task_id': 1,
+        'subtask_id': 14,
+        },   
    
     #######################################################################
     ########################## PairClassification ##########################
@@ -550,6 +555,11 @@ dataset_info_dict_2 = {
         'task_id': 1,
         'subtask_id': 19,
         },  
+   'DigikalamagClustering':
+     {  
+        'task_id': 1,
+        'subtask_id': 14,
+        },   
    
     #######################################################################
     ########################## PairClassification ##########################
