@@ -875,7 +875,7 @@ def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub):
 
     # version 5 
     elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v5_with_inbatch']:
-        print("\nModel is Version 5\n")
+        # print("\nModel is Version 5\n")
         processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v5, dataset_info_dict_2, sub)
 
     else:
