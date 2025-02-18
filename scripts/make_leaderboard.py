@@ -126,7 +126,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--results_repo",
         type=str,
-        default="https://github.com/embeddings-benchmark/results",
+        default="https://github.com/mehran-sarmadi/results",
         help="Path to results repository. Default is the official MTEB results repo.",
     )
 
