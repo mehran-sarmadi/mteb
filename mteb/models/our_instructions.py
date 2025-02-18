@@ -843,7 +843,7 @@ task_prompt_dict_v5 = {
 
 
 
-def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub=None):
+def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub):
     # version 1 
     if model_name.split('/')[-1].strip() in ['retrieval_2_9neg_instruct_stage3_v2', 
                                              'retrieval_2_9neg_instruct_stage3_with_inbatch_v2',
@@ -868,7 +868,8 @@ def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub=None):
                                              'retro_9neg_instruct_stage3_v2_v4_with_inbatch',
                                              'bge_9neg_instruct_stage3_v2_v4_with_inbatch',
                                              'bge_balanced_9neg_instruct_stage3_v2_v4_with_inbatch',
-                                             'bge_unbalanced_9neg_instruct_stage3_v2_v4_with_inbatch']:
+                                             'bge_unbalanced_9neg_instruct_stage3_v2_v4_with_inbatch',
+                                             'retro_7neg_filtered_retrieval_2_farsi']:
         # print("\nModel is Version 4\n")
         processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v4, dataset_info_dict_2, sub)
 
@@ -938,21 +939,21 @@ def preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict, 
         processed_sample = task_prompt + " | " + "متن اول : " + sample[0] + " | " + "متن دوم : " + sample[1]
 
     elif task_id == 3 and not sub:
-        # print(f'yes it is task id = 3 and prompt values is {prompt_type.value}')
-        # print(sample)
         if prompt_type.value == 'query':
             processed_sample = task_prompt + " | " + "متن اول : " + sample
         elif prompt_type.value == 'passage':
             processed_sample = task_prompt + " | " + "متن دوم : " + sample
-                                    
-    elif task_id == 4:
-        processed_sample = sample
 
     elif task_id == 3 and  sub:
         if sub == 'sentence1':
             processed_sample = task_prompt + " | " + "متن اول : " + sample
         elif sub == 'sentence2':
             processed_sample = task_prompt + " | " + "متن دوم : " + sample
+                                    
+    elif task_id == 4:
+        processed_sample = sample
+
+
 
     return processed_sample
 
