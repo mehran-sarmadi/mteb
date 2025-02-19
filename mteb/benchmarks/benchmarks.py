@@ -1244,7 +1244,7 @@ C_MTEB = Benchmark(
 )
 
 FA_MTEB = Benchmark(
-    name="MTEB(fas, beta)",
+    name="MTEB(fas, v1)",
     tasks=get_tasks(
         languages=["fas"],
         tasks=[
@@ -1317,9 +1317,17 @@ FA_MTEB = Benchmark(
             "SynPerChatbotRAGSumSRetrieval",
         ],
     ),
-    description="Main Persian (Farsi) benchmarks from MTEB",
+    description="FaMTEB is a comprehensive Persian text embedding benchmark based on MTEB.",
     reference=None,
-    citation=None,
+    citation="""@misc{zinvandi2025famtebmassivetextembedding,
+      title={FaMTEB: Massive Text Embedding Benchmark in Persian Language}, 
+      author={Erfan Zinvandi and Morteza Alikhani and Mehran Sarmadi and Zahra Pourbahman and Sepehr Arvin and Reza Kazemi and Arash Amini},
+      year={2025},
+      eprint={2502.11571},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2502.11571}, 
+}""",
     contacts=["mehran-sarmadi", "ERfun", "morteza20"],
 )
 
