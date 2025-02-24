@@ -130,54 +130,54 @@ class OurModelWrapper(Wrapper):
 
 
 
-out_instruct_model_0 = ModelMeta(
+hakim_unsupervised_v1 = ModelMeta(
     loader=partial(  
         OurModelWrapper,
         trust_remote_code=True,
         model_name = "/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/retro_7neg_filtered_retrieval_2_farsi",
         revision="v1",
     ),
-    name = "Hakim-unsupervised-v1",
+    name = "hakim-unsupervised-v1",
     languages=["fas_Arab"],
     revision="v1",
     release_date="2024-02-10",
-    n_parameters=int(149 * 1e6),
-    memory_usage_mb=284,
+    n_parameters=122905344,
+    memory_usage_mb=469,
     embed_dim=768,
-    license="apache-2",
-    max_tokens=8192,
-    reference="https://huggingface.co/Alibaba-NLP/gte-modernbert-base",
+    license=None,
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext",
     similarity_fn_name="cosine",
     framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
-    public_training_code=None,  # couldn't find
+    public_training_code=None, 
     public_training_data=None,
-    training_datasets={},  # English part of gte_multi_training_data,
-    open_weights=True
+    training_datasets={},  
+    open_weights=False
 )
 
-out_instruct_model_3_instruct = ModelMeta(
+hakim_v1 = ModelMeta(
     loader=partial(  
         OurInstructModelWrapper,
         trust_remote_code=True,
         model_name = "/mnt/data/mehran-workspace/text-embedding/mteb-test/models_to_test/retro_9neg_instruct_stage3_v2_v3_with_inbatch",
         revision="v1",
     ),
-    name = "Hakim-v1",
+    name = "hakim-v1",
     languages=["fas_Arab"],
     revision="v1",
     release_date="2024-02-10",
-    n_parameters=int(149 * 1e6),
-    memory_usage_mb=284,
+    n_parameters=122905344,
+    memory_usage_mb=469,
     embed_dim=768,
-    license="apache-2",
-    max_tokens=8192,
-    reference="https://huggingface.co/Alibaba-NLP/gte-modernbert-base",
+    license=None,
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext",
     similarity_fn_name="cosine",
     framework=["Sentence Transformers", "PyTorch"],
-    use_instructions=False,
-    public_training_code=None,  # couldn't find
+    use_instructions=True,
+    public_training_code=None,  
     public_training_data=None,
-    training_datasets={},  # English part of gte_multi_training_data,
-    open_weights=True
+    training_datasets={},  
+    open_weights=False
 )
