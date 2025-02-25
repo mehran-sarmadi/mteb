@@ -137,7 +137,7 @@ hakim_unsupervised_v1 = ModelMeta(
         model_name = "/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/retro_7neg_filtered_retrieval_2_farsi",
         revision="v1",
     ),
-    name = "hakim-unsupervised-v1",
+    name = "Hakim-unsupervised-v1",
     languages=["fas_Arab"],
     revision="v1",
     release_date="2024-02-10",
@@ -152,7 +152,7 @@ hakim_unsupervised_v1 = ModelMeta(
     use_instructions=False,
     public_training_code=None, 
     public_training_data=None,
-    training_datasets={},  
+    training_datasets=None,
     open_weights=False
 )
 
@@ -163,7 +163,7 @@ hakim_v1 = ModelMeta(
         model_name = "/mnt/data/mehran-workspace/text-embedding/mteb-test/models_to_test/retro_9neg_instruct_stage3_v2_v3_with_inbatch",
         revision="v1",
     ),
-    name = "hakim-v1",
+    name = "Hakim-v1",
     languages=["fas_Arab"],
     revision="v1",
     release_date="2024-02-10",
@@ -178,6 +178,6 @@ hakim_v1 = ModelMeta(
     use_instructions=True,
     public_training_code=None,  
     public_training_data=None,
-    training_datasets={},  
+    training_datasets=None,
     open_weights=False
 )
