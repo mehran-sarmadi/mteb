@@ -152,7 +152,7 @@ hakim_unsupervised_v1 = ModelMeta(
     use_instructions=False,
     public_training_code=None, 
     public_training_data=None,
-    training_datasets=None,
+    training_datasets={},
     open_weights=False
 )
 
