@@ -222,3 +222,4 @@ ourwordpiece_instruct_model_plush = ModelMeta(
     public_training_data=None,
     training_datasets={},  # English part of gte_multi_training_data,
     open_weights=True
+)
