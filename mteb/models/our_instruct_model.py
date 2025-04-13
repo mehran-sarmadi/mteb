@@ -729,3 +729,36 @@ ourwordpiece_instruct_model_plush = ModelMeta(
     training_datasets={},  # English part of gte_multi_training_data,
     open_weights=True
 )
+
+
+our_model_8 = ModelMeta(
+    loader=partial(  
+        OurModelWrapper,
+        trust_remote_code=True,
+        model_name = "/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/RetroMAE_ourspacedwordpiece_ourlinebyline_filtered_balance_small_farsi2",
+        revision="v1",
+    ),
+    name = "RetroMAE_ourspacedwordpiece_ourlinebyline_filtered_balance_small_farsi2",
+    languages=["fas_Arab"],
+    revision="v1",
+    release_date="2024-02-10",
+    n_parameters=int(149 * 1e6),
+    memory_usage_mb=284,
+    embed_dim=768,
+    license="apache-2",
+    max_tokens=8192,
+    reference="https://huggingface.co/Alibaba-NLP/gte-modernbert-base",
+    similarity_fn_name="cosine",
+    framework=["Sentence Transformers", "PyTorch"],
+    use_instructions=False,
+    public_training_code=None,  # couldn't find
+    public_training_data=None,
+    training_datasets={},  # English part of gte_multi_training_data,
+    open_weights=True
+)
+
+
+
+
+
+
