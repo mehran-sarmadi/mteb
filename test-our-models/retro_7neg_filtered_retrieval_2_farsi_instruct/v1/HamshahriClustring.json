@@ -1,0 +1,34 @@
+{
+  "dataset_revision": "ca93dc707cea06cdb2e3ede3b547a1092053aca6",
+  "task_name": "HamshahriClustring",
+  "mteb_version": "1.34.14",
+  "scores": {
+    "test": [
+      {
+        "v_measures": {
+          "Level 0": [
+            0.689733,
+            0.64954,
+            0.669836,
+            0.6805,
+            0.66442,
+            0.667323,
+            0.674283,
+            0.66859,
+            0.692226,
+            0.675098
+          ]
+        },
+        "v_measure": 0.673155,
+        "v_measure_std": 0.011821,
+        "main_score": 0.673155,
+        "hf_subset": "default",
+        "languages": [
+          "fas-Arab"
+        ]
+      }
+    ]
+  },
+  "evaluation_time": 31.534965991973877,
+  "kg_co2_emissions": null
+}

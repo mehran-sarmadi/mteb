@@ -1,0 +1,26 @@
+{
+  "dataset_revision": "52602079f9032fcf181775a310d79d2f197534e4",
+  "task_name": "Query2Query",
+  "mteb_version": "1.34.14",
+  "scores": {
+    "test": [
+      {
+        "pearson": 0.628404,
+        "spearman": 0.684168,
+        "cosine_pearson": 0.628404,
+        "cosine_spearman": 0.684168,
+        "manhattan_pearson": 0.650072,
+        "manhattan_spearman": 0.686182,
+        "euclidean_pearson": 0.650915,
+        "euclidean_spearman": 0.684169,
+        "main_score": 0.684168,
+        "hf_subset": "default",
+        "languages": [
+          "fas-Arab"
+        ]
+      }
+    ]
+  },
+  "evaluation_time": 24.014188528060913,
+  "kg_co2_emissions": null
+}

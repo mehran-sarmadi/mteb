@@ -1,0 +1,73 @@
+{
+  "dataset_revision": "4ceb1312583fd2c7c73ad2d550b726124dcd39a0",
+  "task_name": "NLPTwitterAnalysisClassification",
+  "mteb_version": "1.34.14",
+  "scores": {
+    "test": [
+      {
+        "accuracy": 0.758824,
+        "f1": 0.782806,
+        "f1_weighted": 0.764001,
+        "scores_per_experiment": [
+          {
+            "accuracy": 0.761765,
+            "f1": 0.788918,
+            "f1_weighted": 0.770929
+          },
+          {
+            "accuracy": 0.755147,
+            "f1": 0.7781,
+            "f1_weighted": 0.756723
+          },
+          {
+            "accuracy": 0.744853,
+            "f1": 0.769092,
+            "f1_weighted": 0.747688
+          },
+          {
+            "accuracy": 0.769118,
+            "f1": 0.792139,
+            "f1_weighted": 0.77605
+          },
+          {
+            "accuracy": 0.761029,
+            "f1": 0.784727,
+            "f1_weighted": 0.76521
+          },
+          {
+            "accuracy": 0.759559,
+            "f1": 0.785057,
+            "f1_weighted": 0.765642
+          },
+          {
+            "accuracy": 0.764706,
+            "f1": 0.786248,
+            "f1_weighted": 0.768926
+          },
+          {
+            "accuracy": 0.759559,
+            "f1": 0.785349,
+            "f1_weighted": 0.768312
+          },
+          {
+            "accuracy": 0.758088,
+            "f1": 0.780993,
+            "f1_weighted": 0.761398
+          },
+          {
+            "accuracy": 0.754412,
+            "f1": 0.777441,
+            "f1_weighted": 0.759134
+          }
+        ],
+        "main_score": 0.758824,
+        "hf_subset": "default",
+        "languages": [
+          "fas-Arab"
+        ]
+      }
+    ]
+  },
+  "evaluation_time": 12.444920539855957,
+  "kg_co2_emissions": null
+}

@@ -858,7 +858,10 @@ def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub):
         processed_sample = preprocess_sample_hard(sample, dataset_name, prompt_type, task_prompt_dict_v2, dataset_info_dict_2, sub)
 
     # version 3 
-    elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v3_with_inbatch']:
+    elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v3_with_inbatch',
+                                               'retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v3_with_inbatch',
+                                               'retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v3_plus_with_inbatch',
+                                               'retro_ourwordpiece_balance_small_instruct_stage3_v2_v3_plus_with_inbatch',]:
         # print("\nModel is Version 3\n")
         processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v3, dataset_info_dict_2, sub)
 
@@ -869,13 +872,15 @@ def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub):
                                              'bge_9neg_instruct_stage3_v2_v4_with_inbatch',
                                              'bge_balanced_9neg_instruct_stage3_v2_v4_with_inbatch',
                                              'bge_unbalanced_9neg_instruct_stage3_v2_v4_with_inbatch',
-                                             'retro_7neg_filtered_retrieval_2_farsi']:
+                                             'retro_7neg_filtered_retrieval_2_farsi',
+                                             'retro_rope_balanced_9neg_instruct_stage3_v2_v4_with_inbatch',
+                                             'bge_large_ret2_9neg_instruct_stage3_v2_v4_with_inbatch',]:
         # print("\nModel is Version 4\n")
         processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v4, dataset_info_dict_2, sub)
 
     # version 5 
     elif model_name.split('/')[-1].strip() in ['retro_9neg_instruct_stage3_v2_v5_with_inbatch']:
-        print("\nModel is Version 5\n")
+        # print("\nModel is Version 5\n")
         processed_sample = preprocess_sample_easy(sample, dataset_name, prompt_type, task_prompt_dict_v5, dataset_info_dict_2, sub)
 
     else:

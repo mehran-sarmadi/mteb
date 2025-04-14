@@ -47,11 +47,13 @@ class STSEvaluator(Evaluator):
         embeddings1 = model.encode(
             self.sentences1,
             task_name=self.task_name,
+            sub='sentence1',
             **encode_kwargs,
         )
         embeddings2 = model.encode(
             self.sentences2,
             task_name=self.task_name,
+            sub='sentence2',
             **encode_kwargs,
         )
 

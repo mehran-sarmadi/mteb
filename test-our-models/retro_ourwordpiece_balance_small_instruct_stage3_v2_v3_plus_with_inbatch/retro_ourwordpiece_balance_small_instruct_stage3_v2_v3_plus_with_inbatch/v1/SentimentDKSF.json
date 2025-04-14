@@ -1,0 +1,73 @@
+{
+  "dataset_revision": "b4d5a8dd501db610b5ad89e9aa13f863b842b395",
+  "task_name": "SentimentDKSF",
+  "mteb_version": "1.34.14",
+  "scores": {
+    "test": [
+      {
+        "accuracy": 0.80946,
+        "f1": 0.73044,
+        "f1_weighted": 0.823154,
+        "scores_per_experiment": [
+          {
+            "accuracy": 0.822894,
+            "f1": 0.737958,
+            "f1_weighted": 0.831829
+          },
+          {
+            "accuracy": 0.810799,
+            "f1": 0.733819,
+            "f1_weighted": 0.82596
+          },
+          {
+            "accuracy": 0.806048,
+            "f1": 0.732147,
+            "f1_weighted": 0.821966
+          },
+          {
+            "accuracy": 0.788337,
+            "f1": 0.707148,
+            "f1_weighted": 0.810675
+          },
+          {
+            "accuracy": 0.817711,
+            "f1": 0.736759,
+            "f1_weighted": 0.832244
+          },
+          {
+            "accuracy": 0.832829,
+            "f1": 0.7598,
+            "f1_weighted": 0.841895
+          },
+          {
+            "accuracy": 0.764579,
+            "f1": 0.681423,
+            "f1_weighted": 0.779974
+          },
+          {
+            "accuracy": 0.81987,
+            "f1": 0.740211,
+            "f1_weighted": 0.830195
+          },
+          {
+            "accuracy": 0.828942,
+            "f1": 0.748097,
+            "f1_weighted": 0.838379
+          },
+          {
+            "accuracy": 0.802592,
+            "f1": 0.727041,
+            "f1_weighted": 0.81842
+          }
+        ],
+        "main_score": 0.80946,
+        "hf_subset": "default",
+        "languages": [
+          "fas-Arab"
+        ]
+      }
+    ]
+  },
+  "evaluation_time": 8.778757810592651,
+  "kg_co2_emissions": null
+}

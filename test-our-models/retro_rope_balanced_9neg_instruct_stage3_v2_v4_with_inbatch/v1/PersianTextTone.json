@@ -1,0 +1,73 @@
+{
+  "dataset_revision": "7144f4c6bdd77911df0dfc5a8bd44dba17e27e3a",
+  "task_name": "PersianTextTone",
+  "mteb_version": "1.34.14",
+  "scores": {
+    "test": [
+      {
+        "accuracy": 0.970048,
+        "f1": 0.952817,
+        "f1_weighted": 0.970176,
+        "scores_per_experiment": [
+          {
+            "accuracy": 0.971311,
+            "f1": 0.955411,
+            "f1_weighted": 0.971435
+          },
+          {
+            "accuracy": 0.974385,
+            "f1": 0.958605,
+            "f1_weighted": 0.974504
+          },
+          {
+            "accuracy": 0.972678,
+            "f1": 0.955698,
+            "f1_weighted": 0.972781
+          },
+          {
+            "accuracy": 0.968238,
+            "f1": 0.95108,
+            "f1_weighted": 0.968473
+          },
+          {
+            "accuracy": 0.966872,
+            "f1": 0.950414,
+            "f1_weighted": 0.967071
+          },
+          {
+            "accuracy": 0.964139,
+            "f1": 0.942985,
+            "f1_weighted": 0.964271
+          },
+          {
+            "accuracy": 0.971653,
+            "f1": 0.954247,
+            "f1_weighted": 0.97172
+          },
+          {
+            "accuracy": 0.962773,
+            "f1": 0.942211,
+            "f1_weighted": 0.962907
+          },
+          {
+            "accuracy": 0.973361,
+            "f1": 0.956259,
+            "f1_weighted": 0.97344
+          },
+          {
+            "accuracy": 0.975068,
+            "f1": 0.961255,
+            "f1_weighted": 0.975155
+          }
+        ],
+        "main_score": 0.970048,
+        "hf_subset": "default",
+        "languages": [
+          "fas-Arab"
+        ]
+      }
+    ]
+  },
+  "evaluation_time": 7.478675365447998,
+  "kg_co2_emissions": null
+}
