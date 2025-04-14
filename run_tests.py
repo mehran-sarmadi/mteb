@@ -28,7 +28,18 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 # model_name = "retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v3_plus_with_inbatch"
 # model_name = "/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/RetroMAE_ourspacedwordpiece_ourlinebyline_filtered_balance_small_farsi2/"
 model_name = "retro_ourwordpiece_balance_small_instruct_stage3_v2_v3_plus_with_inbatch"
-tasks = mteb.get_benchmark("MTEB(fas, beta)")
+model_name = "/mnt/data/mehran-workspace/clean-code/base-model-evaluation/models_to_test/checkpoint-3930351-allfarsi_ourdataset_spacedDataset50kWordpiece_mlm_ourlinebylinels"
+model_name = "/mnt/data/mehran-workspace/clean-code/base-model-evaluation/models_to_test/checkpoint-1564218-RetroMAE_ourspacedwordpiece_ourlinebyline"
+# tasks = mteb.get_benchmark("MTEB(fas, beta)")
+datasets = [
+    "SynPerQARetrieval",
+    "SynPerChatbotTopicsRetrieval",
+    "SynPerChatbotRAGTopicsRetrieval",
+    "SynPerChatbotRAGFAQRetrieval",
+    "PersianWebDocumentRetrieval"
+]
+
+tasks = mteb.get_tasks(tasks=datasets, languages=['fas'])
 # tasks = ["SynPerChatbotConvSAClassification", "CQADupstackRetrievalFa"]
 # print(tasks.tasks)
 
