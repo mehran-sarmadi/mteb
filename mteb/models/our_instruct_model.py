@@ -67,7 +67,6 @@ class OurInstructModelWrapper(Wrapper):
         emb = self.model.encode(sentences, batch_size=batch_size, **kwargs)
         if not isinstance(emb, torch.Tensor):
             emb = torch.tensor(emb)
-        emb = F.layer_norm(emb, normalized_shape=(emb.shape[1],))
         # emb = F.normalize(emb, p=2, dim=1)
         # if kwargs.get("convert_to_tensor", False):
         emb = emb.cpu().detach().numpy()
