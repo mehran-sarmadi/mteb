@@ -863,3 +863,29 @@ ourwordpiece_v8 = ModelMeta(
     training_datasets={},  # English part of gte_multi_training_data,
     open_weights=True
 )
+
+ourwordpiece_v7 = ModelMeta(
+    loader=partial(  
+        OurInstructModelWrapper,
+        trust_remote_code=True,
+        model_name = "/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatc>
+        revision="v1",
+    ),
+    name = "retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_NOinstruct",
+    languages=["fas_Arab"],
+    revision="v1",
+    release_date="2024-02-10",
+    n_parameters=int(149 * 1e6),
+    memory_usage_mb=284,
+    embed_dim=768,
+    license="apache-2",
+    max_tokens=8192,
+    reference="https://huggingface.co/Alibaba-NLP/gte-modernbert-base",
+    similarity_fn_name="cosine",
+    framework=["Sentence Transformers", "PyTorch"],
+    use_instructions=False,
+    public_training_code=None,  # couldn't find
+    public_training_data=None,
+    training_datasets={},  # English part of gte_multi_training_data,
+    open_weights=True
+)
