@@ -864,7 +864,7 @@ ourwordpiece_v8 = ModelMeta(
     open_weights=True
 )
 
-ourwordpiece_v7 = ModelMeta(
+ourwordpiece_v7_noinstruct = ModelMeta(
     loader=partial(  
         OurInstructModelWrapper,
         trust_remote_code=True,
