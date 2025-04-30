@@ -868,7 +868,7 @@ ourwordpiece_v7 = ModelMeta(
     loader=partial(  
         OurInstructModelWrapper,
         trust_remote_code=True,
-        model_name = "retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_NOinstruct"
+        model_name = "retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_NOinstruct",
         revision="v1",
     ),
     name = "retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_NOinstruct",
