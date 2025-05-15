@@ -85,7 +85,7 @@ def _model_name_and_revision(
 
 def load_results(
     results_repo: str = "https://github.com/embeddings-benchmark/results",
-    download_latest: bool = True,
+    download_latest: bool = False,
     models: Sequence[ModelMeta] | Sequence[str] | None = None,
     tasks: Sequence[AbsTask] | Sequence[str] | None = None,
     validate_and_filter: bool = True,
