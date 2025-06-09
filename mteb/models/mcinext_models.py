@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+import os
+import time
 from functools import partial
 from typing import Any
 
@@ -13,402 +15,54 @@ from mteb.model_meta import ModelMeta
 
 from .wrapper import Wrapper
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-dataset_info_dict_2 = {
-    ###################################################################
-    ########################## Classfication ##########################
-    "PersianTextEmotion": {
-        "task_id": 1,
-        "subtask_id": 18,
-    },
-    "PersianFoodSentimentClassification": {
-        "task_id": 1,
-        "subtask_id": 190,
-    },
-    "SentimentDKSF": {
-        "task_id": 1,
-        "subtask_id": 19,
-    },
-    "MassiveIntentClassification": {
-        "task_id": 1,
-        "subtask_id": 170,
-    },
-    "MassiveScenarioClassification": {
-        "task_id": 1,
-        "subtask_id": 17,
-    },
-    "SynPerChatbotConvSAAnger": {
-        "task_id": 1,
-        "subtask_id": 4,
-    },
-    "SynPerChatbotConvSASatisfaction": {
-        "task_id": 1,
-        "subtask_id": 5,
-    },
-    "SynPerChatbotConvSAFriendship": {
-        "task_id": 1,
-        "subtask_id": 6,
-    },
-    "SynPerChatbotConvSAFear": {
-        "task_id": 1,
-        "subtask_id": 7,
-    },
-    "SynPerChatbotConvSAJealousy": {
-        "task_id": 1,
-        "subtask_id": 8,
-    },
-    "SynPerChatbotConvSASurprise": {
-        "task_id": 1,
-        "subtask_id": 9,
-    },
-    "SynPerChatbotConvSALove": {
-        "task_id": 1,
-        "subtask_id": 10,
-    },
-    "SynPerChatbotConvSASadness": {
-        "task_id": 1,
-        "subtask_id": 11,
-    },
-    "SynPerChatbotConvSAHappiness": {
-        "task_id": 1,
-        "subtask_id": 12,
-    },
-    "SynPerChatbotConvSAToneChatbotClassification": {
-        "task_id": 1,
-        "subtask_id": 21,
-    },
-    "SynPerChatbotConvSAToneUserClassification": {
-        "task_id": 1,
-        "subtask_id": 20,
-    },
-    "PersianTextTone": {
-        "task_id": 1,
-        "subtask_id": 13,
-    },
-    "SynPerChatbotToneUserClassification": {
-        "task_id": 1,
-        "subtask_id": 2,
-    },
-    "SynPerChatbotToneChatbotClassification": {
-        "task_id": 1,
-        "subtask_id": 3,
-    },
-    "SynPerChatbotRAGToneUserClassification": {
-        "task_id": 1,
-        "subtask_id": 2,
-    },
-    "SynPerChatbotRAGToneChatbotClassification": {
-        "task_id": 1,
-        "subtask_id": 3,
-    },
-    "SynPerChatbotSatisfactionLevelClassification": {
-        "task_id": 1,
-        "subtask_id": 1,
-    },
-    "DigimagClassification": {
-        "task_id": 1,
-        "subtask_id": 14,
-    },
-    "NLPTwitterAnalysisClassification": {
-        "task_id": 1,
-        "subtask_id": 16,
-    },
-    "SIDClassification": {
-        "task_id": 1,
-        "subtask_id": 15,
-    },
-    "DeepSentiPers": {
-        "task_id": 1,
-        "subtask_id": 19,
-    },
-    "DigikalamagClassification": {
-        "task_id": 1,
-        "subtask_id": 14,
-    },
-    #######################################################################
-    ########################## PairClassification ##########################
-    "FarsTail": {
-        "task_id": 4,
-        "subtask_id": 6,
-    },
-    "ParsinluEntail": {
-        "task_id": 4,
-        "subtask_id": 6,
-    },
-    "ParsinluQueryParaphPC": {
-        "task_id": 4,
-        "subtask_id": 7,
-    },
-    "SynPerChatbotRAGFAQPC": {
-        "task_id": 4,
-        "subtask_id": 1,
-    },
-    "SynPerTextKeywordsPC": {
-        "task_id": 4,
-        "subtask_id": 2,
-    },
-    "SynPerQAPC": {
-        "task_id": 4,
-        "subtask_id": 3,
-    },
-    "CExaPPC": {
-        "task_id": 4,
-        "subtask_id": 7,
-    },
-    "FarsiParaphraseDetection": {
-        "task_id": 4,
-        "subtask_id": 7,
-    },
-    #######################################################################
-    ########################## STS ########################################
-    "Farsick": {
-        "task_id": 3,
-        "subtask_id": 6,
-    },
-    "Query2Query": {
-        "task_id": 3,
-        "subtask_id": 6,
-    },
-    "SynPerSTS": {
-        "task_id": 3,
-        "subtask_id": 6,
-    },
-    #######################################################################
-    ########################## Clustring #################################
-    "BeytooteClustering": {
-        "task_id": 1,
-        "subtask_id": 170,
-    },
-    "DigikalamagClustering": {
-        "task_id": 1,
-        "subtask_id": 14,
-    },
-    "NLPTwitterAnalysisClustering": {
-        "task_id": 1,
-        "subtask_id": 16,
-    },
-    "HamshahriClustring": {
-        "task_id": 1,
-        "subtask_id": 170,
-    },
-    "SIDClustring": {
-        "task_id": 1,
-        "subtask_id": 15,
-    },
-    #######################################################################
-    ########################## Reranking #################################
-    "MIRACLReranking": {
-        "task_id": 3,
-        "subtask_id": 5,
-    },
-    "WikipediaRerankingMultilingual": {
-        "task_id": 3,
-        "subtask_id": 5,
-    },
-    #######################################################################
-    ########################## Retrieval #################################
-    "ArguAna-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "ClimateFEVER-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackAndroidRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackEnglishRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackGamingRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackGisRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackMathematicaRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackPhysicsRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackProgrammersRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackStatsRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackTexRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackUnixRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackWebmastersRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "CQADupstackWordpressRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "DBPedia-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "FiQA2018-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "HotpotQA-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "MSMARCO-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "NFCorpus-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "NQ-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "QuoraRetrieval-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "SCIDOCS-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "SciFact-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "TRECCOVID-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "Touche2020-Fa": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "MIRACLRetrieval": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    "WikipediaRetrievalMultilingual": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    ##########################################################################
-    "SynPerQARetrieval": {
-        "task_id": 3,
-        "subtask_id": 5,
-    },
-    "SynPerChatbotTopicsRetrieval": {
-        "task_id": 3,
-        "subtask_id": 14,
-    },
-    "SynPerChatbotRAGTopicsRetrieval": {
-        "task_id": 3,
-        "subtask_id": 14,
-    },
-    "SynPerChatbotRAGFAQRetrieval": {
-        "task_id": 3,
-        "subtask_id": 3,
-    },
-    "PersianWebDocumentRetrieval": {
-        "task_id": 3,
-        "subtask_id": 13,
-    },
-    #######################################################################
-    ########################## Summary Retrieval #################################
-    "SAMSumFa": {
-        "task_id": 3,
-        "subtask_id": 12,
-    },
-    "SynPerChatbotSumSRetrieval": {
-        "task_id": 3,
-        "subtask_id": 1,
-    },
-    "SynPerChatbotRAGSumSRetrieval": {
-        "task_id": 3,
-        "subtask_id": 1,
-    },
-}
-
-task_prompt_dict_v3 = {
-    "1_1": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس رضایت کاربر در مکالمه با چت بات",
-        "task_classes": ["عالی", "خوب", "متوسط", "بد", "خیلی بد"],
-    },
-    "1_2": {
-        "task_prompt": "مسئله : دسته بندی , تشخیص لحن کاربر در مکالمه با چت بات",
-        "task_classes": ["رسمی", "عامیانه", "کودکانه", "لاتی", "عصبانی"],
-    },
-    "1_3": {
-        "task_prompt": "مسئله : دسته بندی , تشخیص لحن چت بات در مکالمه ی کاربر با چت بات",
-        "task_classes": ["رسمی", "عامیانه", "کودکانه", "لاتی", "عصبانی"],
-    },
-    "1_4": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس عصبانیت کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_5": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس رضایت کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_6": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس صمیمیت کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_7": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس ترس کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_8": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس حسادت کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_9": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس شگفتی کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_10": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس عشق کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_11": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس غصه کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_12": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس خوشحالی کاربر در مکالمه با چت بات",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "1_13": {
-        "task_prompt": "مسئله : دسته بندی , تشخیص لحن متن",
-        "task_classes": ["عامیانه", "رسمی", "کودکانه", "ادبی"],
-    },
-    "1_14": {
-        "task_prompt": "مسئله : دسته بندی , دسته بندی موضوعی متن",
-        "task_classes": [
+# Task configurations
+TASK_CONFIGS = {
+    "1_1": (
+        "دسته بندی , تحلیل احساس رضایت کاربر در مکالمه با چت بات",
+        ["عالی", "خوب", "متوسط", "بد", "خیلی بد"],
+    ),
+    "1_2": (
+        "دسته بندی , تشخیص لحن کاربر در مکالمه با چت بات",
+        ["رسمی", "عامیانه", "کودکانه", "لاتی", "عصبانی"],
+    ),
+    "1_3": (
+        "دسته بندی , تشخیص لحن چت بات در مکالمه ی کاربر با چت بات",
+        ["رسمی", "عامیانه", "کودکانه", "لاتی", "عصبانی"],
+    ),
+    "1_4": (
+        "دسته بندی , تحلیل احساس عصبانیت کاربر در مکالمه با چت بات",
+        ["مثبت", "منفی"],
+    ),
+    "1_5": (
+        "دسته بندی , تحلیل احساس رضایت کاربر در مکالمه با چت بات",
+        ["مثبت", "منفی"],
+    ),
+    "1_6": (
+        "دسته بندی , تحلیل احساس صمیمیت کاربر در مکالمه با چت بات",
+        ["مثبت", "منفی"],
+    ),
+    "1_7": ("دسته بندی , تحلیل احساس ترس کاربر در مکالمه با چت بات", ["مثبت", "منفی"]),
+    "1_8": (
+        "دسته بندی , تحلیل احساس حسادت کاربر در مکالمه با چت بات",
+        ["مثبت", "منفی"],
+    ),
+    "1_9": (
+        "دسته بندی , تحلیل احساس شگفتی کاربر در مکالمه با چت بات",
+        ["مثبت", "منفی"],
+    ),
+    "1_10": ("دسته بندی , تحلیل احساس عشق کاربر در مکالمه با چت بات", ["مثبت", "منفی"]),
+    "1_11": ("دسته بندی , تحلیل احساس غصه کاربر در مکالمه با چت بات", ["مثبت", "منفی"]),
+    "1_12": (
+        "دسته بندی , تحلیل احساس خوشحالی کاربر در مکالمه با چت بات",
+        ["مثبت", "منفی"],
+    ),
+    "1_13": ("دسته بندی , تشخیص لحن متن", ["عامیانه", "رسمی", "کودکانه", "ادبی"]),
+    "1_14": (
+        "دسته بندی , دسته بندی موضوعی متن",
+        [
             "بازی ویدیویی",
             "راهنمای خرید",
             "سلامت و زیبایی",
@@ -417,10 +71,10 @@ task_prompt_dict_v3 = {
             "هنر و سینما",
             "کتاب و ادبیات",
         ],
-    },
-    "1_15": {
-        "task_prompt": "مسئله : دسته بندی , دسته بندی موضوعی متن",
-        "task_classes": [
+    ),
+    "1_15": (
+        "دسته بندی , دسته بندی موضوعی متن",
+        [
             "پزشکی",
             "کشاورزی و منابع طبیعی",
             "فنی مهندسی",
@@ -430,10 +84,10 @@ task_prompt_dict_v3 = {
             "علمی تخصصی",
             "دامپزشکی",
         ],
-    },
-    "1_16": {
-        "task_prompt": "مسئله : دسته بندی , دسته بندی موضوعی متن",
-        "task_classes": [
+    ),
+    "1_16": (
+        "دسته بندی , دسته بندی موضوعی متن",
+        [
             "هنر و طراحی",
             "مسائل اجتماعی و فعال‌سازی",
             "الهام‌بخش و انگیزشی",
@@ -460,10 +114,10 @@ task_prompt_dict_v3 = {
             "کتاب‌ها و ادبیات",
             "محیط زیست و پایداری",
         ],
-    },
-    "1_17": {
-        "task_prompt": "مسئله : دسته بندی , دسته بندی موضوعی متن",
-        "task_classes": [
+    ),
+    "1_17": (
+        "دسته بندی , دسته بندی موضوعی متن",
+        [
             "موسیقی",
             "تقویم",
             "هشدار",
@@ -483,237 +137,349 @@ task_prompt_dict_v3 = {
             "صوتی",
             "اینترنت اشیاء",
         ],
-    },
-    "1_18": {
-        "task_prompt": "مسئله : دسته بندی , دسته بندی احساس متن",
-        "task_classes": ["شادی", "غم", "خشم", "انزجار", "ترس", "تعجب"],
-    },
-    "1_19": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس رضایت متن",
-        "task_classes": ["مثبت", "منفی", "خنثی"],
-    },
-    "1_20": {
-        "task_prompt": "مسئله : دسته بندی , تشخیص لحن کاربر در مکالمه با چت بات",
-        "task_classes": ["رسمی", "عامیانه", "کودکانه"],
-    },
-    "1_21": {
-        "task_prompt": "مسئله : دسته بندی , تشخیص لحن چت بات در مکالمه ی کاربر با چت بات",
-        "task_classes": ["رسمی", "عامیانه", "کودکانه"],
-    },
-    "2_1": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , متن اول مکالمه ی کاربر با چت بات به همراه پیام جدید کاربر است. آیا متن دوم که یک سوال و پاسخ است به متن اول مرتبط است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_2": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , آیا متن دوم کلمات کلیدی متن اول است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_3": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , آیا متن دوم پاسخ متن اول است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_4": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , نوع ارتباط معنایی متن دوم با متن اول چگونه است ؟",
-        "task_classes": [
-            "مفهوم کاملا یکسان",
-            "مفهوم تقریبا یکسان",
-            "مفهوم تا حدی یکسان",
-            "مفهوم متفاوت در موضوع یکسان",
-            "مفهوم کاملا متفاوت",
-        ],
-    },
-    "2_5": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , نوع ارتباط معنایی متن دوم با متن اول چگونه است ؟",
-        "task_classes": [
-            "مفهوم کاملا یکسان",
-            "مفهوم تقریبا یکسان",
-            "مفهوم تا حدی یکسان",
-            "مفهوم تا حدی متفاوت با جزئیات یکسان",
-            "مفهوم متفاوت در موضوع یکسان",
-            "مفهوم کاملا متفاوت",
-        ],
-    },
-    "2_6": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , نوع ارتباط معنایی متن دوم با متن اول چگونه است ؟",
-        "task_classes": ["مشابه", "متضاد", "بی ارتباط"],
-    },
-    "2_7": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , آيا متن دوم بازنویسی متن اول است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_8": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , احساس رضایت از نظر متن دوم در متن اول چگونه است ؟",
-        "task_classes": ["مثبت", "منفی", "خنثی"],
-    },
-    "2_9": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , آيا متن دوم ترجمه ی فارسی متن اول است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_10": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , آيا متن دوم ترجمه ی عربی متن اول است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_11": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , آيا متن دوم ترجمه ی انگلیسی متن اول است ؟",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "2_12": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , متن دوم که یک موجودیت نامدار در متن اول است به کدام دسته تعلق دارد ؟",
-        "task_classes": [
-            "گروه‌های سیاسی",
-            "اشخاص",
-            "سازمان‌ها",
-            "مکان‌ها",
-            "رویدادها",
-            "ملت‌ها",
-        ],
-    },
-    "2_13": {
-        "task_prompt": "مسئله : دسته بندی با دو ورودی , متن دوم که یک موجودیت نامدار در متن اول است به کدام دسته تعلق دارد ؟",
-        "task_classes": ["اشخاص", "سازمان‌ها", "مکان‌ها"],
-    },
-    "3_1": {
-        "task_prompt": "مسئله : تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات است. آیا متن دوم خلاصه ی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_2": {
-        "task_prompt": "مسئله : تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات است. آیا متن دوم موضوعات استخراج شده ی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_3": {
-        "task_prompt": "مسئله : تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات به همراه پیام جدید کاربر است. آیا متن دوم که یک سوال و پاسخ است به متن اول مرتبط است ؟",
-        "task_classes": None,
-    },
-    "3_4": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آیا متن دوم کلمات کلیدی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_5": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_6": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آیا متن دوم شباهت معنایی با متن اول دارد ؟",
-        "task_classes": None,
-    },
-    "3_7": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آیا متن دوم خلاصه ی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_8": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آيا متن دوم بازنویسی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_9": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آيا متن دوم ترجمه ی فارسی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_10": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آيا متن دوم ترجمه ی عربی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_11": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آيا متن دوم ترجمه ی انگلیسی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_12": {
-        "task_prompt": "مسئله : تشخیص ارتباط , متن اول یک مکالمه است. آیا متن دوم خلاصه ی متن اول است ؟",
-        "task_classes": None,
-    },
-    "3_13": {
-        "task_prompt": "مسئله : تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟",
-        "task_classes": None,
-    },
-    "3_14": {
-        "task_prompt": "مسئله : تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات است. آیا متن دوم موضوع استخراج شده ی متن اول است ؟",
-        "task_classes": None,
-    },
-    "1_170": {
-        "task_prompt": "مسئله : دسته بندی , دسته بندی موضوعی متن",
-        "task_classes": [],
-    },
-    "1_190": {
-        "task_prompt": "مسئله : دسته بندی , تحلیل احساس رضایت متن",
-        "task_classes": ["مثبت", "منفی"],
-    },
-    "3_30": {
-        "task_prompt": "مسئله : تشخیص ارتباط , متن اول  پیام جدید کاربر است. آیا متن دوم که یک سوال و پاسخ است به متن اول مرتبط است ؟",
-        "task_classes": None,
-    },
+    ),
+    "1_18": (
+        "دسته بندی , دسته بندی احساس متن",
+        ["شادی", "غم", "خشم", "انزجار", "ترس", "تعجب"],
+    ),
+    "1_19": ("دسته بندی , تحلیل احساس رضایت متن", ["مثبت", "منفی", "خنثی"]),
+    "1_20": (
+        "دسته بندی , تشخیص لحن کاربر در مکالمه با چت بات",
+        ["رسمی", "عامیانه", "کودکانه"],
+    ),
+    "1_21": (
+        "دسته بندی , تشخیص لحن چت بات در مکالمه ی کاربر با چت بات",
+        ["رسمی", "عامیانه", "کودکانه"],
+    ),
+    "1_170": ("دسته بندی , دسته بندی موضوعی متن", []),
+    "1_190": ("دسته بندی , تحلیل احساس رضایت متن", ["مثبت", "منفی"]),
+    "3_1": (
+        "تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات است. آیا متن دوم خلاصه ی متن اول است ؟",
+        None,
+    ),
+    "3_5": ("تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟", None),
+    "3_6": ("تشخیص ارتباط , آیا متن دوم شباهت معنایی با متن اول دارد ؟", None),
+    "3_12": (
+        "تشخیص ارتباط , متن اول یک مکالمه است. آیا متن دوم خلاصه ی متن اول است ؟",
+        None,
+    ),
+    "3_13": ("تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟", None),
+    "3_14": (
+        "تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات است. آیا متن دوم موضوع استخراج شده ی متن اول است ؟",
+        None,
+    ),
 }
 
-
-def preprocess_sample_easy_v7(
-    sample, dataset_name, prompt_type, task_prompt_dict, dataset_info_dict, sub
-):
-    dataset_info = dataset_info_dict[dataset_name]
-    task_id = dataset_info["task_id"]
-    subtask_id = dataset_info["subtask_id"]
-    if task_id != 4:
-        task_key = str(task_id) + "_" + str(subtask_id)
-        task_dict = task_prompt_dict[task_key]
-        task_prompt = task_dict["task_prompt"]
-
-    processed_sample = None
-    if task_id == 1:
-        processed_sample = task_prompt + " | " + "متن : " + sample
-
-    elif task_id == 2:
-        processed_sample = (
-            task_prompt
-            + " | "
-            + "متن اول : "
-            + sample[0]
-            + " | "
-            + "متن دوم : "
-            + sample[1]
-        )
-
-    elif task_id == 3 and not sub:
-        if prompt_type.value == "query":
-            processed_sample = task_prompt + " | " + "متن اول : " + sample
-        elif prompt_type.value == "passage":
-            processed_sample = task_prompt + " | " + "متن دوم : " + sample
-
-    elif task_id == 3 and sub:
-        if sub == "sentence1":
-            processed_sample = task_prompt + " | " + "متن اول : " + sample
-        elif sub == "sentence2":
-            processed_sample = task_prompt + " | " + "متن دوم : " + sample
-
-    elif task_id == 4:
-        processed_sample = sample
-    return processed_sample
-
-
-def preprocess_sample(sample, dataset_name, prompt_type, model_name, sub):
-    processed_sample = preprocess_sample_easy_v7(
-        sample, dataset_name, prompt_type, task_prompt_dict_v3, dataset_info_dict_2, sub
-    )
-    return processed_sample
-
-
-headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
+# Dataset task mappings
+DATASET_TASKS = {
+    "PersianTextEmotion": (1, 18),
+    "PersianFoodSentimentClassification": (1, 190),
+    "SentimentDKSF": (1, 19),
+    "MassiveIntentClassification": (1, 170),
+    "MassiveScenarioClassification": (1, 17),
+    "SynPerChatbotConvSAAnger": (1, 4),
+    "SynPerChatbotConvSASatisfaction": (1, 5),
+    "SynPerChatbotConvSAFriendship": (1, 6),
+    "SynPerChatbotConvSAFear": (1, 7),
+    "SynPerChatbotConvSAJealousy": (1, 8),
+    "SynPerChatbotConvSASurprise": (1, 9),
+    "SynPerChatbotConvSALove": (1, 10),
+    "SynPerChatbotConvSASadness": (1, 11),
+    "SynPerChatbotConvSAHappiness": (1, 12),
+    "SynPerChatbotConvSAToneChatbotClassification": (1, 21),
+    "SynPerChatbotConvSAToneUserClassification": (1, 20),
+    "PersianTextTone": (1, 13),
+    "SynPerChatbotToneUserClassification": (1, 2),
+    "SynPerChatbotToneChatbotClassification": (1, 3),
+    "SynPerChatbotRAGToneUserClassification": (1, 2),
+    "SynPerChatbotRAGToneChatbotClassification": (1, 3),
+    "SynPerChatbotSatisfactionLevelClassification": (1, 1),
+    "DigimagClassification": (1, 14),
+    "NLPTwitterAnalysisClassification": (1, 16),
+    "SIDClassification": (1, 15),
+    "DeepSentiPers": (1, 19),
+    "DigikalamagClassification": (1, 14),
+    "FarsTail": (4, 6),
+    "ParsinluEntail": (4, 6),
+    "ParsinluQueryParaphPC": (4, 7),
+    "SynPerChatbotRAGFAQPC": (4, 1),
+    "SynPerTextKeywordsPC": (4, 2),
+    "SynPerQAPC": (4, 3),
+    "CExaPPC": (4, 7),
+    "FarsiParaphraseDetection": (4, 7),
+    "Farsick": (3, 6),
+    "Query2Query": (3, 6),
+    "SynPerSTS": (3, 6),
+    "BeytooteClustering": (1, 170),
+    "DigikalamagClustering": (1, 14),
+    "NLPTwitterAnalysisClustering": (1, 16),
+    "HamshahriClustring": (1, 170),
+    "SIDClustring": (1, 15),
+    "MIRACLReranking": (3, 5),
+    "WikipediaRerankingMultilingual": (3, 5),
+    "SAMSumFa": (3, 12),
+    "SynPerChatbotSumSRetrieval": (3, 1),
+    "SynPerChatbotRAGSumSRetrieval": (3, 1),
+    "SynPerQARetrieval": (3, 5),
+    "SynPerChatbotTopicsRetrieval": (3, 14),
+    "SynPerChatbotRAGTopicsRetrieval": (3, 14),
+    "SynPerChatbotRAGFAQRetrieval": (3, 3),
+    "PersianWebDocumentRetrieval": (3, 13),
 }
+
+# Add all retrieval datasets with task (3, 13)
+RETRIEVAL_DATASETS = [
+    "ArguAna-Fa",
+    "ClimateFEVER-Fa",
+    "CQADupstackAndroidRetrieval-Fa",
+    "CQADupstackEnglishRetrieval-Fa",
+    "CQADupstackGamingRetrieval-Fa",
+    "CQADupstackGisRetrieval-Fa",
+    "CQADupstackMathematicaRetrieval-Fa",
+    "CQADupstackPhysicsRetrieval-Fa",
+    "CQADupstackProgrammersRetrieval-Fa",
+    "CQADupstackStatsRetrieval-Fa",
+    "CQADupstackTexRetrieval-Fa",
+    "CQADupstackUnixRetrieval-Fa",
+    "CQADupstackWebmastersRetrieval-Fa",
+    "CQADupstackWordpressRetrieval-Fa",
+    "DBPedia-Fa",
+    "FiQA2018-Fa",
+    "HotpotQA-Fa",
+    "MSMARCO-Fa",
+    "NFCorpus-Fa",
+    "NQ-Fa",
+    "QuoraRetrieval-Fa",
+    "SCIDOCS-Fa",
+    "SciFact-Fa",
+    "TRECCOVID-Fa",
+    "Touche2020-Fa",
+    "MIRACLRetrieval",
+    "WikipediaRetrievalMultilingual",
+]
+
+for dataset in RETRIEVAL_DATASETS:
+    DATASET_TASKS[dataset] = (3, 13)
+
+
+class APIError(Exception):
+    """Custom exception for API-related errors."""
+
+    pass
+
+
+class ValidationError(Exception):
+    """Custom exception for validation errors."""
+
+    pass
+
+
+class TaskProcessor:
+    """Handles task-specific text preprocessing."""
+
+    @staticmethod
+    def preprocess_sample(
+        sample: str | list[str],
+        dataset_name: str,
+        prompt_type: PromptType | None,
+        sub: str | None = None,
+        model_name: str | None = None,
+    ) -> str:
+        """Preprocess sample based on task type."""
+        # Skip preprocessing for hakim_unsuper model
+        if model_name == "Hakim_unsuper":
+            return str(sample)
+
+        task_id, subtask_id = DATASET_TASKS.get(dataset_name, (None, None))
+
+        if task_id is None:
+            logger.warning(f"Unknown dataset: {dataset_name}")
+            return str(sample)
+
+        # Skip processing for pair classification tasks
+        if task_id == 4:
+            return str(sample)
+
+        task_key = f"{task_id}_{subtask_id}"
+        task_prompt, _ = TASK_CONFIGS.get(task_key, ("", None))
+
+        if not task_prompt:
+            return str(sample)
+
+        task_prompt = f"مسئله : {task_prompt}"
+
+        # Single text classification
+        if task_id == 1:
+            return f"{task_prompt} | متن : {sample}"
+
+        # Retrieval tasks
+        elif task_id == 3:
+            if sub == "sentence1":
+                return f"{task_prompt} | متن اول : {sample}"
+            elif sub == "sentence2":
+                return f"{task_prompt} | متن دوم : {sample}"
+            elif prompt_type and prompt_type.value == "query":
+                return f"{task_prompt} | متن اول : {sample}"
+            elif prompt_type and prompt_type.value == "passage":
+                return f"{task_prompt} | متن دوم : {sample}"
+
+        return str(sample)
 
 
 class OurInstructModelWrapper(Wrapper):
+    """Wrapper for the Hakim instruction-following model."""
+
     def __init__(
         self,
         model_name: str,
         revision: str,
         model_prompts: dict[str, str] | None = None,
+        max_retries: int = 3,
+        retry_delay: int = 10,
         **kwargs: Any,
     ):
-        print(f"\n\nModel to test is = {model_name}\n\n")
         self.model_name = model_name
+        self.api_url = "https://mcinext.ai/api/hakim"
+        self.max_retries = max_retries
+        self.retry_delay = retry_delay
+
+        # Get API key from environment
+        self.api_key = self._get_api_key()
+
+        self.headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": f"Bearer {self.api_key}",
+        }
+        self.processor = TaskProcessor()
+        logger.info(f"Initialized model wrapper for: {model_name}")
+
+    def _get_api_key(self) -> str:
+        """Get API key from environment variables."""
+        api_key = os.getenv("MCINEXT_API_KEY")
+
+        if not api_key:
+            raise ValueError(
+                "API key not found. Please set MCINEXT_API_KEY environment variable."
+            )
+
+        return api_key
 
     def to(self, device: torch.device) -> None:
-        self.model.to(device)
+        """Move model to device (no-op for API-based model)."""
+        pass
 
-    def encode(  # type: ignore
+    def _validate_api_response(self, response_data: dict[str, Any]) -> None:
+        """Validate API response structure."""
+        if not isinstance(response_data, dict):
+            raise ValidationError("API response is not a dictionary")
+
+        if "data" not in response_data:
+            raise ValidationError("API response missing 'data' field")
+
+        if not isinstance(response_data["data"], list):
+            raise ValidationError("API response 'data' field is not a list")
+
+        for i, item in enumerate(response_data["data"]):
+            if not isinstance(item, dict):
+                raise ValidationError(f"Item {i} in response data is not a dictionary")
+
+            if "embedding" not in item:
+                raise ValidationError(
+                    f"Item {i} in response data missing 'embedding' field"
+                )
+
+            if not isinstance(item["embedding"], list):
+                raise ValidationError(f"Item {i} embedding is not a list")
+
+    def _make_api_request(self, data: dict[str, Any]) -> dict[str, Any]:
+        """Make API request with retry logic and proper error handling."""
+        last_exception = None
+
+        for attempt in range(self.max_retries):
+            try:
+                logger.debug(
+                    f"Making API request, attempt {attempt + 1}/{self.max_retries}"
+                )
+                response = requests.post(
+                    self.api_url,
+                    headers=self.headers,
+                    json=data,
+                    timeout=60,  # Add timeout
+                )
+                response.raise_for_status()
+
+                response_data = response.json()
+                self._validate_api_response(response_data)
+
+                return response_data
+
+            except requests.exceptions.Timeout as e:
+                last_exception = e
+                logger.warning(f"Request timeout on attempt {attempt + 1}: {e}")
+
+            except requests.exceptions.HTTPError as e:
+                last_exception = e
+                if response.status_code == 429:  # Rate limiting
+                    wait_time = self.retry_delay * (2**attempt)  # Exponential backoff
+                    logger.warning(
+                        f"Rate limited on attempt {attempt + 1}, waiting {wait_time}s"
+                    )
+                    time.sleep(wait_time)
+                elif response.status_code >= 500:  # Server errors
+                    wait_time = self.retry_delay * (attempt + 1)
+                    logger.warning(
+                        f"Server error {response.status_code} on attempt {attempt + 1}, waiting {wait_time}s"
+                    )
+                    time.sleep(wait_time)
+                else:
+                    # Client errors (4xx except 429) - don't retry
+                    logger.error(f"Client error {response.status_code}: {e}")
+                    raise APIError(
+                        f"API request failed with status {response.status_code}: {e}"
+                    ) from e
+
+            except requests.exceptions.RequestException as e:
+                last_exception = e
+                wait_time = self.retry_delay * (attempt + 1)
+                logger.warning(
+                    f"Request failed on attempt {attempt + 1}: {e}, waiting {wait_time}s"
+                )
+                time.sleep(wait_time)
+
+            except (ValidationError, ValueError) as e:
+                last_exception = e
+                logger.error(
+                    f"Response validation failed on attempt {attempt + 1}: {e}"
+                )
+                if attempt < self.max_retries - 1:
+                    time.sleep(self.retry_delay)
+
+        # If we get here, all retries failed
+        raise APIError(
+            f"API request failed after {self.max_retries} attempts. Last error: {last_exception}"
+        ) from last_exception
+
+    def _validate_inputs(self, sentences: list[str], batch_size: int) -> None:
+        """Validate input parameters."""
+        if not sentences:
+            raise ValueError("Input sentences list is empty")
+
+        if batch_size <= 0:
+            raise ValueError(
+                f"Invalid batch_size: {batch_size}. Must be a positive integer."
+            )
+
+        # Check for empty or None sentences
+        for i, sentence in enumerate(sentences):
+            if sentence is None:
+                raise ValueError(f"Sentence at index {i} is None")
+            if not isinstance(sentence, str):
+                raise ValueError(
+                    f"Sentence at index {i} is not a string: {type(sentence)}"
+                )
+
+    def encode(
         self,
         sentences: list[str],
         *,
@@ -721,52 +487,99 @@ class OurInstructModelWrapper(Wrapper):
         prompt_type: PromptType | None = None,
         batch_size: int = 32,
         **kwargs: Any,
-    ):
-        # default to search_document if input_type and prompt_name are not provided
-        print("\n\nyes you right...\n\n")
-        print(task_name)
-        print(type(prompt_type))
-        print(len(sentences))
-        print("before...")
-        print(sentences[0])
+    ) -> np.ndarray:
+        """Encode sentences using the API with batch processing and robust error handling."""
+        # Validate inputs
+        self._validate_inputs(sentences, batch_size)
 
         sub = kwargs.get("sub", None)
-        print(f"\n sub === {sub}")
 
-        sentences = [
-            preprocess_sample(sentence, task_name, prompt_type, self.model_name, sub)
-            for sentence in sentences
-        ]
-        print(len(sentences))
+        # Preprocess sentences
+        try:
+            processed_sentences = [
+                self.processor.preprocess_sample(
+                    sentence, task_name, prompt_type, sub, self.model_name
+                )
+                for sentence in sentences
+            ]
+        except Exception as e:
+            logger.error(f"Error during preprocessing: {e}")
+            raise ValueError(f"Failed to preprocess sentences: {e}") from e
 
-        # print(task_name)
-        print("after...")
-        print(sentences[0])
-        # url = f"https://mcinext.ai/api/{self.model_name}"
-        url = "https://mcinext.ai/api/hakim"
+        logger.debug(
+            f"Processing {len(processed_sentences)} sentences for task: {task_name}"
+        )
 
-        data = {
-            "model": "Hakim",
-            "input": sentences,
-            "encoding_format": "float",
-            "add_special_tokens": True,
-        }
+        all_embeddings = []
+        total_batches = (len(processed_sentences) + batch_size - 1) // batch_size
 
-        response = requests.post(url, headers=headers, json=data)
+        # Process in batches
+        for i in range(0, len(processed_sentences), batch_size):
+            batch_num = i // batch_size + 1
+            batch = processed_sentences[i : i + batch_size]
 
-        embeddings = [item["embedding"] for item in response.json()["data"]]
-        embeddings = np.array(embeddings)
+            logger.debug(
+                f"Processing batch {batch_num}/{total_batches} with {len(batch)} sentences"
+            )
 
-        print(f"\n\n\n================================================\n{embeddings}")
+            # Prepare API request for current batch
+            data = {
+                "model": self.model_name,
+                "input": batch,
+                "encoding_format": "float",
+                "add_special_tokens": True,
+            }
 
-        return embeddings
+            # Make API call for current batch with retry logic
+            try:
+                result = self._make_api_request(data)
+
+                # Extract embeddings with proper error handling
+                batch_embeddings = []
+                for item in result["data"]:
+                    embedding = item["embedding"]
+                    if not embedding:  # Check for empty embeddings
+                        raise ValidationError("Received empty embedding from API")
+                    batch_embeddings.append(embedding)
+
+                # Verify we got the expected number of embeddings
+                if len(batch_embeddings) != len(batch):
+                    raise ValidationError(
+                        f"Expected {len(batch)} embeddings, got {len(batch_embeddings)}"
+                    )
+
+                all_embeddings.extend(batch_embeddings)
+
+            except (APIError, ValidationError) as e:
+                logger.error(f"Failed to process batch {batch_num}: {e}")
+                raise
+            except Exception as e:
+                logger.error(f"Unexpected error processing batch {batch_num}: {e}")
+                raise APIError(
+                    f"Unexpected error processing batch {batch_num}: {e}"
+                ) from e
+
+        # Verify final results
+        if len(all_embeddings) != len(sentences):
+            raise ValidationError(
+                f"Final embedding count mismatch: expected {len(sentences)}, got {len(all_embeddings)}"
+            )
+
+        try:
+            embeddings_array = np.array(all_embeddings, dtype=np.float32)
+            logger.debug(f"Generated embeddings with shape: {embeddings_array.shape}")
+            return embeddings_array
+        except Exception as e:
+            logger.error(f"Failed to convert embeddings to numpy array: {e}")
+            raise ValueError(f"Failed to convert embeddings to numpy array: {e}") from e
 
 
+# Model metadata
 hakim = ModelMeta(
     loader=partial(
         OurInstructModelWrapper,
         trust_remote_code=True,
-        model_name="hakim",
+        model_name="Hakim",
         revision="v1",
     ),
     name="MCINext/Hakim",
@@ -825,6 +638,105 @@ hakim = ModelMeta(
         "SynPerChatbotRAGFAQRetrieval": ["train"],
         "Farsick": ["train"],
         "SynPerSTS": ["train"],
+        "Query2Query": ["train"],
+    },
+)
+
+
+hakim_small = ModelMeta(
+    loader=partial(
+        OurInstructModelWrapper,
+        trust_remote_code=True,
+        model_name="Hakim_small",
+        revision="v1",
+    ),
+    name="MCINext/Hakim-small",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=38_736_384,
+    memory_usage_mb=148,
+    embed_dim=512,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-small",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets={
+        "FarsTail": [],
+        "SAMSumFa": ["train"],
+        "SynPerChatbotSumSRetrieval": ["train"],
+        "SynPerChatbotRAGSumSRetrieval": ["train"],
+        "SynPerChatbotConvSAClassification": ["train"],
+        "SynPerChatbotConvSAToneChatbotClassification": ["train"],
+        "SynPerChatbotConvSAToneUserClassification": ["train"],
+        "SynPerChatbotSatisfactionLevelClassification": ["train"],
+        "SynPerChatbotRAGToneChatbotClassification": ["train"],
+        "SynPerChatbotRAGToneUserClassification": ["train"],
+        "SynPerChatbotToneChatbotClassification": ["train"],
+        "SynPerChatbotToneUserClassification": ["train"],
+        "SynPerTextToneClassification": ["train"],
+        "SIDClassification": ["train"],
+        "PersianTextEmotion": ["train"],
+        "SentimentDKSF": ["train"],
+        "NLPTwitterAnalysisClassification": ["train"],
+        "DigikalamagClassification": ["train"],
+        "DigikalamagClustering": ["train"],
+        "NLPTwitterAnalysisClustering": ["train"],
+        "SIDClustring": ["train"],
+        "CExaPPC": ["train"],
+        "SynPerChatbotRAGFAQPC": ["train"],
+        "FarsiParaphraseDetection": ["train"],
+        "SynPerTextKeywordsPC": ["train"],
+        "SynPerQAPC": ["train"],
+        "ParsinluEntail": ["train"],
+        "ParsinluQueryParaphPC": ["train"],
+        "FiQA2018-Fa": ["train"],
+        "HotpotQA-Fa": ["train"],
+        "MSMARCO-Fa": ["train"],
+        "NFCorpus-Fa": ["train"],
+        "SciFact-Fa": ["train"],
+        "SynPerQARetrieval": ["train"],
+        "SynPerChatbotTopicsRetrieval": ["train"],
+        "SynPerChatbotRAGTopicsRetrieval": ["train"],
+        "SynPerChatbotRAGFAQRetrieval": ["train"],
+        "Farsick": ["train"],
+        "SynPerSTS": ["train"],
+        "Query2Query": ["train"],
+    },
+)
+
+hakim_unsup = ModelMeta(
+    loader=partial(
+        OurInstructModelWrapper,
+        trust_remote_code=True,
+        model_name="Hakim_unsuper",
+        revision="v1",
+    ),
+    name="MCINext/Hakim-unsup",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets={
+        "FarsTail": [],
+        "Farsick": ["train"],
+        "MSMARCO-Fa": ["train"],
         "Query2Query": ["train"],
     },
 )
