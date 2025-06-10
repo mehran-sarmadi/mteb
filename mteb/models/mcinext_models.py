@@ -274,11 +274,16 @@ class APIError(Exception):
     """Custom exception for API-related errors."""
 
     def __init__(
-        self, message: str, status_code: int = None, response_data: dict = None
+        self,
+        message: str,
+        status_code: int = None,
+        response_data: dict = None,
+        details: dict = None,  # Add this line
     ):
         super().__init__(message)
         self.status_code = status_code
         self.response_data = response_data or {}
+        self.details = details or {}  # Add this line
 
 
 class TaskProcessor:
@@ -522,8 +527,15 @@ class OurInstructModelWrapper(Wrapper):
         # All retries failed
         error_msg = f"API request failed after {self.max_retries} attempts"
         logger.error(f"{error_msg}. Last error: {str(last_exception)}")
+        # Pass 'details' when raising APIError
         raise APIError(
             error_msg,
+            status_code=getattr(last_exception, "response", None).status_code
+            if hasattr(last_exception, "response") and last_exception.response
+            else None,
+            response_data=getattr(last_exception, "response", None).json()
+            if hasattr(last_exception, "response") and last_exception.response
+            else {},
             details={
                 "last_exception": str(last_exception),
                 "attempts": self.max_retries,
