@@ -549,6 +549,99 @@ class OurInstructModelWrapper(Wrapper):
                     f"Sentence at index {i} is not a string: {type(sentence)}"
                 )
 
+    def _preprocess_sentences(
+        self,
+        sentences: list[str],
+        task_name: str,
+        prompt_type: PromptType | None,
+        sub: str | None,
+    ) -> list[str]:
+        """Preprocess sentences for the given task."""
+        try:
+            processed_sentences = [
+                self.processor.preprocess_sample(
+                    sentence, task_name, prompt_type, sub, self.model_name
+                )
+                for sentence in sentences
+            ]
+            logger.info(
+                f"Preprocessed {len(processed_sentences)} sentences for task: {task_name}"
+            )
+            return processed_sentences
+        except Exception as e:
+            error_msg = f"Failed to preprocess sentences for task {task_name}: {str(e)}"
+            logger.error(error_msg)
+            raise ValueError(error_msg) from e
+
+    def _process_batch(
+        self, batch: list[str], batch_num: int, total_batches: int
+    ) -> list[list[float]]:
+        """Process a single batch of sentences."""
+        logger.info(
+            f"Processing batch {batch_num}/{total_batches} with {len(batch)} sentences"
+        )
+
+        data = {
+            "model": self.model_name,
+            "input": batch,
+            "encoding_format": "float",
+            "add_special_tokens": True,
+        }
+
+        try:
+            result = self._make_api_request(data)
+            batch_embeddings = self._extract_embeddings(result, len(batch))
+            logger.info(f"Successfully processed batch {batch_num}")
+            return batch_embeddings
+
+        except (APIError, ValidationError) as e:
+            error_msg = f"Failed to process batch {batch_num}/{total_batches}: {str(e)}"
+            logger.error(error_msg)
+            raise APIError(error_msg) from e
+        except Exception as e:
+            error_msg = f"Unexpected error processing batch {batch_num}/{total_batches}: {str(e)}"
+            logger.error(error_msg)
+            raise APIError(error_msg) from e
+
+    def _extract_embeddings(
+        self, api_result: dict[str, Any], expected_count: int
+    ) -> list[list[float]]:
+        """Extract and validate embeddings from API result."""
+        batch_embeddings = []
+
+        for item in api_result["data"]:
+            embedding = item["embedding"]
+            if not embedding:
+                raise ValidationError("Received empty embedding from API")
+            batch_embeddings.append(embedding)
+
+        if len(batch_embeddings) != expected_count:
+            raise ValidationError(
+                f"Embedding count mismatch: expected {expected_count}, got {len(batch_embeddings)}"
+            )
+
+        return batch_embeddings
+
+    def _convert_to_numpy(
+        self, embeddings: list[list[float]], original_count: int
+    ) -> np.ndarray:
+        """Convert embeddings list to numpy array with validation."""
+        if len(embeddings) != original_count:
+            raise ValidationError(
+                f"Final embedding count mismatch: expected {original_count}, got {len(embeddings)}"
+            )
+
+        try:
+            embeddings_array = np.array(embeddings, dtype=np.float32)
+            logger.info(f"Generated embeddings with shape: {embeddings_array.shape}")
+            return embeddings_array
+        except Exception as e:
+            error_msg = f"Failed to convert embeddings to numpy array: {str(e)}"
+            logger.error(error_msg)
+            raise ValueError(error_msg) from e
+
+    # 5. Replace the encode method with the refactored version:
+
     def encode(
         self,
         sentences: list[str],
@@ -559,89 +652,34 @@ class OurInstructModelWrapper(Wrapper):
         **kwargs: Any,
     ) -> np.ndarray:
         """Encode sentences using the API with batch processing and robust error handling."""
+        logger.info(
+            f"Starting encoding for {len(sentences)} sentences, task: {task_name}, batch_size: {batch_size}"
+        )
+
         # Validate inputs
         self._validate_inputs(sentences, batch_size)
 
-        sub = kwargs.get("sub", None)
-
         # Preprocess sentences
-        try:
-            processed_sentences = [
-                self.processor.preprocess_sample(
-                    sentence, task_name, prompt_type, sub, self.model_name
-                )
-                for sentence in sentences
-            ]
-        except Exception as e:
-            logger.error(f"Error during preprocessing: {e}")
-            raise ValueError(f"Failed to preprocess sentences: {e}") from e
-
-        logger.debug(
-            f"Processing {len(processed_sentences)} sentences for task: {task_name}"
+        sub = kwargs.get("sub", None)
+        processed_sentences = self._preprocess_sentences(
+            sentences, task_name, prompt_type, sub
         )
 
+        # Process in batches
         all_embeddings = []
         total_batches = (len(processed_sentences) + batch_size - 1) // batch_size
 
-        # Process in batches
         for i in range(0, len(processed_sentences), batch_size):
             batch_num = i // batch_size + 1
             batch = processed_sentences[i : i + batch_size]
 
-            logger.debug(
-                f"Processing batch {batch_num}/{total_batches} with {len(batch)} sentences"
-            )
+            batch_embeddings = self._process_batch(batch, batch_num, total_batches)
+            all_embeddings.extend(batch_embeddings)
 
-            # Prepare API request for current batch
-            data = {
-                "model": self.model_name,
-                "input": batch,
-                "encoding_format": "float",
-                "add_special_tokens": True,
-            }
-
-            # Make API call for current batch with retry logic
-            try:
-                result = self._make_api_request(data)
-
-                # Extract embeddings with proper error handling
-                batch_embeddings = []
-                for item in result["data"]:
-                    embedding = item["embedding"]
-                    if not embedding:  # Check for empty embeddings
-                        raise ValidationError("Received empty embedding from API")
-                    batch_embeddings.append(embedding)
-
-                # Verify we got the expected number of embeddings
-                if len(batch_embeddings) != len(batch):
-                    raise ValidationError(
-                        f"Expected {len(batch)} embeddings, got {len(batch_embeddings)}"
-                    )
-
-                all_embeddings.extend(batch_embeddings)
-
-            except (APIError, ValidationError) as e:
-                logger.error(f"Failed to process batch {batch_num}: {e}")
-                raise
-            except Exception as e:
-                logger.error(f"Unexpected error processing batch {batch_num}: {e}")
-                raise APIError(
-                    f"Unexpected error processing batch {batch_num}: {e}"
-                ) from e
-
-        # Verify final results
-        if len(all_embeddings) != len(sentences):
-            raise ValidationError(
-                f"Final embedding count mismatch: expected {len(sentences)}, got {len(all_embeddings)}"
-            )
-
-        try:
-            embeddings_array = np.array(all_embeddings, dtype=np.float32)
-            logger.debug(f"Generated embeddings with shape: {embeddings_array.shape}")
-            return embeddings_array
-        except Exception as e:
-            logger.error(f"Failed to convert embeddings to numpy array: {e}")
-            raise ValueError(f"Failed to convert embeddings to numpy array: {e}") from e
+        # Convert to numpy array and return
+        result = self._convert_to_numpy(all_embeddings, len(sentences))
+        logger.info(f"Encoding completed successfully for {len(sentences)} sentences")
+        return result
 
 
 # Model metadata
