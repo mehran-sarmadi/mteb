@@ -15,9 +15,7 @@ from mteb.model_meta import ModelMeta
 
 from .wrapper import Wrapper
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 temp_dic = {
     "hakim": "Hakim",
