@@ -287,7 +287,8 @@ class TaskProcessor:
     ) -> str:
         """Preprocess sample based on task type."""
         # Skip preprocessing for hakim_unsuper model
-        if model_name == "Hakim_unsuper":
+        if model_name and "unsupe" in model_name:
+            logging.info(f"Skipping preprocessing for unsupervised model: {model_name}")
             return str(sample)
 
         task_id, subtask_id = DATASET_TASKS.get(dataset_name, (None, None))
@@ -339,7 +340,7 @@ class OurInstructModelWrapper(Wrapper):
         **kwargs: Any,
     ):
         self.model_name = model_name
-        self.api_url = "https://mcinext.ai/api/hakim"
+        self.api_url = f"https://mcinext.ai/api/{model_name}"
         self.max_retries = max_retries
         self.retry_delay = retry_delay
 
@@ -579,7 +580,7 @@ hakim = ModelMeta(
     loader=partial(
         OurInstructModelWrapper,
         trust_remote_code=True,
-        model_name="Hakim",
+        model_name="hakim",
         revision="v1",
     ),
     name="MCINext/Hakim",
@@ -647,7 +648,7 @@ hakim_small = ModelMeta(
     loader=partial(
         OurInstructModelWrapper,
         trust_remote_code=True,
-        model_name="Hakim_small",
+        model_name="hakim-small",
         revision="v1",
     ),
     name="MCINext/Hakim-small",
@@ -714,7 +715,7 @@ hakim_unsup = ModelMeta(
     loader=partial(
         OurInstructModelWrapper,
         trust_remote_code=True,
-        model_name="Hakim_unsuper",
+        model_name="hakim-unsup",
         revision="v1",
     ),
     name="MCINext/Hakim-unsup",
