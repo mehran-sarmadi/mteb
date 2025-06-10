@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 temp_dic = {
     "hakim": "Hakim",
-    "hakim-samll": "Hakim_small",
+    "hakim-small": "Hakim_small",
     "hakim-unsup": "Hakim_unsuper",
 }
 
@@ -306,7 +306,7 @@ class TaskProcessor:
     ) -> str:
         """Preprocess sample based on task type."""
         # Skip preprocessing for hakim_unsuper model
-        if model_name and "unsupe" in model_name:
+        if model_name and "unsup" in model_name:
             logging.info(f"Skipping preprocessing for unsupervised model: {model_name}")
             return str(sample)
 
