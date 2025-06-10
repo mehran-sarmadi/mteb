@@ -18,6 +18,13 @@ from .wrapper import Wrapper
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+temp_dic = {
+    "hakim": "Hakim",
+    "hakim-samll": "Hakim_small",
+    "hakim-unsup": "Hakim_unsuper",
+}
+
 # Task configurations
 TASK_CONFIGS = {
     "1_1": (
@@ -594,7 +601,7 @@ class OurInstructModelWrapper(Wrapper):
         )
 
         data = {
-            "model": self.model_name,
+            "model": temp_dic[self.model_name],
             "input": batch,
             "encoding_format": "float",
             "add_special_tokens": True,
