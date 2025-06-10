@@ -262,16 +262,23 @@ for dataset in RETRIEVAL_DATASETS:
     DATASET_TASKS[dataset] = (3, 13)
 
 
-class APIError(Exception):
-    """Custom exception for API-related errors."""
-
-    pass
-
-
 class ValidationError(Exception):
     """Custom exception for validation errors."""
 
-    pass
+    def __init__(self, message: str, details: dict = None):
+        super().__init__(message)
+        self.details = details or {}
+
+
+class APIError(Exception):
+    """Custom exception for API-related errors."""
+
+    def __init__(
+        self, message: str, status_code: int = None, response_data: dict = None
+    ):
+        super().__init__(message)
+        self.status_code = status_code
+        self.response_data = response_data or {}
 
 
 class TaskProcessor:
@@ -370,96 +377,158 @@ class OurInstructModelWrapper(Wrapper):
         """Move model to device (no-op for API-based model)."""
         pass
 
+    def _validate_embedding_item(self, item: Any, index: int) -> list[str]:
+        """Validate individual embedding item and return list of errors."""
+        errors = []
+
+        if not isinstance(item, dict):
+            errors.append(
+                f"Item {index}: Expected dictionary, got {type(item).__name__}"
+            )
+            return errors
+
+        if "embedding" not in item:
+            errors.append(
+                f"Item {index}: Missing 'embedding' field. Available fields: {list(item.keys())}"
+            )
+            return errors
+
+        embedding = item["embedding"]
+        if not isinstance(embedding, list):
+            errors.append(
+                f"Item {index}: Embedding must be a list, got {type(embedding).__name__}"
+            )
+        elif len(embedding) == 0:
+            errors.append(f"Item {index}: Embedding list is empty")
+        elif not all(isinstance(x, (int, float)) for x in embedding):
+            errors.append(f"Item {index}: Embedding contains non-numeric values")
+
+        return errors
+
     def _validate_api_response(self, response_data: dict[str, Any]) -> None:
-        """Validate API response structure."""
+        """Validate API response structure with detailed error messages."""
+        validation_errors = []
+
         if not isinstance(response_data, dict):
-            raise ValidationError("API response is not a dictionary")
+            raise ValidationError(
+                "API response must be a dictionary",
+                {"received_type": type(response_data).__name__},
+            )
 
         if "data" not in response_data:
-            raise ValidationError("API response missing 'data' field")
+            raise ValidationError(
+                "API response missing required 'data' field",
+                {"available_fields": list(response_data.keys())},
+            )
 
-        if not isinstance(response_data["data"], list):
-            raise ValidationError("API response 'data' field is not a list")
+        data = response_data["data"]
+        if not isinstance(data, list):
+            raise ValidationError(
+                "API response 'data' field must be a list",
+                {"received_type": type(data).__name__},
+            )
 
-        for i, item in enumerate(response_data["data"]):
-            if not isinstance(item, dict):
-                raise ValidationError(f"Item {i} in response data is not a dictionary")
+        for i, item in enumerate(data):
+            item_errors = self._validate_embedding_item(item, i)
+            validation_errors.extend(item_errors)
 
-            if "embedding" not in item:
-                raise ValidationError(
-                    f"Item {i} in response data missing 'embedding' field"
-                )
-
-            if not isinstance(item["embedding"], list):
-                raise ValidationError(f"Item {i} embedding is not a list")
+        if validation_errors:
+            raise ValidationError(
+                f"API response validation failed with {len(validation_errors)} errors",
+                {"errors": validation_errors},
+            )
 
     def _make_api_request(self, data: dict[str, Any]) -> dict[str, Any]:
-        """Make API request with retry logic and proper error handling."""
+        """Make API request with retry logic and comprehensive error handling."""
         last_exception = None
 
         for attempt in range(self.max_retries):
             try:
-                logger.debug(
-                    f"Making API request, attempt {attempt + 1}/{self.max_retries}"
+                logger.info(
+                    f"API request attempt {attempt + 1}/{self.max_retries} for {len(data.get('input', []))} items"
                 )
+
                 response = requests.post(
-                    self.api_url,
-                    headers=self.headers,
-                    json=data,
-                    timeout=60,  # Add timeout
+                    self.api_url, headers=self.headers, json=data, timeout=60
                 )
                 response.raise_for_status()
 
                 response_data = response.json()
                 self._validate_api_response(response_data)
 
+                logger.info(f"API request successful on attempt {attempt + 1}")
                 return response_data
 
             except requests.exceptions.Timeout as e:
                 last_exception = e
-                logger.warning(f"Request timeout on attempt {attempt + 1}: {e}")
+                logger.warning(f"Request timeout on attempt {attempt + 1}: {str(e)}")
 
             except requests.exceptions.HTTPError as e:
                 last_exception = e
-                if response.status_code == 429:  # Rate limiting
-                    wait_time = self.retry_delay * (2**attempt)  # Exponential backoff
+                status_code = response.status_code if "response" in locals() else None
+
+                if status_code == 429:  # Rate limiting
+                    wait_time = self.retry_delay * (2**attempt)
                     logger.warning(
-                        f"Rate limited on attempt {attempt + 1}, waiting {wait_time}s"
+                        f"Rate limited (429) on attempt {attempt + 1}, waiting {wait_time}s"
                     )
                     time.sleep(wait_time)
-                elif response.status_code >= 500:  # Server errors
+                elif status_code and status_code >= 500:  # Server errors
                     wait_time = self.retry_delay * (attempt + 1)
                     logger.warning(
-                        f"Server error {response.status_code} on attempt {attempt + 1}, waiting {wait_time}s"
+                        f"Server error {status_code} on attempt {attempt + 1}, waiting {wait_time}s"
                     )
                     time.sleep(wait_time)
                 else:
                     # Client errors (4xx except 429) - don't retry
-                    logger.error(f"Client error {response.status_code}: {e}")
+                    error_msg = f"API client error {status_code}: {str(e)}"
+                    logger.error(error_msg)
                     raise APIError(
-                        f"API request failed with status {response.status_code}: {e}"
-                    ) from e
+                        error_msg, status_code, getattr(response, "json", lambda: {})()
+                    )
+
+            except requests.exceptions.ConnectionError as e:
+                last_exception = e
+                wait_time = self.retry_delay * (attempt + 1)
+                logger.warning(
+                    f"Connection error on attempt {attempt + 1}: {str(e)}, waiting {wait_time}s"
+                )
+                time.sleep(wait_time)
 
             except requests.exceptions.RequestException as e:
                 last_exception = e
                 wait_time = self.retry_delay * (attempt + 1)
                 logger.warning(
-                    f"Request failed on attempt {attempt + 1}: {e}, waiting {wait_time}s"
+                    f"Request error on attempt {attempt + 1}: {str(e)}, waiting {wait_time}s"
                 )
                 time.sleep(wait_time)
 
-            except (ValidationError, ValueError) as e:
+            except ValidationError as e:
                 last_exception = e
                 logger.error(
-                    f"Response validation failed on attempt {attempt + 1}: {e}"
+                    f"Response validation failed on attempt {attempt + 1}: {str(e)}"
                 )
+                if e.details:
+                    logger.error(f"Validation details: {e.details}")
                 if attempt < self.max_retries - 1:
                     time.sleep(self.retry_delay)
 
-        # If we get here, all retries failed
+            except ValueError as e:
+                last_exception = e
+                logger.error(f"JSON parsing error on attempt {attempt + 1}: {str(e)}")
+                if attempt < self.max_retries - 1:
+                    time.sleep(self.retry_delay)
+
+        # All retries failed
+        error_msg = f"API request failed after {self.max_retries} attempts"
+        logger.error(f"{error_msg}. Last error: {str(last_exception)}")
         raise APIError(
-            f"API request failed after {self.max_retries} attempts. Last error: {last_exception}"
-        ) from last_exception
+            error_msg,
+            details={
+                "last_exception": str(last_exception),
+                "attempts": self.max_retries,
+            },
+        )
 
     def _validate_inputs(self, sentences: list[str], batch_size: int) -> None:
         """Validate input parameters."""
