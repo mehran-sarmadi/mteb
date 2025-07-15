@@ -206,3 +206,24 @@ tooka_sbert_v2_large = ModelMeta(
     public_training_data=None,
     training_datasets=None,
 )
+
+persian_embeddings = ModelMeta(
+    name="heydariAI/persian-embeddings",
+    languages=["fas-Arab"],
+    open_weights=True,
+    revision="0c487ec2e3838e4b348ffac7281dc1f6e5fa2453",
+    release_date="2024-11-21",
+    n_parameters=559_890_432,
+    memory_usage_mb=2136,
+    embed_dim=1024,
+    license="apache-2.0",
+    max_tokens=514,
+    reference="https://huggingface.co/heydariAI/persian-embeddings",
+    similarity_fn_name="cosine",
+    framework=["Sentence Transformers", "PyTorch"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+    adapted_from="FacebookAI/xlm-roberta-base",
+)
