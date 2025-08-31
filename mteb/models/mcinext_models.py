@@ -1,13 +1,11 @@
 from __future__ import annotations
 
 import logging
-import os
-import time
 from functools import partial
 from typing import Any
 
 import numpy as np
-import requests
+from sentence_transformers import SentenceTransformer
 
 from mteb.encoder_interface import PromptType
 from mteb.model_meta import ModelMeta
@@ -15,12 +13,6 @@ from mteb.model_meta import ModelMeta
 from .wrapper import Wrapper
 
 logger = logging.getLogger(__name__)
-
-MODEL_API_NAMES = {
-    "hakim": "Hakim",
-    "hakim-small": "Hakim_small",
-    "hakim-unsup": "Hakim_unsuper",
-}
 
 # Dataset task mappings with descriptions and task IDs
 DATASET_TASKS = {
@@ -205,42 +197,15 @@ for dataset in RETRIEVAL_DATASETS:
     DATASET_TASKS[dataset] = ("تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟", 3)
 
 
-class APIError(Exception):
-    """Custom exception for API errors."""
-
-    def __init__(self, message: str, status_code: int | None = None):
-        super().__init__(
-            f"API Error: {message} (Status Code: {status_code})"
-            if status_code
-            else f"API Error: {message}"
-        )
-        self.status_code = status_code
-
-
 class HakimModelWrapper(Wrapper):
     """A simplified wrapper for the Hakim instruction-following model."""
 
-    def __init__(
-        self,
-        model_name: str,
-        revision: str,
-        max_retries: int = 3,
-        retry_delay: int = 10,
-        **kwargs: Any,
-    ):
+    def __init__(self, model_name: str, revision: str, **kwargs):
+        """Initializes the wrapper and loads the SentenceTransformer model."""
+        self.model = SentenceTransformer(model_name, revision=revision)
+        # You can still have model_name for other logic if needed
         self.model_name = model_name
-        self.api_url = f"https://mcinext.ai/api/{model_name}"
-        self.max_retries = max_retries
-        self.retry_delay = retry_delay
-        self.api_key = os.getenv("MCINEXT_API_KEY")
-        if not self.api_key:
-            raise ValueError("MCINEXT_API_KEY environment variable not set.")
-        self.headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": f"Bearer {self.api_key}",
-        }
-        logger.info(f"Initialized model wrapper for: {model_name}")
+        logging.info(f"Initialized model: {model_name}")
 
     def _preprocess_sample(
         self,
@@ -266,37 +231,9 @@ class HakimModelWrapper(Wrapper):
         if task_id == 3:
             if sub == "sentence1" or (prompt_type and prompt_type.value == "query"):
                 return f"{task_prompt} | متن اول : {sample}"
-            if sub == "sentence2" or (prompt_type and prompt_type.value == "document"):
+            if sub == "sentence2" or (prompt_type and prompt_type.value == "passage"):
                 return f"{task_prompt} | متن دوم : {sample}"
         return sample
-
-    def _make_api_request(self, data: dict[str, Any]) -> list[list[float]]:
-        """Makes an API request with retry logic."""
-        for attempt in range(self.max_retries):
-            try:
-                response = requests.post(
-                    self.api_url, headers=self.headers, json=data, timeout=60
-                )
-                response.raise_for_status()
-                response_data = response.json()
-
-                if not response_data.get("data") or not all(
-                    "embedding" in item for item in response_data["data"]
-                ):
-                    raise APIError("Invalid response format from API.")
-
-                return [item["embedding"] for item in response_data["data"]]
-
-            except requests.exceptions.RequestException as e:
-                status_code = e.response.status_code if e.response else None
-                logger.warning(
-                    f"API request failed (attempt {attempt + 1}/{self.max_retries}): {e}"
-                )
-                if status_code and 400 <= status_code < 500 and status_code != 429:
-                    raise APIError(f"Client error: {e}", status_code)
-                time.sleep(self.retry_delay * (2**attempt))
-
-        raise APIError(f"API request failed after {self.max_retries} attempts.")
 
     def encode(
         self,
@@ -307,50 +244,52 @@ class HakimModelWrapper(Wrapper):
         batch_size: int = 32,
         **kwargs: Any,
     ) -> np.ndarray:
-        """Encodes sentences using the API."""
+        """Encodes sentences using a loaded SentenceTransformer model.
+
+        Args:
+            sentences: A list of strings to be encoded.
+            task_name: The name of the task for preprocessing.
+            prompt_type: The type of prompt (e.g., 'query', 'passage').
+            batch_size: The batch size for encoding.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A numpy array of the sentence embeddings.
+        """
         if not sentences or not all(isinstance(s, str) for s in sentences):
             raise ValueError("Input must be a non-empty list of strings.")
 
         logger.info(
             f"Starting encoding for {len(sentences)} sentences, task: {task_name}, batch_size: {batch_size}"
         )
-
         sub = kwargs.get("sub")
+        # Pre-process sentences with task-specific instructions if necessary
         processed_sentences = [
             self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
         ]
 
-        all_embeddings = []
-        for i in range(0, len(processed_sentences), batch_size):
-            batch = processed_sentences[i : i + batch_size]
-            data = {
-                "model": MODEL_API_NAMES[self.model_name],
-                "input": batch,
-                "encoding_format": "float",
-                "add_special_tokens": True,
-            }
-            try:
-                batch_embeddings = self._make_api_request(data)
-                if len(batch_embeddings) != len(batch):
-                    raise APIError(
-                        f"Embedding count mismatch: expected {len(batch)}, got {len(batch_embeddings)}"
-                    )
-                all_embeddings.extend(batch_embeddings)
-            except APIError as e:
-                logger.error(f"Failed to process batch starting at index {i}: {e}")
-                raise e
+        logger.info(f"Encoding {len(processed_sentences)} processed sentences.")
 
-        logger.info(
-            f"Encoding completed successfully for {len(all_embeddings)} sentences."
+        # Use the sentence-transformers model to encode in batches
+        embeddings = self.model.encode(
+            processed_sentences,
+            batch_size=batch_size,
+            show_progress_bar=True,  # Provides a helpful progress bar
+            normalize_embeddings=False,  # Set to True if you need unit vectors
         )
-        return np.array(all_embeddings, dtype=np.float32)
+
+        logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
+
+        # The output of model.encode is already a numpy array with dtype=np.float32
+        return embeddings
 
 
+# Model metadata
 hakim = ModelMeta(
     loader=partial(
         HakimModelWrapper,
         trust_remote_code=True,
-        model_name="hakim",
+        model_name="/mnt/data/morteza-workspace/language-model/our_models/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim",
         revision="v1",
     ),
     name="MCINext/Hakim",
@@ -413,12 +352,11 @@ hakim = ModelMeta(
     },
 )
 
-
 hakim_small = ModelMeta(
     loader=partial(
         HakimModelWrapper,
         trust_remote_code=True,
-        model_name="hakim-small",
+        model_name="/mnt/data/morteza-workspace/language-model/our_models/retro_ourwordpiece_small_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim-small",
         revision="v1",
     ),
     name="MCINext/Hakim-small",
@@ -485,7 +423,7 @@ hakim_unsup = ModelMeta(
     loader=partial(
         HakimModelWrapper,
         trust_remote_code=True,
-        model_name="hakim-unsup",
+        model_name="/mnt/data/morteza-workspace/language-model/our_models/RetroMAE_ourspacedwordpiece_ourlinebyline_filtered_retrieval_2_farsi_Hakim-unsup",
         revision="v1",
     ),
     name="MCINext/Hakim-unsup",
