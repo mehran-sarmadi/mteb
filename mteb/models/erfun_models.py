@@ -216,7 +216,7 @@ class HakimModelWrapper(Wrapper):
     ) -> str:
         """Preprocesses a single text sample based on the task."""
         if 'Hakim_unsup_lora_retrieval_w_prompt' in self.model_name:
-            if prompt_type.value == 'query':
+            if prompt_type and prompt_type.value == 'query':
                 sample = "متن پرس و جو: " + sample
                 return sample
 
