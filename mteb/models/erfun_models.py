@@ -291,7 +291,7 @@ class HakimModelWrapper(Wrapper):
 
 
 
-hakim_lora = ModelMeta(
+model_1 = ModelMeta(
     loader=partial(
         HakimModelWrapper,
         trust_remote_code=True,
@@ -314,21 +314,16 @@ hakim_lora = ModelMeta(
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
-    training_datasets={
-        "FarsTail": [],
-        "Farsick": ["train"],
-        "MSMARCO-Fa": ["train"],
-        "Query2Query": ["train"],
-    },
+    training_datasets=None,
 )
 
 
 
-hakim_lora_unsup_prompt = ModelMeta(
+model_2 = ModelMeta(
     loader=partial(
         HakimModelWrapper,
         trust_remote_code=True,
-        model_name=" /mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_w_prompt",
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_w_prompt",
         revision="v1",
     ),
     name="erfun/Hakim_unsup_lora_retrieval_w_prompt",
@@ -347,12 +342,329 @@ hakim_lora_unsup_prompt = ModelMeta(
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
-    training_datasets={
-        "FarsTail": [],
-        "Farsick": ["train"],
-        "MSMARCO-Fa": ["train"],
-        "Query2Query": ["train"],
-    },
+    training_datasets=None,
 )
 
 
+model_3 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_alpha64_r32ـsyn_data",
+        revision="v1",
+    ),
+    name="erfun/Hakim_unsup_lora_retrieval_alpha64_r32ـsyn_data",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+model_4 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_single_gpu",
+        revision="v1",
+    ),
+    name="erfun/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_single_gpu",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+model_5 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_model_parallel/checkpoint-34830",
+        revision="v1",
+    ),
+    name="erfun/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_model_parallel",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_6 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_data_parallel",
+        revision="v1",
+    ),
+    name="erfun/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_data_parallel",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_7 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-5_2epoch",
+        revision="v1",
+    ),
+    name="erfun/ret2_data_parallel_lr1e-5_2epoch",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_8 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-5_1epoch_long_miracl_syn",
+        revision="v1",
+    ),
+    name="erfun/ret2_data_parallel_lr1e-5_1epoch_long_miracl_syn",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_9 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-5_1epoch",
+        revision="v1",
+    ),
+    name="erfun/ret2_data_parallel_lr1e-5_1epoch",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_10 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_unsup_lora_retrieval_wo_msmarco",
+        revision="v1",
+    ),
+    name="erfun/hakim_unsup_lora_retrieval_wo_msmarco",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_11 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr3e-6_1epoch",
+        revision="v1",
+    ),
+    name="erfun/ret2_data_parallel_lr3e-6_1epoch",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_12 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_alpha64_r32",
+        revision="v1",
+    ),
+    name="erfun/Hakim_unsup_lora_retrieval_alpha64_r32",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_13 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval",
+        revision="v1",
+    ),
+    name="erfun/Hakim_unsup_lora_retrieval",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+
+
+model_14 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_w_prompt",
+        revision="v1",
+    ),
+    name="erfun/Hakim_unsup_lora_retrieval_w_prompt",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
