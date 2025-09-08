@@ -290,7 +290,7 @@ class HakimModelWrapper(Wrapper):
         return embeddings
 
 
-
+############# test with prompt #############
 model_1 = ModelMeta(
     loader=partial(
         HakimModelWrapper,
@@ -318,7 +318,7 @@ model_1 = ModelMeta(
 )
 
 
-
+############# test with prompt #############
 model_2 = ModelMeta(
     loader=partial(
         HakimModelWrapper,
@@ -651,6 +651,58 @@ model_14 = ModelMeta(
         revision="v1",
     ),
     name="erfun/Hakim_unsup_lora_retrieval_w_prompt",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+model_15 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_data_parallel_new",
+        revision="v1",
+    ),
+    name="ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_data_parallel_new",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+model_16 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr3e-6_1epoch_long_new",
+        revision="v1",
+    ),
+    name="ret2_data_parallel_lr3e-6_1epoch_long_new",
     languages=["fas-Arab"],
     open_weights=False,
     revision="1",
