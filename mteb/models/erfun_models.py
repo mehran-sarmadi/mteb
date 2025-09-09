@@ -270,10 +270,11 @@ class HakimModelWrapper(Wrapper):
         sub = kwargs.get("sub")
         # Pre-process sentences with task-specific instructions if necessary
         print(sentences[0])
+        print(task_name, prompt_type, sub)
         processed_sentences = [
             self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
         ]
-        print("\n\nsecond:\n\n")
+        print("\nsecond:\n")
         print(processed_sentences[0])
         logger.info(f"Encoding {len(processed_sentences)} processed sentences.")
 
