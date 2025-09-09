@@ -720,3 +720,83 @@ model_16 = ModelMeta(
     public_training_data=None,
     training_datasets=None,
 )
+
+############# test with prompt #############
+model_17 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/hakim_long_instruct_stage2_v2_v7_with_inbatch",
+        revision="v1",
+    ),
+    name="erfun/hakim_long_instruct_stage2_v2_v7_with_inbatch",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+############# test with prompt #############
+model_18 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v7_with_inbatch",
+        revision="v1",
+    ),
+    name="erfun/hakim_instruct_stage2_v2_v7_with_inbatch",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+model_19 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-6_1epoch_long",
+        revision="v1",
+    ),
+    name="erfun/ret2_data_parallel_lr1e-6_1epoch_long",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
