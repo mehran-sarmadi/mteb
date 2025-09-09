@@ -273,6 +273,7 @@ class HakimModelWrapper(Wrapper):
         processed_sentences = [
             self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
         ]
+        print("\n\nsecond:\n\n")
         print(processed_sentences[0])
         logger.info(f"Encoding {len(processed_sentences)} processed sentences.")
 
