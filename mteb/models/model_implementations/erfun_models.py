@@ -292,14 +292,14 @@ class HakimModelWrapper(Wrapper):
         return embeddings
 
 
-hakim = ModelMeta(
+hakim_test_prompt = ModelMeta(
     loader=partial(
         HakimModelWrapper,
         trust_remote_code=True,
         model_name="/mnt/data/morteza-workspace/language-model/our_models/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim",
         revision="v1",
     ),
-    name="MCINext/Hakim",
+    name="MCINext/Hakim_test_prompts",
     languages=["fas-Arab"],
     open_weights=False,
     revision="1",
@@ -357,6 +357,33 @@ hakim = ModelMeta(
         "SynPerSTS": ["train"],
         "Query2Query": ["train"],
     },
+)
+
+
+hakim_without_prompt = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/morteza-workspace/language-model/our_models/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim",
+        revision="v1",
+    ),
+    name="MCINext/Hakim_without_prompt",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
 )
 
 
