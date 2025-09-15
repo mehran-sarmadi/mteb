@@ -130,14 +130,7 @@ DATASET_TASKS = {
         "تشخیص ارتباط , متن اول مکالمه ی کاربر با چت بات است. آیا متن دوم موضوع استخراج شده ی متن اول است ؟",
         3,
     ),
-    "SynPerChatbotRAGFAQRetrieval": (
-        "تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟",
-        3,
-    ),
-    "PersianWebDocumentRetrieval": (
-        "تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟",
-        3,
-    ),
+    "WebFAQRetrieval": ("تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟", 3),
 }
 
 # Add all retrieval datasets with the same instruction and task ID
@@ -174,23 +167,16 @@ RETRIEVAL_DATASETS = [
     "MSMARCO-FaHardNegatives",
     "NQ-FaHardNegatives",
     "FEVER-FaHardNegatives",
-    "WebFAQRetrieval",
     "NeuCLIR2022RetrievalHardNegatives",
     "NeuCLIR2023RetrievalHardNegatives",
-    "MIRACLRetrievalHardNegatives",
-    "HotpotQA-FaHardNegatives",
-    "MSMARCO-FaHardNegatives",
-    "NQ-FaHardNegatives",
     "ArguAna-Fa.v2",
     "FiQA2018-Fa.v2",
-    "QuoraRetrieval-Fa.v2",
     "SCIDOCS-Fa.v2",
     "SciFact-Fa.v2",
     "TRECCOVID-Fa.v2",
     "Touche2020-Fa.v2",
-    "FEVER-FaHardNegatives",
-    "NeuCLIR2023RetrievalHardNegatives",
-    "WebFAQRetrieval",
+    "PersianWebDocumentRetrieval",
+    "SynPerChatbotRAGFAQRetrieval",
 ]
 
 for dataset in RETRIEVAL_DATASETS:
@@ -897,3 +883,55 @@ model_19 = ModelMeta(
     public_training_data=None,
     training_datasets=None,
 )
+
+############# test with prompt #############
+model_20 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v7_with_inbatch_long_2048",
+        revision="v1",
+    ),
+    name="erfun/hakim_instruct_stage2_v2_v7_with_inbatch_long_2048",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+
+############# test with prompt #############
+model_21 = ModelMeta(
+    loader=partial(
+        HakimModelWrapper,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v7_with_inbatch/checkpoint-50000",
+        revision="v1",
+    ),
+    name="erfun/hakim_instruct_stage2_v2_v7_with_inbatch_checkpoint_50000",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
