@@ -909,7 +909,7 @@ model_20 = ModelMeta(
     public_training_code=None,
     public_training_data=None,
     training_datasets=None,
-
+)
 ############# test with prompt #############
 model_21 = ModelMeta(
     loader=partial(
@@ -935,3 +935,4 @@ model_21 = ModelMeta(
     public_training_code=None,
     public_training_data=None,
     training_datasets=None,
+)
