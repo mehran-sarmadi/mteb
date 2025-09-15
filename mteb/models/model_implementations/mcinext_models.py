@@ -164,23 +164,16 @@ RETRIEVAL_DATASETS = [
     "MSMARCO-FaHardNegatives",
     "NQ-FaHardNegatives",
     "FEVER-FaHardNegatives",
-    "WebFAQRetrieval",
     "NeuCLIR2022RetrievalHardNegatives",
     "NeuCLIR2023RetrievalHardNegatives",
-    "MIRACLRetrievalHardNegatives",
-    "HotpotQA-FaHardNegatives",
-    "MSMARCO-FaHardNegatives",
-    "NQ-FaHardNegatives",
     "ArguAna-Fa.v2",
     "FiQA2018-Fa.v2",
-    "QuoraRetrieval-Fa.v2",
     "SCIDOCS-Fa.v2",
     "SciFact-Fa.v2",
     "TRECCOVID-Fa.v2",
     "Touche2020-Fa.v2",
-    "FEVER-FaHardNegatives",
-    "NeuCLIR2023RetrievalHardNegatives",
-    "WebFAQRetrieval",
+    "PersianWebDocumentRetrieval",
+    "SynPerChatbotRAGFAQRetrieval",
 ]
 
 for dataset in RETRIEVAL_DATASETS:
@@ -221,7 +214,7 @@ class HakimModelWrapper(Wrapper):
         if task_id == 3:
             if sub == "sentence1" or (prompt_type and prompt_type.value == "query"):
                 return f"{task_prompt} | متن اول : {sample}"
-            if sub == "sentence2" or (prompt_type and prompt_type.value == "passage"):
+            if sub == "sentence2" or (prompt_type and prompt_type.value == "document"):
                 return f"{task_prompt} | متن دوم : {sample}"
         return sample
 
