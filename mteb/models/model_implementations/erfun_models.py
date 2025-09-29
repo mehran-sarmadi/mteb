@@ -284,6 +284,13 @@ class HakimModelWrapperNoPrompt(Wrapper):
         """Initializes the wrapper and loads the SentenceTransformer model."""
         self.model = SentenceTransformer(model_name, revision=revision)
         # You can still have model_name for other logic if needed
+        orig_forward = self.model[0].forward
+        def safe_forward(features, **kwargs):
+            features = {k: v for k, v in features.items() if k != "token_type_ids"}
+            return orig_forward(features, **kwargs)
+
+        self.model[0].forward = safe_forward
+
         self.model_name = model_name
         logging.info(f"Initialized model: {model_name}")
 
