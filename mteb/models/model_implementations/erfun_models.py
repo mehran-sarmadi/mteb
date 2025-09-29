@@ -276,11 +276,63 @@ class HakimModelWrapper(Wrapper):
 
         # The output of model.encode is already a numpy array with dtype=np.float32
         return embeddings
+    
+class HakimModelWrapperNoPrompt(Wrapper):
+    """A simplified wrapper for the Hakim instruction-following model."""
+
+    def __init__(self, model_name: str, revision: str, **kwargs):
+        """Initializes the wrapper and loads the SentenceTransformer model."""
+        self.model = SentenceTransformer(model_name, revision=revision)
+        # You can still have model_name for other logic if needed
+        self.model_name = model_name
+        logging.info(f"Initialized model: {model_name}")
+
+    def encode(
+        self,
+        sentences: list[str],
+        *,
+        task_name: str,
+        prompt_type: PromptType | None = None,
+        batch_size: int = 32,
+        **kwargs: Any,
+    ) -> np.ndarray:
+        """Encodes sentences using a loaded SentenceTransformer model.
+
+        Args:
+            sentences: A list of strings to be encoded.
+            task_name: The name of the task for preprocessing.
+            prompt_type: The type of prompt (e.g., 'query', 'passage').
+            batch_size: The batch size for encoding.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A numpy array of the sentence embeddings.
+        """
+        if not sentences or not all(isinstance(s, str) for s in sentences):
+            raise ValueError("Input must be a non-empty list of strings.")
+
+        logger.info(
+            f"Starting encoding for {len(sentences)} sentences, task: {task_name}, batch_size: {batch_size}"
+        )
+
+
+        # Use the sentence-transformers model to encode in batches
+        embeddings = self.model.encode(
+            sentences,
+            batch_size=batch_size,
+            show_progress_bar=True,  # Provides a helpful progress bar
+            normalize_embeddings=False,  # Set to True if you need unit vectors
+        )
+
+        logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
+
+        # The output of model.encode is already a numpy array with dtype=np.float32
+        return embeddings
 
 
 hakim_test_prompt = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/morteza-workspace/language-model/our_models/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim",
         revision="v1",
@@ -348,7 +400,7 @@ hakim_test_prompt = ModelMeta(
 
 hakim_without_prompt = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/morteza-workspace/language-model/our_models/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim",
         revision="v1",
@@ -431,7 +483,7 @@ model_2 = ModelMeta(
 
 model_3 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_alpha64_r32ـsyn_data",
         revision="v1",
@@ -457,7 +509,7 @@ model_3 = ModelMeta(
 
 model_4 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_single_gpu",
         revision="v1",
@@ -483,7 +535,7 @@ model_4 = ModelMeta(
 
 model_5 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_model_parallel/checkpoint-34830",
         revision="v1",
@@ -510,7 +562,7 @@ model_5 = ModelMeta(
 
 model_6 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_data_parallel",
         revision="v1",
@@ -537,7 +589,7 @@ model_6 = ModelMeta(
 
 model_7 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-5_2epoch",
         revision="v1",
@@ -564,7 +616,7 @@ model_7 = ModelMeta(
 
 model_8 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-5_1epoch_long_miracl_syn",
         revision="v1",
@@ -591,7 +643,7 @@ model_8 = ModelMeta(
 
 model_9 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-5_1epoch",
         revision="v1",
@@ -618,7 +670,7 @@ model_9 = ModelMeta(
 
 model_10 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_unsup_lora_retrieval_wo_msmarco",
         revision="v1",
@@ -645,7 +697,7 @@ model_10 = ModelMeta(
 
 model_11 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr3e-6_1epoch",
         revision="v1",
@@ -672,7 +724,7 @@ model_11 = ModelMeta(
 
 model_12 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_alpha64_r32",
         revision="v1",
@@ -699,7 +751,7 @@ model_12 = ModelMeta(
 
 model_13 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval",
         revision="v1",
@@ -728,7 +780,7 @@ model_13 = ModelMeta(
 
 model_14 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_w_prompt",
         revision="v1",
@@ -754,7 +806,7 @@ model_14 = ModelMeta(
 
 model_15 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ourlinebyline8192-lr1e4-1-datav2_retrieval_2_farsi_data_parallel_new",
         revision="v1",
@@ -780,7 +832,7 @@ model_15 = ModelMeta(
 
 model_16 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr3e-6_1epoch_long_new",
         revision="v1",
@@ -860,7 +912,7 @@ model_18 = ModelMeta(
 
 model_19 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNoPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/ret2_data_parallel_lr1e-6_1epoch_long",
         revision="v1",
@@ -974,6 +1026,59 @@ model_23 = ModelMeta(
     ),
     name="erfun/hakim_instruct_stage2_v2_v7_with_inbatch_long_2048_ds",
     languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+
+model_24 = ModelMeta(
+    loader=partial(
+        HakimModelWrapperNoPrompt,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_unsup_multi_sample_all_0_1",
+        revision="v1",
+    ),
+    name="erfun/hakim_unsup_multi_sample_all_0_1",
+    languages=["fas-Arab", "ara-Arab", "eng-Latn"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
+
+model_25 = ModelMeta(
+    loader=partial(
+        HakimModelWrapperNoPrompt,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_multi_sample_arfaen_0_1",
+        revision="v1",
+    ),
+    name="erfun/",
+    languages=["fas-Arab", "ara-Arab", "eng-Latn"],
     open_weights=False,
     revision="1",
     release_date="2025-05-10",
