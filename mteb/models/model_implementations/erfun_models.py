@@ -1077,7 +1077,7 @@ model_25 = ModelMeta(
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_multi_sample_arfaen_0_1",
         revision="v1",
     ),
-    name="erfun/",
+    name="erfun/hakim_multi_sample_arfaen_0_1",
     languages=["fas-Arab", "ara-Arab", "eng-Latn"],
     open_weights=False,
     revision="1",
