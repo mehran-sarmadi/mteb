@@ -296,18 +296,7 @@ class HakimModelWrapperNoPrompt(Wrapper):
         batch_size: int = 32,
         **kwargs: Any,
     ) -> np.ndarray:
-        """Encodes sentences using a loaded SentenceTransformer model.
-
-        Args:
-            sentences: A list of strings to be encoded.
-            task_name: The name of the task for preprocessing.
-            prompt_type: The type of prompt (e.g., 'query', 'passage').
-            batch_size: The batch size for encoding.
-            **kwargs: Additional keyword arguments.
-
-        Returns:
-            A numpy array of the sentence embeddings.
-        """
+        """Encodes sentences using a loaded SentenceTransformer model."""
         if not sentences or not all(isinstance(s, str) for s in sentences):
             raise ValueError("Input must be a non-empty list of strings.")
 
@@ -315,18 +304,21 @@ class HakimModelWrapperNoPrompt(Wrapper):
             f"Starting encoding for {len(sentences)} sentences, task: {task_name}, batch_size: {batch_size}"
         )
 
+        # ---- Fix: drop unsupported kwargs like token_type_ids ----
+        unsupported_keys = {"token_type_ids"}
+        clean_kwargs = {k: v for k, v in kwargs.items() if k not in unsupported_keys}
 
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
             sentences,
             batch_size=batch_size,
-            show_progress_bar=True,  # Provides a helpful progress bar
-            normalize_embeddings=False,  # Set to True if you need unit vectors
+            show_progress_bar=True,
+            normalize_embeddings=False,
+            **clean_kwargs,  # safe kwargs
         )
 
         logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
 
-        # The output of model.encode is already a numpy array with dtype=np.float32
         return embeddings
 
 
