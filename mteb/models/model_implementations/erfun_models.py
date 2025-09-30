@@ -311,17 +311,15 @@ class HakimModelWrapperNoPrompt(Wrapper):
             f"Starting encoding for {len(sentences)} sentences, task: {task_name}, batch_size: {batch_size}"
         )
 
-        # ---- Fix: drop unsupported kwargs like token_type_ids ----
-        unsupported_keys = {"token_type_ids"}
-        clean_kwargs = {k: v for k, v in kwargs.items() if k not in unsupported_keys}
+        kwargs["show_progress_bar"] = True
+
 
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
             sentences,
             batch_size=batch_size,
-            show_progress_bar=True,
             normalize_embeddings=False,
-            **clean_kwargs,  # safe kwargs
+            **kwargs,  # safe kwargs
         )
 
         logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
