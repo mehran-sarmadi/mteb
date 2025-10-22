@@ -12,18 +12,9 @@ from mteb.model_meta import ModelMeta
 
 from .wrapper import Wrapper
 
-from __future__ import annotations
-
-import logging
 from collections.abc import Sequence
-from typing import Any
 
-import numpy as np
 import torch
-from sentence_transformers import CrossEncoder, SentenceTransformer
-
-from mteb.encoder_interface import PromptType
-from mteb.models.wrapper import Wrapper
 
 logger = logging.getLogger(__name__)
 
