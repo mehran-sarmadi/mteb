@@ -128,6 +128,7 @@ DATASET_TASKS = {
         3,
     ),
     "WebFAQRetrieval": ("تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟", 3),
+    "LongRag-Fa": ("تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟", 3),
 }
 
 # Add all retrieval datasets with the same instruction and task ID
