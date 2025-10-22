@@ -164,7 +164,7 @@ class HakimModelWrapperNewPrompt(Wrapper):
         if prompt_type:
             if prompt_type.value == 'query':
                 prompt = self.model_prompts['retrieval.query']
-            elif prompt_type.value == 'passage':
+            elif prompt_type.value == 'document':
                 prompt = self.model_prompts['retrieval.passage']
         else:
             if task_name in sentiment_data:
