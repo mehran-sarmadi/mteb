@@ -135,3 +135,29 @@ class PersianWebDocumentRetrieval(AbsTaskRetrieval):
         sample_creation="found",
         bibtex_citation="""""",
     )
+
+class LongRagFa(AbsTaskRetrieval):
+    ignore_identical_ids = True
+    metadata = TaskMetadata(
+        name="LongRag-Fa",
+        description="This dataset is a translated version of the LONG2RAG benchmark (Qi et al., EMNLP Findings 2024).",
+        reference="https://huggingface.co/datasets/MCINext/LongRag-Fa",
+        dataset={
+            "path": "MCINext/LongRag-Fa",
+            "revision": "9da1d3a01c9d89ad5311415b3ae57540fd20b3f3",
+        },
+        type="Retrieval",
+        category="s2p",
+        modalities=["text"],
+        eval_splits=["test"],
+        eval_langs=["fas-Arab"],
+        main_score="ndcg_at_10",
+        date=("2025-09-01", "2025-10-01"),
+        domains=["Web"],
+        task_subtypes=[],
+        license="not specified",
+        annotations_creators="expert-annotated",
+        dialect=[],
+        sample_creation="found",
+        bibtex_citation="""""",
+    )

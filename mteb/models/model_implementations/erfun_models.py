@@ -1231,5 +1231,29 @@ model_30 = ModelMeta(
     training_datasets=None,
 )
 
-
-
+# # prompt v9
+# model_31 = ModelMeta(
+#     loader=partial(
+#         "",
+#         trust_remote_code=True,
+#         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
+#         revision="v1",
+#     ),
+#     name="erfun/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
+#     languages=["fas-Arab"],
+#     open_weights=False,
+#     revision="1",
+#     release_date="2025-05-10",
+#     n_parameters=124_441_344,
+#     memory_usage_mb=475,
+#     embed_dim=768,
+#     license="not specified",
+#     max_tokens=512,
+#     reference="https://huggingface.co/MCINext/Hakim-unsup",
+#     similarity_fn_name="cosine",
+#     framework=["API"],
+#     use_instructions=False,
+#     public_training_code=None,
+#     public_training_data=None,
+#     training_datasets=None,
+# )
