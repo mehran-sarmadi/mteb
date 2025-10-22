@@ -12,6 +12,192 @@ from mteb.model_meta import ModelMeta
 
 from .wrapper import Wrapper
 
+from __future__ import annotations
+
+import logging
+from collections.abc import Sequence
+from typing import Any
+
+import numpy as np
+import torch
+from sentence_transformers import CrossEncoder, SentenceTransformer
+
+from mteb.encoder_interface import PromptType
+from mteb.models.wrapper import Wrapper
+
+logger = logging.getLogger(__name__)
+
+task_general_prompt_dict = {"sentiment": "مسئله: تحلیل احساس | متن: ",
+                            "classification": "مسئله: دسته‌بندی | متن: ",
+                            "sts": "مسئله: شباهت معنایی | متن: ",
+                            "retrieval.query": "مسئله: بازیابی - سوال | متن: ",
+                            "retrieval.passage": "مسئله: بازیابی - پاسخ | متن: ",
+                            "cross": "مسئله: دسته‌بندی دو متنی"}
+
+sentiment_data = [
+    "PersianTextEmotion",
+    "PersianTextEmotion.v2",
+    "PersianFoodSentimentClassification",
+    "SentimentDKSF",
+    "SynPerChatbotConvSAAnger",
+    "SynPerChatbotConvSASatisfaction",
+    "SynPerChatbotConvSAFriendship",
+    "SynPerChatbotConvSAFear",
+    "SynPerChatbotConvSAJealousy",
+    "SynPerChatbotConvSASurprise",
+    "SynPerChatbotConvSALove",
+    "SynPerChatbotConvSASadness",
+    "SynPerChatbotConvSAHappiness",
+    "SynPerChatbotConvSAToneChatbotClassification",
+    "SynPerChatbotConvSAToneUserClassification",
+    "SynPerChatbotSatisfactionLevelClassification",
+    "DeepSentiPers.v2",
+    "DeepSentiPers",
+]
+
+classification_data = [
+    "MassiveIntentClassification",
+    "MassiveScenarioClassification",
+    "DigikalamagClassification",
+    "NLPTwitterAnalysisClassification",
+    "NLPTwitterAnalysisClassification.v2",
+    "SIDClassification",
+    "SIDClassification.v2",
+    "BeytooteClustering",
+    "DigikalamagClustering",
+    "NLPTwitterAnalysisClustering",
+    "HamshahriClustring",
+    "SIDClustring",
+    "PersianTextTone",
+    "SynPerTextToneClassification.v3",
+    "StyleClassification",
+    "SynPerChatbotToneUserClassification",
+    "SynPerChatbotToneChatbotClassification",
+    "SynPerChatbotRAGToneUserClassification",
+    "SynPerChatbotRAGToneChatbotClassification",
+]
+
+sts_data = [
+    "Farsick",
+    "Query2Query",
+    "SynPerSTS",
+]
+# RETRIEVAL_DATASETS = [
+#     "ArguAna-Fa",
+#     "ClimateFEVER-Fa",
+#     "CQADupstackAndroidRetrieval-Fa",
+#     "CQADupstackEnglishRetrieval-Fa",
+#     "CQADupstackGamingRetrieval-Fa",
+#     "CQADupstackGisRetrieval-Fa",
+#     "CQADupstackMathematicaRetrieval-Fa",
+#     "CQADupstackPhysicsRetrieval-Fa",
+#     "CQADupstackProgrammersRetrieval-Fa",
+#     "CQADupstackStatsRetrieval-Fa",
+#     "CQADupstackTexRetrieval-Fa",
+#     "CQADupstackUnixRetrieval-Fa",
+#     "CQADupstackWebmastersRetrieval-Fa",
+#     "CQADupstackWordpressRetrieval-Fa",
+#     "DBPedia-Fa",
+#     "FiQA2018-Fa",
+#     "HotpotQA-Fa",
+#     "MSMARCO-Fa",
+#     "NFCorpus-Fa",
+#     "NQ-Fa",
+#     "QuoraRetrieval-Fa",
+#     "SCIDOCS-Fa",
+#     "SciFact-Fa",
+#     "TRECCOVID-Fa",
+#     "Touche2020-Fa",
+#     "MIRACLRetrieval",
+#     "WikipediaRetrievalMultilingual",
+#     "MIRACLRetrievalHardNegatives",
+#     "HotpotQA-FaHardNegatives",
+#     "MSMARCO-FaHardNegatives",
+#     "NQ-FaHardNegatives",
+#     "FEVER-FaHardNegatives",
+#     "NeuCLIR2022RetrievalHardNegatives",
+#     "NeuCLIR2023RetrievalHardNegatives",
+#     "ArguAna-Fa.v2",
+#     "FiQA2018-Fa.v2",
+#     "SCIDOCS-Fa.v2",
+#     "SciFact-Fa.v2",
+#     "TRECCOVID-Fa.v2",
+#     "Touche2020-Fa.v2",
+#     "PersianWebDocumentRetrieval",
+#     "SynPerChatbotRAGFAQRetrieval",
+#     "MIRACLReranking",
+#     "WikipediaRerankingMultilingual",
+#     "SAMSumFa",
+#     "SynPerChatbotSumSRetrieval",
+#     "SynPerChatbotRAGSumSRetrieval",
+#     "SynPerQARetrieval",
+#     "SynPerChatbotTopicsRetrieval",
+#     "SynPerChatbotRAGTopicsRetrieval",
+#     "WebFAQRetrieval",
+# ]
+
+
+
+
+class HakimModelWrapperNewPrompt(Wrapper):
+    def __init__(
+        self,
+        model: str | SentenceTransformer | CrossEncoder,
+        revision: str | None = None,
+        model_prompts: dict[str, str] | None = None,
+        **kwargs,
+    ) -> None:
+        """Wrapper for SentenceTransformer models.
+
+        Args:
+            model: The SentenceTransformer model to use. Can be a string (model name), a SentenceTransformer model, or a CrossEncoder model.
+            revision: The revision of the model to use.
+            model_prompts: A dictionary mapping task names to prompt names.
+                First priority is given to the composed prompt of task name + prompt type (query or passage), then to the specific task prompt,
+                then to the composed prompt of task type + prompt type, then to the specific task type prompt,
+                and finally to the specific prompt type.
+            **kwargs: Additional arguments to pass to the SentenceTransformer model.
+        """
+        self.model = SentenceTransformer(model, revision=revision, **kwargs)
+
+    def encode(
+        self,
+        sentences: Sequence[str],
+        *,
+        task_name: str,
+        prompt_type: PromptType | None = None,
+        **kwargs: Any,
+    ) -> np.ndarray:
+        prompt = None
+        if prompt_type:
+            if prompt_type.value == 'query':
+                prompt = task_general_prompt_dict['retrieval.query']
+            elif prompt_type.value == 'passage':
+                prompt = task_general_prompt_dict['retrieval.passage']
+        else:
+            if task_name in sentiment_data:
+                prompt = task_general_prompt_dict['sentiment']
+            elif task_name in classification_data:
+                prompt = task_general_prompt_dict['classification']
+            elif task_name in sts_data:
+                prompt = task_general_prompt_dict['sts']
+            else:
+                raise ValueError(f"Unknown task name: {task_name}, cannot determine prompt.")
+
+        print(f"\nUsing prompt: {prompt} for task: {task_name} and prompt_type: {prompt_type}\n")
+
+
+        embeddings = self.model.encode(
+            sentences,
+            prompt=prompt,
+            **kwargs,
+        )
+        if isinstance(embeddings, torch.Tensor):
+            # sometimes in kwargs can be return_tensors=True
+            embeddings = embeddings.cpu().detach().float().numpy()
+        return embeddings
+
+
 logger = logging.getLogger(__name__)
 
 # Dataset task mappings with descriptions and task IDs
@@ -1231,29 +1417,29 @@ model_30 = ModelMeta(
     training_datasets=None,
 )
 
-# # prompt v9
-# model_31 = ModelMeta(
-#     loader=partial(
-#         "",
-#         trust_remote_code=True,
-#         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
-#         revision="v1",
-#     ),
-#     name="erfun/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
-#     languages=["fas-Arab"],
-#     open_weights=False,
-#     revision="1",
-#     release_date="2025-05-10",
-#     n_parameters=124_441_344,
-#     memory_usage_mb=475,
-#     embed_dim=768,
-#     license="not specified",
-#     max_tokens=512,
-#     reference="https://huggingface.co/MCINext/Hakim-unsup",
-#     similarity_fn_name="cosine",
-#     framework=["API"],
-#     use_instructions=False,
-#     public_training_code=None,
-#     public_training_data=None,
-#     training_datasets=None,
-# )
+# prompt v9
+model_31 = ModelMeta(
+    loader=partial(
+        HakimModelWrapperNewPrompt,
+        trust_remote_code=True,
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
+        revision="v1",
+    ),
+    name="erfun/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
+    languages=["fas-Arab"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
