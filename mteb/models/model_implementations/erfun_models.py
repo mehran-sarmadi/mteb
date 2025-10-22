@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from functools import partial
 from typing import Any
+import warnings
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
@@ -174,7 +175,7 @@ class HakimModelWrapperNewPrompt(Wrapper):
             elif task_name in sts_data:
                 prompt = self.model_prompts['sts']
             else:
-                raise Warning(f"Unknown task name: {task_name}, cannot determine prompt.")
+                warnings.warn(f"Unknown task name: {task_name}, cannot determine prompt.")
 
         print(f"\nUsing prompt: {prompt} for task: {task_name} and prompt_type: {prompt_type}\n")
 
