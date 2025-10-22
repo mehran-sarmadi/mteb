@@ -1414,7 +1414,7 @@ model_31 = ModelMeta(
     loader=partial(
         HakimModelWrapperNewPrompt,
         trust_remote_code=True,
-        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
+        model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
         revision="v1",
         model_prompts=task_general_prompt_dict,
     ),
