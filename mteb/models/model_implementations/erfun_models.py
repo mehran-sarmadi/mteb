@@ -133,7 +133,7 @@ sts_data = [
 class HakimModelWrapperNewPrompt(Wrapper):
     def __init__(
         self,
-        model: str | SentenceTransformer | CrossEncoder,
+        model_name: str,
         revision: str | None = None,
         model_prompts: dict[str, str] | None = None,
         **kwargs,
@@ -149,7 +149,8 @@ class HakimModelWrapperNewPrompt(Wrapper):
                 and finally to the specific prompt type.
             **kwargs: Additional arguments to pass to the SentenceTransformer model.
         """
-        self.model = SentenceTransformer(model, revision=revision, **kwargs)
+        self.model = SentenceTransformer(model_name, revision=revision, **kwargs)
+        self.model_prompts = model_prompts
 
     def encode(
         self,
@@ -162,16 +163,16 @@ class HakimModelWrapperNewPrompt(Wrapper):
         prompt = None
         if prompt_type:
             if prompt_type.value == 'query':
-                prompt = task_general_prompt_dict['retrieval.query']
+                prompt = self.model_prompts['retrieval.query']
             elif prompt_type.value == 'passage':
-                prompt = task_general_prompt_dict['retrieval.passage']
+                prompt = self.model_prompts['retrieval.passage']
         else:
             if task_name in sentiment_data:
-                prompt = task_general_prompt_dict['sentiment']
+                prompt = self.model_prompts['sentiment']
             elif task_name in classification_data:
-                prompt = task_general_prompt_dict['classification']
+                prompt = self.model_prompts['classification']
             elif task_name in sts_data:
-                prompt = task_general_prompt_dict['sts']
+                prompt = self.model_prompts['sts']
             else:
                 raise ValueError(f"Unknown task name: {task_name}, cannot determine prompt.")
 
@@ -1415,6 +1416,7 @@ model_31 = ModelMeta(
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
         revision="v1",
+        model_prompts=task_general_prompt_dict,
     ),
     name="erfun/hakim_instruct_stage2_v2_v9_with_inbatch_long_2048_1e-5",
     languages=["fas-Arab"],
