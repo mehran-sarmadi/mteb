@@ -1442,7 +1442,7 @@ model_31 = ModelMeta(
 # prompt v9
 model_32 = ModelMeta(
     loader=partial(
-        HakimModelWrapper,
+        HakimModelWrapperNewPrompt,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding/FlagEmbedding/baai_general_embedding/results/hakim_instruct_stage2_v2_v9_with_inbatch_long_512_1e-5",
         revision="v1",
