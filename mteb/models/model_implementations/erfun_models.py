@@ -19,6 +19,9 @@ import torch
 
 logger = logging.getLogger(__name__)
 
+
+TEST_PROMPT = True
+
 task_general_prompt_dict = {"sentiment": "مسئله: تحلیل احساس | متن: ",
                             "classification": "مسئله: دسته‌بندی | متن: ",
                             "sts": "مسئله: شباهت معنایی | متن: ",
@@ -178,6 +181,8 @@ class HakimModelWrapperNewPrompt(Wrapper):
                 warnings.warn(f"Unknown task name: {task_name}, cannot determine prompt.")
 
         print(f"\nUsing prompt: {prompt} for task: {task_name} and prompt_type: {prompt_type}\n")
+        if TEST_PROMPT:
+            return np.array([[0.0]*self.model.get_sentence_embedding_dimension()]*len(sentences))
 
 
         embeddings = self.model.encode(
@@ -443,7 +448,8 @@ class HakimModelWrapper(Wrapper):
         print("\nsecond:\n")
         print(processed_sentences[0])
         logger.info(f"Encoding {len(processed_sentences)} processed sentences.")
-
+        if TEST_PROMPT:
+            return np.array([[0.0]*self.model.get_sentence_embedding_dimension()]*len(sentences))
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
             processed_sentences,
@@ -492,7 +498,7 @@ class HakimModelWrapperNoPrompt(Wrapper):
         )
 
         kwargs["show_progress_bar"] = True
-
+        
 
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
