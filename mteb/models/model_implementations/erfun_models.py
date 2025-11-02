@@ -440,8 +440,9 @@ class HakimModelWrapper(Wrapper):
         )
         sub = kwargs.get("sub")
         # Pre-process sentences with task-specific instructions if necessary
-        print(sentences[0])
         print(task_name, prompt_type, sub)
+        print("\nfirst:\n")
+        print(sentences[0])
         processed_sentences = [
             self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
         ]
@@ -498,7 +499,7 @@ class HakimModelWrapperNoPrompt(Wrapper):
         )
 
         kwargs["show_progress_bar"] = True
-        
+
 
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
