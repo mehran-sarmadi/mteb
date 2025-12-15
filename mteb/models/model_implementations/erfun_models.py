@@ -1555,3 +1555,30 @@ model_35 = ModelMeta(
     public_training_data=None,
     training_datasets=None,
 )
+
+# Multi No prompt
+model_36 = ModelMeta(
+    loader=partial(
+        HakimModelWrapperNoPrompt,
+        trust_remote_code=True,
+        model_name="/mnt/data2/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/hakim_multi_v1_3",
+        revision="v1",
+    ),
+    name="erfun/hakim_multi_v1_3",
+    languages=["fas-Arab", "ara-Arab", "eng-Latn"],
+    open_weights=False,
+    revision="1",
+    release_date="2025-05-10",
+    n_parameters=124_441_344,
+    memory_usage_mb=475,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference="https://huggingface.co/MCINext/Hakim-unsup",
+    similarity_fn_name="cosine",
+    framework=["API"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+)
