@@ -463,6 +463,7 @@ class SynPerTextToneClassification(AbsTaskClassification):
 
 
 class SynPerTextToneClassificationV2(AbsTaskClassification):
+    superseded_by = "SynPerTextToneClassification.v3"
     metadata = TaskMetadata(
         name="SynPerTextToneClassification.v2",
         description="Persian Text Tone This version corrects errors found in the original data. For details, see [pull request](https://github.com/embeddings-benchmark/mteb/pull/2900)",
@@ -502,6 +503,34 @@ class SynPerTextToneClassificationV3(AbsTaskClassification):
         },
         type="Classification",
         category="t2t",
+        modalities=["text"],
+        eval_splits=["test"],
+        eval_langs=["fas-Arab"],
+        main_score="accuracy",
+        date=("2024-09-01", "2024-12-31"),
+        domains=[],
+        task_subtypes=["Sentiment/Hate speech"],
+        license="not specified",
+        annotations_creators="LM-generated",
+        dialect=[],
+        sample_creation="LM-generated and verified",
+        bibtex_citation=""" """,
+        adapted_from=["SynPerTextToneClassification"],
+    )
+    samples_per_label = 32
+
+
+class SynPerTextToneClassificationV3(AbsTaskClassification):
+    metadata = TaskMetadata(
+        name="SynPerTextToneClassification.v3",
+        description="""Persian Text Tone""",
+        reference="https://mcinext.com/",
+        dataset={
+            "path": "MCINext/synthetic-persian-text-tone-classification-v3",
+            "revision": "ff6d88107a89abeb10aa28751b31d78831d7d503",
+        },
+        type="Classification",
+        category="s2p",
         modalities=["text"],
         eval_splits=["test"],
         eval_langs=["fas-Arab"],
