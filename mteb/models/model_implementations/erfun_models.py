@@ -8,10 +8,14 @@ import warnings
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from mteb.types import PromptType
+from mteb.types import Array, BatchedInput, PromptType
 from mteb.models.model_meta import ModelMeta
 
 from collections.abc import Sequence
+
+from torch.utils.data import DataLoader
+
+from mteb.abstasks.task_metadata import TaskMetadata
 
 import torch
 
@@ -164,12 +168,23 @@ class HakimModelWrapperNewPrompt:
 
     def encode(
         self,
-        sentences: Sequence[str],
+        inputs: DataLoader[BatchedInput] | Sequence[str],
         *,
-        task_name: str,
+        task_metadata: TaskMetadata | None = None,
+        task_name: str | None = None,
+        hf_split: str | None = None,
+        hf_subset: str | None = None,
         prompt_type: PromptType | None = None,
         **kwargs: Any,
-    ) -> np.ndarray:
+    ) -> Array:
+        if isinstance(inputs, DataLoader):
+            sentences = [text for batch in inputs for text in batch["text"]]
+        else:
+            sentences = list(inputs)
+
+        if task_name is None and task_metadata is not None:
+            task_name = task_metadata.name
+
         prompt = None
         if prompt_type:
             if prompt_type.value == 'query':
@@ -197,7 +212,6 @@ class HakimModelWrapperNewPrompt:
             **kwargs,
         )
         if isinstance(embeddings, torch.Tensor):
-            # sometimes in kwargs can be return_tensors=True
             embeddings = embeddings.cpu().detach().float().numpy()
         return embeddings
 
@@ -425,25 +439,25 @@ class HakimModelWrapper:
 
     def encode(
         self,
-        sentences: list[str],
+        inputs: DataLoader[BatchedInput] | list[str],
         *,
-        task_name: str,
+        task_metadata: TaskMetadata | None = None,
+        task_name: str | None = None,
+        hf_split: str | None = None,
+        hf_subset: str | None = None,
         prompt_type: PromptType | None = None,
         batch_size: int = 32,
         **kwargs: Any,
-    ) -> np.ndarray:
-        """Encodes sentences using a loaded SentenceTransformer model.
+    ) -> Array:
+        """Encodes sentences using a loaded SentenceTransformer model."""
+        if isinstance(inputs, DataLoader):
+            sentences = [text for batch in inputs for text in batch["text"]]
+        else:
+            sentences = inputs
 
-        Args:
-            sentences: A list of strings to be encoded.
-            task_name: The name of the task for preprocessing.
-            prompt_type: The type of prompt (e.g., 'query', 'passage').
-            batch_size: The batch size for encoding.
-            **kwargs: Additional keyword arguments.
+        if task_name is None and task_metadata is not None:
+            task_name = task_metadata.name
 
-        Returns:
-            A numpy array of the sentence embeddings.
-        """
         if not sentences or not all(isinstance(s, str) for s in sentences):
             raise ValueError("Input must be a non-empty list of strings.")
 
@@ -467,13 +481,12 @@ class HakimModelWrapper:
         embeddings = self.model.encode(
             processed_sentences,
             batch_size=batch_size,
-            show_progress_bar=True,  # Provides a helpful progress bar
-            normalize_embeddings=False,  # Set to True if you need unit vectors
+            show_progress_bar=True,
+            normalize_embeddings=False,
         )
 
         logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
 
-        # The output of model.encode is already a numpy array with dtype=np.float32
         return embeddings
     
 class HakimModelWrapperNoPrompt:
@@ -501,14 +514,25 @@ class HakimModelWrapperNoPrompt:
 
     def encode(
         self,
-        sentences: list[str],
+        inputs: DataLoader[BatchedInput] | list[str],
         *,
-        task_name: str,
+        task_metadata: TaskMetadata | None = None,
+        task_name: str | None = None,
+        hf_split: str | None = None,
+        hf_subset: str | None = None,
         prompt_type: PromptType | None = None,
         batch_size: int = 32,
         **kwargs: Any,
-    ) -> np.ndarray:
+    ) -> Array:
         """Encodes sentences using a loaded SentenceTransformer model."""
+        if isinstance(inputs, DataLoader):
+            sentences = [text for batch in inputs for text in batch["text"]]
+        else:
+            sentences = inputs
+
+        if task_name is None and task_metadata is not None:
+            task_name = task_metadata.name
+
         if not sentences or not all(isinstance(s, str) for s in sentences):
             raise ValueError("Input must be a non-empty list of strings.")
 
@@ -524,7 +548,6 @@ class HakimModelWrapperNoPrompt:
             sentences,
             batch_size=batch_size,
             normalize_embeddings=False,
-            **kwargs,  # safe kwargs
         )
 
         logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
