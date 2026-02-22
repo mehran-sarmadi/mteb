@@ -186,7 +186,7 @@ for dataset in RETRIEVAL_DATASETS:
 class HakimModelWrapper:
     """A simplified wrapper for the Hakim instruction-following model."""
 
-    def __init__(self, model_name: str, revision: str, **kwargs):
+    def __init__(self, _model_name_or_path: str = None, *, model_name: str, revision: str, **kwargs):
         """Initializes the wrapper and loads the SentenceTransformer model."""
         self.model = SentenceTransformer(model_name, revision=revision)
         # You can still have model_name for other logic if needed
