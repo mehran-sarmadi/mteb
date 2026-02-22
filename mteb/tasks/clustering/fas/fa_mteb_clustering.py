@@ -48,8 +48,13 @@ class DigikalamagClustering(AbsTaskClustering):
         description="A total of 8,515 articles scraped from Digikala Online Magazine. This dataset includes seven different classes.",
         reference="https://hooshvare.github.io/docs/datasets/tc",
         dataset={
+<<<<<<< HEAD:mteb/tasks/clustering/fas/fa_mteb_clustering.py
             "path": "mteb/DigikalamagClustering",
             "revision": "0fe394ee57514d4dbc3deeb1b1ae5dbd8cb7e52b",
+=======
+            "path": "MCINext/DigiMag",
+            "revision": "4a10ab01213cb8135748c39c52c8420e63898eab",
+>>>>>>> 2698a798 (change digimag dataset to our hub because datasets error in new version):mteb/tasks/Clustering/fas/FaMTEBClustering.py
         },
         type="Clustering",
         category="t2c",

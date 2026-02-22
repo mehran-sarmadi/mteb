@@ -38,9 +38,9 @@ def test_task_bibtex(task: AbsTask):
     bibtex_citation = bibtex_citation.strip()
 
     formatted_bibtex = format_bibtex(bibtex_citation)
-    assert formatted_bibtex is not None and formatted_bibtex == bibtex_citation, (
-        f"Wrong BibTeX citation formatting for task {task_name}"
-    )
+    assert (
+        formatted_bibtex is not None and formatted_bibtex == bibtex_citation
+    ), f"Wrong BibTeX citation formatting for task {task_name}"
 
 
 @pytest.fixture(params=mteb.get_benchmarks())
@@ -57,6 +57,6 @@ def test_benchmark_bibtex(benchmark: Benchmark):
     bibtex_citation = bibtex_citation.strip()
 
     formatted_bibtex = format_bibtex(bibtex_citation)
-    assert formatted_bibtex is not None and formatted_bibtex == bibtex_citation, (
-        f"Wrong BibTeX citation formatting for benchmark {benchmark_name}"
-    )
+    assert (
+        formatted_bibtex is not None and formatted_bibtex == bibtex_citation
+    ), f"Wrong BibTeX citation formatting for benchmark {benchmark_name}"

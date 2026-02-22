@@ -82,12 +82,12 @@ def test_run_task(
     model_name_as_path = model_name.replace("/", "__").replace(" ", "_")
     results_path = tmp_path / "results" / model_name_as_path / model_revision
     assert results_path.exists(), "Output folder not created"
-    assert "model_meta.json" in [f.name for f in list(results_path.glob("*.json"))], (
-        "model_meta.json not found in output folder"
-    )
-    assert f"{task_name}.json" in [f.name for f in list(results_path.glob("*.json"))], (
-        f"{task_name} not found in output folder"
-    )
+    assert "model_meta.json" in [
+        f.name for f in list(results_path.glob("*.json"))
+    ], "model_meta.json not found in output folder"
+    assert f"{task_name}.json" in [
+        f.name for f in list(results_path.glob("*.json"))
+    ], f"{task_name} not found in output folder"
 
 
 def test_create_meta(tmp_path):
@@ -125,9 +125,9 @@ def test_create_meta(tmp_path):
     for key in frontmatter_gold:
         assert key in frontmatter, f"Key {key} not found in output"
 
-        assert frontmatter[key] == frontmatter_gold[key], (
-            f"Value for {key} does not match"
-        )
+        assert (
+            frontmatter[key] == frontmatter_gold[key]
+        ), f"Value for {key} does not match"
 
     # ensure that the command line interface works as well
     command = f"{sys.executable} -m mteb create-model-results --model-name {model_name} --results-folder {output_folder.as_posix()} --output-path {output_path.as_posix()} --overwrite"
@@ -189,9 +189,9 @@ def test_create_meta_from_existing(
     for key in frontmatter_gold:
         assert key in frontmatter, f"Key {key} not found in output"
 
-        assert frontmatter[key] == frontmatter_gold[key], (
-            f"Value for {key} does not match"
-        )
+        assert (
+            frontmatter[key] == frontmatter_gold[key]
+        ), f"Value for {key} does not match"
     assert readme_output == gold_readme
     # ensure that the command line interface works as well
     command = f"{sys.executable} -m mteb create-model-results --model-name {model_name} --results-folder {output_folder.as_posix()} --output-path {output_path.as_posix()} --from-existing {existing_readme.as_posix()} --overwrite"
