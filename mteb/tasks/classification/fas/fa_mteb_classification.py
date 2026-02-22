@@ -530,7 +530,7 @@ class SynPerTextToneClassificationV3(AbsTaskClassification):
             "revision": "ff6d88107a89abeb10aa28751b31d78831d7d503",
         },
         type="Classification",
-        category="s2p",
+        category="t2t",
         modalities=["text"],
         eval_splits=["test"],
         eval_langs=["fas-Arab"],
@@ -840,13 +840,8 @@ class DigikalamagClassification(AbsTaskClassification):
         description="A total of 8,515 articles scraped from Digikala Online Magazine. This dataset includes seven different classes.",
         reference="https://hooshvare.github.io/docs/datasets/tc",
         dataset={
-<<<<<<< HEAD:mteb/tasks/classification/fas/fa_mteb_classification.py
-            "path": "mteb/DigikalamagClassification",
-            "revision": "1425e8f2c0e68c32dbabfabe818fcc73e24079bb",
-=======
             "path": "MCINext/DigiMag",
             "revision": "4a10ab01213cb8135748c39c52c8420e63898eab",
->>>>>>> 2698a798 (change digimag dataset to our hub because datasets error in new version):mteb/tasks/Classification/fas/FaMTEBClassification.py
         },
         type="Classification",
         category="t2c",

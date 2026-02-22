@@ -9,8 +9,8 @@ from huggingface_hub import ModelCard
 from sentence_transformers import SentenceTransformer
 
 from mteb.abstasks.AbsTask import AbsTask
-from mteb.encoder_interface import Encoder
-from mteb.model_meta import ModelMeta
+from mteb.models.models_protocols import EncoderProtocol as Encoder
+from mteb.models.model_meta import ModelMeta
 from mteb.models import (
     align_models,
     ara_models,

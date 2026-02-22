@@ -8,10 +8,8 @@ import warnings
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from mteb.encoder_interface import PromptType
-from mteb.model_meta import ModelMeta
-
-from .wrapper import Wrapper
+from mteb.types import PromptType
+from mteb.models.model_meta import ModelMeta
 
 from collections.abc import Sequence
 
@@ -134,7 +132,7 @@ sts_data = [
 
 
 
-class HakimModelWrapperNewPrompt(Wrapper):
+class HakimModelWrapperNewPrompt:
     def __init__(
         self,
         model_name: str,
@@ -368,7 +366,7 @@ for dataset in RETRIEVAL_DATASETS:
     DATASET_TASKS[dataset] = ("تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟", 3)
 
 
-class HakimModelWrapper(Wrapper):
+class HakimModelWrapper:
     """A simplified wrapper for the Hakim instruction-following model."""
 
     def __init__(self, model_name: str, revision: str, **kwargs):
@@ -464,7 +462,7 @@ class HakimModelWrapper(Wrapper):
         # The output of model.encode is already a numpy array with dtype=np.float32
         return embeddings
     
-class HakimModelWrapperNoPrompt(Wrapper):
+class HakimModelWrapperNoPrompt:
     """A simplified wrapper for the Hakim instruction-following model."""
 
     def __init__(self, model_name: str, revision: str, **kwargs):
@@ -538,46 +536,46 @@ hakim_test_prompt = ModelMeta(
     public_training_code=None,
     public_training_data=None,
     training_datasets={
-        "FarsTail": [],
-        "SAMSumFa": ["train"],
-        "SynPerChatbotSumSRetrieval": ["train"],
-        "SynPerChatbotRAGSumSRetrieval": ["train"],
-        "SynPerChatbotConvSAClassification": ["train"],
-        "SynPerChatbotConvSAToneChatbotClassification": ["train"],
-        "SynPerChatbotConvSAToneUserClassification": ["train"],
-        "SynPerChatbotSatisfactionLevelClassification": ["train"],
-        "SynPerChatbotRAGToneChatbotClassification": ["train"],
-        "SynPerChatbotRAGToneUserClassification": ["train"],
-        "SynPerChatbotToneChatbotClassification": ["train"],
-        "SynPerChatbotToneUserClassification": ["train"],
-        "SynPerTextToneClassification": ["train"],
-        "SIDClassification": ["train"],
-        "PersianTextEmotion": ["train"],
-        "SentimentDKSF": ["train"],
-        "NLPTwitterAnalysisClassification": ["train"],
-        "DigikalamagClassification": ["train"],
-        "DigikalamagClustering": ["train"],
-        "NLPTwitterAnalysisClustering": ["train"],
-        "SIDClustring": ["train"],
-        "CExaPPC": ["train"],
-        "SynPerChatbotRAGFAQPC": ["train"],
-        "FarsiParaphraseDetection": ["train"],
-        "SynPerTextKeywordsPC": ["train"],
-        "SynPerQAPC": ["train"],
-        "ParsinluEntail": ["train"],
-        "ParsinluQueryParaphPC": ["train"],
-        "FiQA2018-Fa": ["train"],
-        "HotpotQA-Fa": ["train"],
-        "MSMARCO-Fa": ["train"],
-        "NFCorpus-Fa": ["train"],
-        "SciFact-Fa": ["train"],
-        "SynPerQARetrieval": ["train"],
-        "SynPerChatbotTopicsRetrieval": ["train"],
-        "SynPerChatbotRAGTopicsRetrieval": ["train"],
-        "SynPerChatbotRAGFAQRetrieval": ["train"],
-        "Farsick": ["train"],
-        "SynPerSTS": ["train"],
-        "Query2Query": ["train"],
+        "FarsTail",
+        "SAMSumFa",
+        "SynPerChatbotSumSRetrieval",
+        "SynPerChatbotRAGSumSRetrieval",
+        "SynPerChatbotConvSAClassification",
+        "SynPerChatbotConvSAToneChatbotClassification",
+        "SynPerChatbotConvSAToneUserClassification",
+        "SynPerChatbotSatisfactionLevelClassification",
+        "SynPerChatbotRAGToneChatbotClassification",
+        "SynPerChatbotRAGToneUserClassification",
+        "SynPerChatbotToneChatbotClassification",
+        "SynPerChatbotToneUserClassification",
+        "SynPerTextToneClassification",
+        "SIDClassification",
+        "PersianTextEmotion",
+        "SentimentDKSF",
+        "NLPTwitterAnalysisClassification",
+        "DigikalamagClassification",
+        "DigikalamagClustering",
+        "NLPTwitterAnalysisClustering",
+        "SIDClustring",
+        "CExaPPC",
+        "SynPerChatbotRAGFAQPC",
+        "FarsiParaphraseDetection",
+        "SynPerTextKeywordsPC",
+        "SynPerQAPC",
+        "ParsinluEntail",
+        "ParsinluQueryParaphPC",
+        "FiQA2018-Fa",
+        "HotpotQA-Fa",
+        "MSMARCO-Fa",
+        "NFCorpus-Fa",
+        "SciFact-Fa",
+        "SynPerQARetrieval",
+        "SynPerChatbotTopicsRetrieval",
+        "SynPerChatbotRAGTopicsRetrieval",
+        "SynPerChatbotRAGFAQRetrieval",
+        "Farsick",
+        "SynPerSTS",
+        "Query2Query",
     },
 )
 

@@ -11,6 +11,8 @@ from mteb.types import PromptType
 
 logger = logging.getLogger(__name__)
 
+HAKIM_CITATION = ""
+
 # Dataset task mappings with descriptions and task IDs
 DATASET_TASKS = {
     "PersianTextEmotion": ("دسته بندی , دسته بندی احساس متن", 1),
@@ -181,7 +183,7 @@ for dataset in RETRIEVAL_DATASETS:
     DATASET_TASKS[dataset] = ("تشخیص ارتباط , آیا متن دوم به متن اول مرتبط است ؟", 3)
 
 
-class HakimModelWrapper(Wrapper):
+class HakimModelWrapper:
     """A simplified wrapper for the Hakim instruction-following model."""
 
     def __init__(self, model_name: str, revision: str, **kwargs):
@@ -293,46 +295,46 @@ hakim = ModelMeta(
     public_training_code=None,
     public_training_data=None,
     training_datasets={
-        "FarsTail": [],
-        "SAMSumFa": ["train"],
-        "SynPerChatbotSumSRetrieval": ["train"],
-        "SynPerChatbotRAGSumSRetrieval": ["train"],
-        "SynPerChatbotConvSAClassification": ["train"],
-        "SynPerChatbotConvSAToneChatbotClassification": ["train"],
-        "SynPerChatbotConvSAToneUserClassification": ["train"],
-        "SynPerChatbotSatisfactionLevelClassification": ["train"],
-        "SynPerChatbotRAGToneChatbotClassification": ["train"],
-        "SynPerChatbotRAGToneUserClassification": ["train"],
-        "SynPerChatbotToneChatbotClassification": ["train"],
-        "SynPerChatbotToneUserClassification": ["train"],
-        "SynPerTextToneClassification": ["train"],
-        "SIDClassification": ["train"],
-        "PersianTextEmotion": ["train"],
-        "SentimentDKSF": ["train"],
-        "NLPTwitterAnalysisClassification": ["train"],
-        "DigikalamagClassification": ["train"],
-        "DigikalamagClustering": ["train"],
-        "NLPTwitterAnalysisClustering": ["train"],
-        "SIDClustring": ["train"],
-        "CExaPPC": ["train"],
-        "SynPerChatbotRAGFAQPC": ["train"],
-        "FarsiParaphraseDetection": ["train"],
-        "SynPerTextKeywordsPC": ["train"],
-        "SynPerQAPC": ["train"],
-        "ParsinluEntail": ["train"],
-        "ParsinluQueryParaphPC": ["train"],
-        "FiQA2018-Fa": ["train"],
-        "HotpotQA-Fa": ["train"],
-        "MSMARCO-Fa": ["train"],
-        "NFCorpus-Fa": ["train"],
-        "SciFact-Fa": ["train"],
-        "SynPerQARetrieval": ["train"],
-        "SynPerChatbotTopicsRetrieval": ["train"],
-        "SynPerChatbotRAGTopicsRetrieval": ["train"],
-        "SynPerChatbotRAGFAQRetrieval": ["train"],
-        "Farsick": ["train"],
-        "SynPerSTS": ["train"],
-        "Query2Query": ["train"],
+        "FarsTail",
+        "SAMSumFa",
+        "SynPerChatbotSumSRetrieval",
+        "SynPerChatbotRAGSumSRetrieval",
+        "SynPerChatbotConvSAClassification",
+        "SynPerChatbotConvSAToneChatbotClassification",
+        "SynPerChatbotConvSAToneUserClassification",
+        "SynPerChatbotSatisfactionLevelClassification",
+        "SynPerChatbotRAGToneChatbotClassification",
+        "SynPerChatbotRAGToneUserClassification",
+        "SynPerChatbotToneChatbotClassification",
+        "SynPerChatbotToneUserClassification",
+        "SynPerTextToneClassification",
+        "SIDClassification",
+        "PersianTextEmotion",
+        "SentimentDKSF",
+        "NLPTwitterAnalysisClassification",
+        "DigikalamagClassification",
+        "DigikalamagClustering",
+        "NLPTwitterAnalysisClustering",
+        "SIDClustring",
+        "CExaPPC",
+        "SynPerChatbotRAGFAQPC",
+        "FarsiParaphraseDetection",
+        "SynPerTextKeywordsPC",
+        "SynPerQAPC",
+        "ParsinluEntail",
+        "ParsinluQueryParaphPC",
+        "FiQA2018-Fa",
+        "HotpotQA-Fa",
+        "MSMARCO-Fa",
+        "NFCorpus-Fa",
+        "SciFact-Fa",
+        "SynPerQARetrieval",
+        "SynPerChatbotTopicsRetrieval",
+        "SynPerChatbotRAGTopicsRetrieval",
+        "SynPerChatbotRAGFAQRetrieval",
+        "Farsick",
+        "SynPerSTS",
+        "Query2Query",
     },
 )
 

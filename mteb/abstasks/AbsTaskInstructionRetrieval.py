@@ -11,7 +11,7 @@ from typing import Any
 import tqdm
 from datasets import Dataset, Features, Value, load_dataset
 
-from mteb.encoder_interface import Encoder
+from mteb.models.models_protocols import EncoderProtocol as Encoder
 
 from ..evaluation.evaluators import utils
 from ..evaluation.evaluators.InstructionRetrievalEvaluator import (

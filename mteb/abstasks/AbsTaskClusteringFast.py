@@ -12,7 +12,7 @@ import sklearn.cluster
 from datasets import Dataset, DatasetDict
 from sklearn.metrics.cluster import v_measure_score
 
-from mteb.encoder_interface import Encoder
+from mteb.models.models_protocols import EncoderProtocol as Encoder
 
 from ..load_results.task_results import HFSubset
 from .AbsTask import AbsTask

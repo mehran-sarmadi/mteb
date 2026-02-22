@@ -147,7 +147,7 @@ class LongRagFa(AbsTaskRetrieval):
             "revision": "9da1d3a01c9d89ad5311415b3ae57540fd20b3f3",
         },
         type="Retrieval",
-        category="s2p",
+        category="t2t",
         modalities=["text"],
         eval_splits=["test"],
         eval_langs=["fas-Arab"],

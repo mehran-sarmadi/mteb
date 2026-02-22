@@ -1464,7 +1464,7 @@ C_MTEB = Benchmark(
 """,
 )
 
-FA_MTEB_CLASSIC = Benchmark(
+FA_MTEB = Benchmark(
     name="MTEB(fas, v1)",
     display_name="Farsi Legacy",
     icon="https://github.com/lipis/flag-icons/raw/260c91531be024944c6514130c5defb2ebb02b7d/flags/4x3/ir.svg",
