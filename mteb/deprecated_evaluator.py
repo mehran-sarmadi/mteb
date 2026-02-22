@@ -70,38 +70,10 @@ class MTEB:
         """
         from mteb.benchmarks import Benchmark
 
-<<<<<<< HEAD:mteb/deprecated_evaluator.py
         self.tasks = list(tasks)
         if len(self.tasks) > 0 and isinstance(self.tasks[0], Benchmark):
             self.benchmarks = tasks
             self.tasks = list(chain.from_iterable(self.tasks))
-=======
-        self.deprecation_warning(
-            task_types, task_categories, task_langs, tasks, version
-        )
-        if tasks is not None:
-            self._tasks = tasks
-            if isinstance(tasks[0], Benchmark):
-                self.benchmarks = tasks
-                self._tasks = self._tasks = list(chain.from_iterable(tasks))  # type: ignore
-            assert (
-                task_types is None and task_categories is None
-            ), "Cannot specify both `tasks` and `task_types`/`task_categories`"
-        else:
-            self._task_types = task_types
-            self._task_categories = task_categories
-            self._tasks = None
-
-        self._task_langs = task_langs if task_langs is not None else []
-        if isinstance(self._task_langs, str):
-            self._task_langs = [self._task_langs]
-
-        self._extend_lang_code()
-        self._extend_lang_pairs()  # add all possible pairs
-
-        self._version = version
-        self.err_logs_path = err_logs_path
->>>>>>> 2698a798 (change digimag dataset to our hub because datasets error in new version):mteb/evaluation/MTEB.py
 
         self.err_logs_path = Path(err_logs_path)
         self.last_evaluated_splits = {}
