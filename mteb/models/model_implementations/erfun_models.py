@@ -156,6 +156,12 @@ class HakimModelWrapperNewPrompt:
         self.model = SentenceTransformer(model_name, revision=revision, **kwargs)
         self.model_prompts = model_prompts
 
+    def similarity(self, embeddings1, embeddings2):
+        return self.model.similarity(embeddings1, embeddings2)
+
+    def similarity_pairwise(self, embeddings1, embeddings2):
+        return self.model.similarity_pairwise(embeddings1, embeddings2)
+
     def encode(
         self,
         sentences: Sequence[str],
@@ -378,6 +384,12 @@ class HakimModelWrapper:
         self.model_name = model_name
         logging.info(f"Initialized model: {model_name}")
 
+    def similarity(self, embeddings1, embeddings2):
+        return self.model.similarity(embeddings1, embeddings2)
+
+    def similarity_pairwise(self, embeddings1, embeddings2):
+        return self.model.similarity_pairwise(embeddings1, embeddings2)
+
     def _preprocess_sample(
         self,
         sample: str,
@@ -480,6 +492,12 @@ class HakimModelWrapperNoPrompt:
 
         self.model_name = model_name
         logging.info(f"Initialized model: {model_name}")
+
+    def similarity(self, embeddings1, embeddings2):
+        return self.model.similarity(embeddings1, embeddings2)
+
+    def similarity_pairwise(self, embeddings1, embeddings2):
+        return self.model.similarity_pairwise(embeddings1, embeddings2)
 
     def encode(
         self,
