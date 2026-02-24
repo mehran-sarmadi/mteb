@@ -1493,9 +1493,9 @@ FA_MTEB = Benchmark(
             # Clustering
             "BeytooteClustering",
             "DigikalamagClustering",
-            "HamshahriClustring",
+            "HamshahriClustering",
             "NLPTwitterAnalysisClustering",
-            "SIDClustring",
+            "SIDClustering",
             # PairClassification
             "FarsTail",
             "CExaPPC",
@@ -1580,9 +1580,9 @@ FA_MTEB_2 = Benchmark(
             # Clustering
             "BeytooteClustering",
             "DigikalamagClustering",
-            "HamshahriClustring",
+            "HamshahriClustering",
             "NLPTwitterAnalysisClustering",
-            "SIDClustring",
+            "SIDClustering",
             # PairClassification
             "FarsTail",
             "SynPerChatbotRAGFAQPC",

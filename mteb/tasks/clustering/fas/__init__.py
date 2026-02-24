@@ -1,15 +1,15 @@
 from .fa_mteb_clustering import (
     BeytooteClustering,
     DigikalamagClustering,
-    HamshahriClustring,
+    HamshahriClustering,
     NLPTwitterAnalysisClustering,
-    SIDClustring,
+    SIDClustering,
 )
 
 __all__ = [
     "BeytooteClustering",
     "DigikalamagClustering",
-    "HamshahriClustring",
+    "HamshahriClustering",
     "NLPTwitterAnalysisClustering",
-    "SIDClustring",
+    "SIDClustering",
 ]
