@@ -4,8 +4,8 @@ import pytest
 
 import mteb
 from mteb import get_task, get_tasks
-from mteb.abstasks.AbsTask import AbsTask
-from mteb.abstasks.TaskMetadata import TASK_DOMAIN, TASK_TYPE
+from mteb.abstasks.abstask import AbsTask
+from mteb.abstasks.task_metadata import TASK_DOMAIN, TASK_TYPE
 from mteb.custom_validators import MODALITIES
 from mteb.overview import MTEBTasks
 
@@ -19,7 +19,7 @@ def test_get_tasks_size_differences():
     assert len(get_tasks()) >= len(get_tasks(modalities=["text"]))
     assert len(get_tasks()) >= len(get_tasks(modalities=["image"]))
     assert len(get_tasks(languages=["eng", "deu"])) >= len(
-        get_tasks(languages=["eng", "deu"])
+        get_tasks(languages=["eng"])
     )
     assert len(get_tasks(modalities=["text", "image"])) >= len(
         get_tasks(modalities=["text"])
@@ -152,8 +152,8 @@ def test_MTEBTasks(
         assert len(langs.intersection(t.languages)) > 0
 
     # check for header of a table
-    n_langs = len(tasks)
-    assert len(tasks.to_markdown().split("\n")) - 3 == n_langs
+    n_tasks = len(tasks)
+    assert len(tasks.to_markdown().split("\n")) - 3 == n_tasks
 
 
 def test_all_tasks_fetch():

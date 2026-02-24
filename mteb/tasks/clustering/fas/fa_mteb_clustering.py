@@ -68,9 +68,9 @@ class DigikalamagClustering(AbsTaskClustering):
     )
 
 
-class HamshahriClustring(AbsTaskClustering):
+class HamshahriClustering(AbsTaskClustering):
     metadata = TaskMetadata(
-        name="HamshahriClustring",
+        name="HamshahriClustering",
         description="These datasets have been extracted from the RSS feed of two Farsi news agency websites.",
         reference="https://github.com/mallahyari/Farsi-datasets",
         dataset={
@@ -162,10 +162,10 @@ class NLPTwitterAnalysisClustering(AbsTaskClustering):
         )
 
 
-class SIDClustring(AbsTaskClustering):
+class SIDClustering(AbsTaskClustering):
     metadata = TaskMetadata(
-        name="SIDClustring",
-        description="Clustering of summariesfrom SIDClustring across categories.",
+        name="SIDClustering",
+        description="Clustering of summaries from SID across categories.",
         reference="https://www.sid.com/",
         dataset={
             "path": "MCINext/sid-clustering",

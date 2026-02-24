@@ -8,7 +8,7 @@ from typing import Any
 from huggingface_hub import ModelCard
 from sentence_transformers import SentenceTransformer
 
-from mteb.abstasks.AbsTask import AbsTask
+from mteb.abstasks.abstask import AbsTask
 from mteb.models.models_protocols import EncoderProtocol as Encoder
 from mteb.models.model_meta import ModelMeta
 from mteb.models import (
@@ -323,7 +323,7 @@ def get_model_meta(
     else:  # assume it is a sentence-transformers model
         if not fetch_from_hf:
             raise ValueError(
-                f"Model {model_name} not found in MTEB registry. Please set fetch_from_hf=False to load it from HuggingFace Hub."
+                f"Model {model_name} not found in MTEB registry and fetch_from_hf is disabled. Set fetch_from_hf=True to load it from HuggingFace Hub."
             )
         logger.info(
             "Model not found in model registry, assuming it is on HF Hub model."

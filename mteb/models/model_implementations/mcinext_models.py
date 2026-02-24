@@ -4,10 +4,11 @@ from typing import Any
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
+from torch.utils.data import DataLoader
 
-from mteb.models.abs_encoder import AbsEncoder
 from mteb.models.model_meta import ModelMeta
-from mteb.types import PromptType
+from mteb.types import Array, BatchedInput, PromptType
+from mteb.abstasks.task_metadata import TaskMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -101,8 +102,8 @@ DATASET_TASKS = {
     "BeytooteClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
     "DigikalamagClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
     "NLPTwitterAnalysisClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
-    "HamshahriClustring": ("دسته بندی , دسته بندی موضوعی متن", 1),
-    "SIDClustring": ("دسته بندی , دسته بندی موضوعی متن", 1),
+    "HamshahriClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
+    "SIDClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
     "MIRACLReranking": ("تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟", 3),
     "WikipediaRerankingMultilingual": (
         "تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟",
@@ -223,25 +224,25 @@ class HakimModelWrapper:
 
     def encode(
         self,
-        sentences: list[str],
+        inputs: DataLoader[BatchedInput] | list[str],
         *,
-        task_name: str,
+        task_metadata: TaskMetadata | None = None,
+        task_name: str | None = None,
+        hf_split: str | None = None,
+        hf_subset: str | None = None,
         prompt_type: PromptType | None = None,
         batch_size: int = 32,
         **kwargs: Any,
-    ) -> np.ndarray:
-        """Encodes sentences using a loaded SentenceTransformer model.
+    ) -> Array:
+        """Encodes sentences using a loaded SentenceTransformer model."""
+        if isinstance(inputs, DataLoader):
+            sentences = [text for batch in inputs for text in batch["text"]]
+        else:
+            sentences = inputs
 
-        Args:
-            sentences: A list of strings to be encoded.
-            task_name: The name of the task for preprocessing.
-            prompt_type: The type of prompt (e.g., 'query', 'passage').
-            batch_size: The batch size for encoding.
-            **kwargs: Additional keyword arguments.
+        if task_name is None and task_metadata is not None:
+            task_name = task_metadata.name
 
-        Returns:
-            A numpy array of the sentence embeddings.
-        """
         if not sentences or not all(isinstance(s, str) for s in sentences):
             raise ValueError("Input must be a non-empty list of strings.")
 
@@ -260,13 +261,12 @@ class HakimModelWrapper:
         embeddings = self.model.encode(
             processed_sentences,
             batch_size=batch_size,
-            show_progress_bar=True,  # Provides a helpful progress bar
-            normalize_embeddings=False,  # Set to True if you need unit vectors
+            show_progress_bar=True,
+            normalize_embeddings=False,
         )
 
         logger.info(f"Encoding completed successfully for {len(embeddings)} sentences.")
 
-        # The output of model.encode is already a numpy array with dtype=np.float32
         return embeddings
 
 
@@ -290,7 +290,7 @@ hakim = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -315,7 +315,7 @@ hakim = ModelMeta(
         "DigikalamagClassification",
         "DigikalamagClustering",
         "NLPTwitterAnalysisClustering",
-        "SIDClustring",
+        "SIDClustering",
         "CExaPPC",
         "SynPerChatbotRAGFAQPC",
         "FarsiParaphraseDetection",
@@ -336,6 +336,7 @@ hakim = ModelMeta(
         "SynPerSTS",
         "Query2Query",
     },
+    citation=HAKIM_CITATION,
 )
 
 hakim_small = ModelMeta(
@@ -357,7 +358,7 @@ hakim_small = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-small",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -382,7 +383,7 @@ hakim_small = ModelMeta(
         "DigikalamagClassification",
         "DigikalamagClustering",
         "NLPTwitterAnalysisClustering",
-        "SIDClustring",
+        "SIDClustering",
         "CExaPPC",
         "SynPerChatbotRAGFAQPC",
         "FarsiParaphraseDetection",
@@ -425,7 +426,7 @@ hakim_unsup = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,

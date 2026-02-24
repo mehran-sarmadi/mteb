@@ -22,7 +22,7 @@ import torch
 logger = logging.getLogger(__name__)
 
 
-TEST_PROMPT = True
+TEST_PROMPT = False
 
 task_general_prompt_dict = {"sentiment": "مسئله: تحلیل احساس | متن: ",
                             "classification": "مسئله: دسته‌بندی | متن: ",
@@ -63,8 +63,8 @@ classification_data = [
     "BeytooteClustering",
     "DigikalamagClustering",
     "NLPTwitterAnalysisClustering",
-    "HamshahriClustring",
-    "SIDClustring",
+    "HamshahriClustering",
+    "SIDClustering",
     "PersianTextTone",
     "SynPerTextToneClassification.v3",
     "StyleClassification",
@@ -186,25 +186,24 @@ class HakimModelWrapperNewPrompt:
             task_name = task_metadata.name
 
         prompt = None
-        if prompt_type:
+        if self.model_prompts is None:
+            warnings.warn(f"model_prompts is None for task: {task_name}, no prompt applied.")
+        elif prompt_type:
             if prompt_type.value == 'query':
-                prompt = self.model_prompts['retrieval.query']
+                prompt = self.model_prompts.get('retrieval.query')
             elif prompt_type.value == 'document':
-                prompt = self.model_prompts['retrieval.passage']
+                prompt = self.model_prompts.get('retrieval.passage')
         else:
             if task_name in sentiment_data:
-                prompt = self.model_prompts['sentiment']
+                prompt = self.model_prompts.get('sentiment')
             elif task_name in classification_data:
-                prompt = self.model_prompts['classification']
+                prompt = self.model_prompts.get('classification')
             elif task_name in sts_data:
-                prompt = self.model_prompts['sts']
+                prompt = self.model_prompts.get('sts')
             else:
                 warnings.warn(f"Unknown task name: {task_name}, cannot determine prompt.")
 
-        print(f"\nUsing prompt: {prompt} for task: {task_name} and prompt_type: {prompt_type}\n")
-        if TEST_PROMPT:
-            return np.array([[0.0]*self.model.get_sentence_embedding_dimension()]*len(sentences))
-
+        logger.debug(f"Using prompt: {prompt} for task: {task_name} and prompt_type: {prompt_type}")
 
         embeddings = self.model.encode(
             sentences,
@@ -215,8 +214,6 @@ class HakimModelWrapperNewPrompt:
             embeddings = embeddings.cpu().detach().float().numpy()
         return embeddings
 
-
-logger = logging.getLogger(__name__)
 
 # Dataset task mappings with descriptions and task IDs
 DATASET_TASKS = {
@@ -306,8 +303,8 @@ DATASET_TASKS = {
     "BeytooteClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
     "DigikalamagClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
     "NLPTwitterAnalysisClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
-    "HamshahriClustring": ("دسته بندی , دسته بندی موضوعی متن", 1),
-    "SIDClustring": ("دسته بندی , دسته بندی موضوعی متن", 1),
+    "HamshahriClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
+    "SIDClustering": ("دسته بندی , دسته بندی موضوعی متن", 1),
     "MIRACLReranking": ("تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟", 3),
     "WikipediaRerankingMultilingual": (
         "تشخیص ارتباط , آیا متن دوم پاسخ متن اول است ؟",
@@ -466,17 +463,10 @@ class HakimModelWrapper:
         )
         sub = kwargs.get("sub")
         # Pre-process sentences with task-specific instructions if necessary
-        print(task_name, prompt_type, sub)
-        print("\nfirst:\n")
-        print(sentences[0])
         processed_sentences = [
             self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
         ]
-        print("\nsecond:\n")
-        print(processed_sentences[0])
         logger.info(f"Encoding {len(processed_sentences)} processed sentences.")
-        if TEST_PROMPT:
-            return np.array([[0.0]*self.model.get_sentence_embedding_dimension()]*len(sentences))
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
             processed_sentences,
@@ -540,13 +530,11 @@ class HakimModelWrapperNoPrompt:
             f"Starting encoding for {len(sentences)} sentences, task: {task_name}, batch_size: {batch_size}"
         )
 
-        kwargs["show_progress_bar"] = True
-
-
         # Use the sentence-transformers model to encode in batches
         embeddings = self.model.encode(
             sentences,
             batch_size=batch_size,
+            show_progress_bar=True,
             normalize_embeddings=False,
         )
 
@@ -574,7 +562,7 @@ hakim_test_prompt = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -599,7 +587,7 @@ hakim_test_prompt = ModelMeta(
         "DigikalamagClassification",
         "DigikalamagClustering",
         "NLPTwitterAnalysisClustering",
-        "SIDClustring",
+        "SIDClustering",
         "CExaPPC",
         "SynPerChatbotRAGFAQPC",
         "FarsiParaphraseDetection",
@@ -642,7 +630,7 @@ hakim_without_prompt = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -670,7 +658,7 @@ model_1 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -698,7 +686,7 @@ model_2 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -710,10 +698,10 @@ model_3 = ModelMeta(
     loader=partial(
         HakimModelWrapperNoPrompt,
         trust_remote_code=True,
-        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_alpha64_r32ـsyn_data",
+        model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_alpha64_r32_syn_data",
         revision="v1",
     ),
-    name="erfun/Hakim_unsup_lora_retrieval_alpha64_r32ـsyn_data",
+    name="erfun/Hakim_unsup_lora_retrieval_alpha64_r32_syn_data",
     languages=["fas-Arab"],
     open_weights=False,
     revision="1",
@@ -725,7 +713,7 @@ model_3 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -751,7 +739,7 @@ model_4 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -777,7 +765,7 @@ model_5 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -804,7 +792,7 @@ model_6 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -831,7 +819,7 @@ model_7 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -858,7 +846,7 @@ model_8 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -885,7 +873,7 @@ model_9 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -912,7 +900,7 @@ model_10 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -939,7 +927,7 @@ model_11 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -966,7 +954,7 @@ model_12 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -993,7 +981,7 @@ model_13 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1005,12 +993,12 @@ model_13 = ModelMeta(
 
 model_14 = ModelMeta(
     loader=partial(
-        HakimModelWrapperNoPrompt,
+        HakimModelWrapper,
         trust_remote_code=True,
         model_name="/mnt/data/ez-workspace/FlagEmbedding_old/FlagEmbedding/baai_general_embedding/results/Hakim_unsup_lora_retrieval_w_prompt",
         revision="v1",
     ),
-    name="erfun/Hakim_unsup_lora_retrieval_w_prompt",
+    name="erfun/Hakim_unsup_lora_retrieval_w_prompt_v2",
     languages=["fas-Arab"],
     open_weights=False,
     revision="1",
@@ -1022,7 +1010,7 @@ model_14 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1048,7 +1036,7 @@ model_15 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1074,7 +1062,7 @@ model_16 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1101,7 +1089,7 @@ model_17 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1128,7 +1116,7 @@ model_18 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1154,7 +1142,7 @@ model_19 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1181,7 +1169,7 @@ model_20 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1207,7 +1195,7 @@ model_21 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1234,7 +1222,7 @@ model_22 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1261,7 +1249,7 @@ model_23 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1288,7 +1276,7 @@ model_24 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1315,7 +1303,7 @@ model_25 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1342,7 +1330,7 @@ model_26 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1369,7 +1357,7 @@ model_27 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1396,7 +1384,7 @@ model_28 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1424,7 +1412,7 @@ model_29 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1452,7 +1440,7 @@ model_30 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1480,7 +1468,7 @@ model_31 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1508,7 +1496,7 @@ model_32 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1535,7 +1523,7 @@ model_33 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1562,7 +1550,7 @@ model_34 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1590,7 +1578,7 @@ model_35 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1617,7 +1605,7 @@ model_36 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1644,7 +1632,7 @@ model_37 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,
@@ -1671,7 +1659,7 @@ model_38 = ModelMeta(
     max_tokens=512,
     reference="https://huggingface.co/MCINext/Hakim-unsup",
     similarity_fn_name="cosine",
-    framework=["API"],
+    framework=["Sentence Transformers", "PyTorch"],
     use_instructions=False,
     public_training_code=None,
     public_training_data=None,

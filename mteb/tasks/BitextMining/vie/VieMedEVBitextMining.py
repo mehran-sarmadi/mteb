@@ -4,8 +4,8 @@ import random
 
 import datasets
 
-from mteb.abstasks.AbsTaskBitextMining import AbsTaskBitextMining
-from mteb.abstasks.TaskMetadata import TaskMetadata
+from mteb.abstasks import AbsTaskBitextMining
+from mteb.abstasks.task_metadata import TaskMetadata
 
 TEST_SAMPLES = 2048
 
@@ -26,7 +26,7 @@ class VieMedEVBitextMining(AbsTaskBitextMining):
         eval_splits=["test"],
         eval_langs=["eng-Latn", "vie-Latn"],
         main_score="f1",
-        date=("2024-08-28", "2022-03-28"),
+        date=("2022-03-28", "2024-08-28"),
         domains=["Medical", "Written"],
         task_subtypes=[],
         license="cc-by-nc-4.0",  # version is assumed, but was previously unspecified

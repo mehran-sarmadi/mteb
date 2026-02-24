@@ -15,8 +15,8 @@ from sklearn.metrics.cluster import v_measure_score
 from mteb.models.models_protocols import EncoderProtocol as Encoder
 
 from ..load_results.task_results import HFSubset
-from .AbsTask import AbsTask
-from .TaskMetadata import DescriptiveStatistics
+from .abstask import AbsTask
+from .task_metadata import DescriptiveStatistics
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ def evaluate_clustering_bootstrapped(
 ) -> dict[str, list[float]]:
     """Bootstrapped evaluation of clustering performance using V-measure.
 
-    The bootstrapping is done by sampling N samples from the corpus and clustering them. It is done without replacement to get a diverse set of
+    The bootstrapping is done by sampling N samples from the corpus and clustering them. It is done with replacement to get a diverse set of
     samples.
     """
     n_embeddings = embeddings.shape[0]
@@ -252,6 +252,7 @@ class AbsTaskClusteringFast(AbsTask):
         return ClusteringFastDescriptiveStatistics(
             num_samples=len(sentences),
             number_of_characters=total_text_len,
+            unique_texts=len(set(sentences)),
             min_text_length=min(text_len),
             average_text_length=total_text_len / len(sentences),
             max_text_length=max(text_len),

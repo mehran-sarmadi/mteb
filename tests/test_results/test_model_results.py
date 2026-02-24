@@ -41,7 +41,7 @@ def test_indexing(model_result: ModelResult) -> None:
     res = model_result[0]
     assert isinstance(
         res, TaskResult
-    ), "indexing into the list should return a ModelResult"
+    ), "indexing into the list should return a TaskResult"
 
 
 def test_utility_properties(

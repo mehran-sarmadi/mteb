@@ -6,7 +6,7 @@ import pytest
 
 from mteb import AbsTask
 from mteb.abstasks.aggregated_task import AbsTaskAggregate
-from mteb.abstasks.TaskMetadata import TaskMetadata
+from mteb.abstasks.task_metadata import TaskMetadata
 from mteb.overview import get_tasks
 
 # Historic datasets without filled metadata. Do NOT add new datasets to this list.
@@ -570,16 +570,14 @@ def test_disallow_trust_remote_code_in_new_datasets():
         135 == len(exceptions)
     ), "The number of exceptions has changed. Please do not add new datasets to this list."
 
-    exceptions = []
-
     for task in get_tasks():
         if task.metadata.dataset.get("trust_remote_code", False):
             assert (
-                task.metadata.name not in exceptions
+                task.metadata.name in exceptions
             ), f"Dataset {task.metadata.name} should not trust remote code"
 
 
-def test_empy_descriptive_stat_in_new_datasets():
+def test_empty_descriptive_stat_in_new_datasets():
     # DON'T ADD NEW DATASETS TO THIS LIST
     # THIS IS ONLY INTENDED FOR HISTORIC DATASETS
     exceptions = [
@@ -1142,12 +1140,10 @@ def test_empy_descriptive_stat_in_new_datasets():
         553 == len(exceptions)
     ), "The number of exceptions has changed. Please do not add new datasets to this list."
 
-    exceptions = []
-
     for task in get_tasks():
         if task.metadata.descriptive_stats is None:
             assert (
-                task.metadata.name not in exceptions
+                task.metadata.name in exceptions
             ), f"Dataset {task.metadata.name} should have descriptive stats"
 
 
