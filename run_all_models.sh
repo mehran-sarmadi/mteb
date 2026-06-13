@@ -3,6 +3,9 @@
 
 cd "$(dirname "$0")"
 
+# Ensure peft is installed for LoRA model
+uv pip install peft 2>/dev/null
+
 BENCHMARK="MTEB(fas, v2)"
 OUTPUT_BASE="results"
 

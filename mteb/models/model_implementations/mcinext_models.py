@@ -395,18 +395,23 @@ class HakimLocalWrapper(AbsEncoder):
 
     def encode(
         self,
-        sentences: list[str],
+        inputs,
         *,
-        task_name: str,
-        prompt_type: PromptType | None = None,
-        batch_size: int = 32,
-        **kwargs: Any,
-    ) -> Array:
-        sub = kwargs.get("sub")
+        task_metadata=None,
+        hf_split=None,
+        hf_subset=None,
+        prompt_type=None,
+        **kwargs,
+    ):
+        sentences = [text for batch in inputs for text in batch["text"]]
+        task_name = task_metadata.name if task_metadata else ""
+
         processed_sentences = [
-            self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
+            self._preprocess_sample(s, task_name, prompt_type, None)
+            for s in sentences
         ]
 
+        batch_size = kwargs.get("batch_size", 32)
         embeddings = self.st_model.encode(
             processed_sentences,
             batch_size=batch_size,
