@@ -346,6 +346,75 @@ class HakimModelWrapper(AbsEncoder):
         return np.array(all_embeddings, dtype=np.float32)
 
 
+class HakimLocalWrapper(AbsEncoder):
+    """Wrapper for locally-hosted Hakim models loaded via SentenceTransformers."""
+
+    def __init__(
+        self,
+        model_name: str,
+        revision: str,
+        model_path: str,
+        embed_dim: int | None = None,
+        **kwargs: Any,
+    ):
+        from sentence_transformers import SentenceTransformer
+
+        self.st_model = SentenceTransformer(
+            model_path,
+            trust_remote_code=True,
+            truncate_dim=embed_dim,
+        )
+        self._model_name = model_name
+        logger.info(f"Loaded local model from: {model_path}")
+
+    def _preprocess_sample(
+        self,
+        sample: str,
+        task_name: str,
+        prompt_type: PromptType | None,
+        sub: str | None,
+    ) -> str:
+        task_prompt, task_id = DATASET_TASKS.get(task_name, (None, None))
+
+        if not task_prompt:
+            msg = f"Unknown dataset: {task_name}, no preprocessing applied."
+            logger.warning(msg)
+            warnings.warn(msg)
+            return sample
+
+        task_prompt = f"مسئله : {task_prompt}"
+
+        if task_id == 1:
+            return f"{task_prompt} | متن : {sample}"
+        if task_id == 3:
+            if sub == "sentence1" or (prompt_type and prompt_type.value == "query"):
+                return f"{task_prompt} | متن اول : {sample}"
+            if sub == "sentence2" or (prompt_type and prompt_type.value == "document"):
+                return f"{task_prompt} | متن دوم : {sample}"
+        return sample
+
+    def encode(
+        self,
+        sentences: list[str],
+        *,
+        task_name: str,
+        prompt_type: PromptType | None = None,
+        batch_size: int = 32,
+        **kwargs: Any,
+    ) -> Array:
+        sub = kwargs.get("sub")
+        processed_sentences = [
+            self._preprocess_sample(s, task_name, prompt_type, sub) for s in sentences
+        ]
+
+        embeddings = self.st_model.encode(
+            processed_sentences,
+            batch_size=batch_size,
+            show_progress_bar=True,
+        )
+        return np.array(embeddings, dtype=np.float32)
+
+
 hakim = ModelMeta(
     loader=HakimModelWrapper,
     loader_kwargs=dict(
@@ -512,5 +581,86 @@ hakim_unsup = ModelMeta(
         "MSMARCO-Fa",
         "Query2Query",
     },
+    citation=HAKIM_CITATION,
+)
+
+test_embedding_model = ModelMeta(
+    loader=HakimLocalWrapper,
+    loader_kwargs=dict(
+        model_path="/mnt/data2/ez-workspace/text-embedding-train/output/test_embedding_model",
+        model_type=["dense"],
+    ),
+    name="MCINext/test-embedding-model",
+    languages=["fas-Arab"],
+    open_weights=True,
+    revision="1",
+    release_date="2025-06-13",
+    n_parameters=None,
+    n_embedding_parameters=None,
+    memory_usage_mb=None,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference=None,
+    similarity_fn_name="cosine",
+    framework=["PyTorch", "Sentence Transformers"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+    citation=HAKIM_CITATION,
+)
+
+test_embedding_model_lora = ModelMeta(
+    loader=HakimLocalWrapper,
+    loader_kwargs=dict(
+        model_path="/mnt/data2/ez-workspace/text-embedding-train/output/test_embedding_model_lora",
+        model_type=["dense"],
+    ),
+    name="MCINext/test-embedding-model-lora",
+    languages=["fas-Arab"],
+    open_weights=True,
+    revision="1",
+    release_date="2025-06-13",
+    n_parameters=None,
+    n_embedding_parameters=None,
+    memory_usage_mb=None,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference=None,
+    similarity_fn_name="cosine",
+    framework=["PyTorch", "Sentence Transformers"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+    citation=HAKIM_CITATION,
+)
+
+test_embedding_model_matryoshka = ModelMeta(
+    loader=HakimLocalWrapper,
+    loader_kwargs=dict(
+        model_path="/mnt/data2/ez-workspace/text-embedding-train/output/test_embedding_model_matryoshka",
+        model_type=["dense"],
+    ),
+    name="MCINext/test-embedding-model-matryoshka",
+    languages=["fas-Arab"],
+    open_weights=True,
+    revision="1",
+    release_date="2025-06-13",
+    n_parameters=None,
+    n_embedding_parameters=None,
+    memory_usage_mb=None,
+    embed_dim=[768, 512, 256, 128, 64],
+    license="not specified",
+    max_tokens=512,
+    reference=None,
+    similarity_fn_name="cosine",
+    framework=["PyTorch", "Sentence Transformers"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
     citation=HAKIM_CITATION,
 )
