@@ -355,6 +355,7 @@ class HakimLocalWrapper(AbsEncoder):
         revision: str,
         model_path: str,
         embed_dim: int | None = None,
+        device: str | None = None,
         **kwargs: Any,
     ):
         from sentence_transformers import SentenceTransformer
@@ -363,6 +364,7 @@ class HakimLocalWrapper(AbsEncoder):
             model_path,
             trust_remote_code=True,
             truncate_dim=embed_dim,
+            device=device,
         )
         self._model_name = model_name
         logger.info(f"Loaded local model from: {model_path}")
