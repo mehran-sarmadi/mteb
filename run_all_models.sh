@@ -4,14 +4,13 @@
 cd "$(dirname "$0")"
 mkdir -p logs
 
-# Ensure peft is installed for LoRA model
-uv pip install peft 2>/dev/null
-
 BENCHMARK="MTEB(fas, v2)"
 OUTPUT_BASE="results"
+PYTHON=".venv/bin/python"
+MTEB=".venv/bin/mteb"
 
 # GPU 0: test_embedding_model
-CUDA_VISIBLE_DEVICES=0 uv run mteb run \
+CUDA_VISIBLE_DEVICES=0 $MTEB run \
     -m "MCINext/test-embedding-model" \
     -b "$BENCHMARK" \
     --device 0 \
@@ -19,7 +18,7 @@ CUDA_VISIBLE_DEVICES=0 uv run mteb run \
     2>&1 | tee logs/test-embedding-model.log &
 
 # GPU 1: test_embedding_model_lora
-CUDA_VISIBLE_DEVICES=1 uv run mteb run \
+CUDA_VISIBLE_DEVICES=1 $MTEB run \
     -m "MCINext/test-embedding-model-lora" \
     -b "$BENCHMARK" \
     --device 0 \
@@ -31,7 +30,7 @@ DIMS=(768 512 256 128 64)
 for i in "${!DIMS[@]}"; do
     GPU=$((i + 2))
     DIM=${DIMS[$i]}
-    CUDA_VISIBLE_DEVICES=$GPU uv run python -c "
+    CUDA_VISIBLE_DEVICES=$GPU $PYTHON -c "
 import mteb
 
 model = mteb.get_model('MCINext/test-embedding-model-matryoshka', embed_dim=$DIM, device='cuda:0')
