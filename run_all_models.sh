@@ -2,6 +2,7 @@
 # Run all test models in parallel on separate GPUs against FaMTEB v2
 
 cd "$(dirname "$0")"
+mkdir -p logs
 
 # Ensure peft is installed for LoRA model
 uv pip install peft 2>/dev/null
@@ -13,6 +14,7 @@ OUTPUT_BASE="results"
 CUDA_VISIBLE_DEVICES=0 uv run mteb run \
     -m "MCINext/test-embedding-model" \
     -b "$BENCHMARK" \
+    --device 0 \
     --output-folder "$OUTPUT_BASE/test-embedding-model" \
     2>&1 | tee logs/test-embedding-model.log &
 
@@ -20,6 +22,7 @@ CUDA_VISIBLE_DEVICES=0 uv run mteb run \
 CUDA_VISIBLE_DEVICES=1 uv run mteb run \
     -m "MCINext/test-embedding-model-lora" \
     -b "$BENCHMARK" \
+    --device 0 \
     --output-folder "$OUTPUT_BASE/test-embedding-model-lora" \
     2>&1 | tee logs/test-embedding-model-lora.log &
 
@@ -31,7 +34,7 @@ for i in "${!DIMS[@]}"; do
     CUDA_VISIBLE_DEVICES=$GPU uv run python -c "
 import mteb
 
-model = mteb.get_model('MCINext/test-embedding-model-matryoshka', embed_dim=$DIM)
+model = mteb.get_model('MCINext/test-embedding-model-matryoshka', embed_dim=$DIM, device='cuda:0')
 tasks = mteb.get_benchmarks(names=['$BENCHMARK'])[0].tasks
 mteb.evaluate(
     model,
