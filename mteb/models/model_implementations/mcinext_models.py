@@ -672,6 +672,34 @@ hakim_unsup_checkpoint_47643 = ModelMeta(
     citation=HAKIM_CITATION,
 )
 
+Main_Hakim = ModelMeta(
+    loader=HakimLocalWrapper,
+    loader_kwargs=dict(
+        model_path="/home/dev/serve/retro_ourwordpiece_retrieval_2_instruct_stage3_v2_v7_with_inbatch_Hakim",
+        model_type=["dense"],
+    ),
+    name="MCINext/main-hakim",
+    languages=["fas-Arab"],
+    open_weights=True,
+    revision="1",
+    release_date="2025-07-12",
+    n_parameters=None,
+    n_embedding_parameters=None,
+    memory_usage_mb=None,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference=None,
+    similarity_fn_name="cosine",
+    framework=["PyTorch", "Sentence Transformers"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+    citation=HAKIM_CITATION,
+)
+
+
 test_embedding_model_matryoshka = ModelMeta(
     loader=HakimLocalWrapper,
     loader_kwargs=dict(
