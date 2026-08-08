@@ -700,6 +700,34 @@ Main_Hakim = ModelMeta(
 )
 
 
+hakim_ndcg_10 = ModelMeta(
+    loader=HakimLocalWrapper,
+    loader_kwargs=dict(
+        model_path="/mnt/data2/ez-workspace/auto-trainer/results/hakim_ndcg_10",
+        model_type=["dense"],
+    ),
+    name="MCINext/hakim-ndcg-10",
+    languages=["fas-Arab"],
+    open_weights=True,
+    revision="1",
+    release_date="2025-07-12",
+    n_parameters=None,
+    n_embedding_parameters=None,
+    memory_usage_mb=None,
+    embed_dim=768,
+    license="not specified",
+    max_tokens=512,
+    reference=None,
+    similarity_fn_name="cosine",
+    framework=["PyTorch", "Sentence Transformers"],
+    use_instructions=False,
+    public_training_code=None,
+    public_training_data=None,
+    training_datasets=None,
+    citation=HAKIM_CITATION,
+)
+
+
 test_embedding_model_matryoshka = ModelMeta(
     loader=HakimLocalWrapper,
     loader_kwargs=dict(
